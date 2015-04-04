@@ -10,7 +10,7 @@ import net.spy.memcached.CachedData;
  * @author wesley
  */
 
-public class Constants {
+public class Constants   {
 	public static final String JSON_MIME_TYPE = "application/json";
 
 	public static final int COUCHBASE_UPDATE_RETRIES_MAX = 10; // cas loop attempts
