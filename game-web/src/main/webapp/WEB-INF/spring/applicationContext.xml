@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:security="http://www.springframework.org/schema/security"
+       	xmlns:amq="http://activemq.apache.org/schema/core"
+		xmlns:jms="http://www.springframework.org/schema/jms"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.1.xsd
+		http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-3.1.xsd
+		http://activemq.apache.org/schema/core http://activemq.apache.org/schema/core/activemq-core-5.8.0.xsd
+       	http://www.springframework.org/schema/jms http://www.springframework.org/schema/jms/spring-jms-3.1.xsd"
+        >
+
+
+    <!-- Root Context: defines shared resources visible to all other web components -->
+
+    <!--<bean id="exporter" class="org.springframework.jmx.export.MBeanExporter">-->
+    <!--<property name="autodetect" value="true"/>-->
+    <!--</bean>-->
+
+    <!-- <context:mbean-export/> -->
+
+    <!--
+        Order of precedence:
+        * System properties
+        * ~/game.properties
+        * classpath:game-{env}.properties (passing env as system property)
+        * game-default.properties
+    -->
+
+ 
+    <bean class="org.springframework.context.support.PropertySourcesPlaceholderConfigurer">
+        <property name="locations">
+            <list>
+                <value>classpath:game-default.properties</value>  
+            </list>
+        </property>
+        <property name="ignoreResourceNotFound" value="true"/>
+        <property name="ignoreUnresolvablePlaceholders" value="true"/>
+    </bean>
+
+
+    <!--    <bean id="objectMapper" class="com.ea.vanguard.framework.helper.ObjectMapperFactoryBean"/>   -->
+
+
+   
+    
+    <!--   <security:authentication-manager>
+        <security:authentication-provider>
+            <security:user-service>
+                <security:user name="${content.mgmt.user}" password="${content.mgmt.password}"
+                               authorities="ROLE_SUPPORT,ROLE_CONTENT_MGR,ROLE_OPS,ROLE_DESIGNER,ROLE_RESET_PLAYER"/>
+            </security:user-service>
+        </security:authentication-provider>
+        <security:authentication-provider user-service-ref="userService">
+            <security:password-encoder ref="passwordEncoder">
+                <security:salt-source ref="saltSource" />
+            </security:password-encoder>
+        </security:authentication-provider>
+    </security:authentication-manager>
+    -->
+
+	 <!--  <bean id="userService" class="com.ea.vanguard.web.auth.AuthenticationService" /> -->
+    <!-- These beans are explicitly defined so they can injected into the User Service -->
+	 <!-- <bean id="passwordEncoder" class="org.springframework.security.authentication.encoding.ShaPasswordEncoder" />
+	<bean id="saltSource" class="org.springframework.security.authentication.dao.ReflectionSaltSource">
+		<property name="userPropertyToUse" value="username" />
+	</bean>
+	-->
+    
+    <bean id="rest-template" class="org.springframework.web.client.RestTemplate">
+	    <constructor-arg>
+	        <bean class="org.springframework.http.client.HttpComponentsClientHttpRequestFactory">
+	            <property name="readTimeout" value="${rest.template.read.timeout}" />
+	        </bean>
+	    </constructor-arg>
+        <property name="messageConverters">
+	        <list>
+	            <bean class="org.springframework.http.converter.ByteArrayHttpMessageConverter"/>
+	            <bean class="org.springframework.http.converter.StringHttpMessageConverter"/>
+	            <bean class="org.springframework.http.converter.ResourceHttpMessageConverter"/>
+	            <bean class="org.springframework.http.converter.FormHttpMessageConverter"/>
+	            <bean class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter"/>
+            </list>
+        </property>
+	</bean>
+
+	<bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">
+		<property name="basename">
+			<value>locale.messages</value>
+		</property>
+	</bean>
+	
+	
+	
+</beans>

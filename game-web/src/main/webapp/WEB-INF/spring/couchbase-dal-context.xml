@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.1.xsd">
+
+    <context:annotation-config/>
+    <!-- base-package takes comma-separated values -->
+
+    <!-- Couchbase Connection Factory & Pool -->
+
+    <bean id="cbConnectionFactory" class="game.framework.dal.couchbase.CouchbaseConnectionFactoryBean">
+        <constructor-arg ref="cbConnectionFactoryConfig"/>
+    </bean>
+
+
+    <bean id="cbClientObjectFactory" class="game.framework.dal.couchbase.CouchbaseClientObjectFactory">
+        <property name="couchbaseConnectionFactory" ref="cbConnectionFactory"/>
+    </bean>
+
+    <bean id="cbObjectPoolConfig" class="game.framework.dal.ObjectPoolConfig">
+        <property name="minIdle" value="5"/>
+    </bean>
+    <!--
+        <bean id="cbDataSource" class="game.framework.dal.couchbase.CouchbasePoolDataSource" destroy-method="shutdown" >
+            <property name="factory" ref="cbClientObjectFactory"/>
+            <property name="config" ref="cbObjectPoolConfig"/>
+        </bean>
+              -->
+    <bean id="cbDataSource" class="game.framework.dal.couchbase.CouchbaseSimpleDataSource" destroy-method="shutdown">
+        <constructor-arg ref="cbConnectionFactory"/>
+        <constructor-arg type ="int"  value="${couchbase.connection.count}"/> 
+    </bean>
+    <bean id="cbConnectionFactoryConfig"
+          class="game.framework.dal.couchbase.CouchbaseConnectionFactoryConfig">
+        <property name="serverList">
+            <list>
+                <value>http://${couchbase.host}:${couchbase.port}/pools</value>
+            </list>
+        </property>
+        <property name="bucketName" value="${couchbase.bucket.name}"/>
+        <property name="password" value="${couchbase.bucket.password}"/>
+    </bean>
+
+</beans>
