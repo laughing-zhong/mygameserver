@@ -7,7 +7,7 @@ import net.spy.memcached.CachedData;
  * the XML configuration. This class (or another Constants class) is the only place that
  * public fields are allowed in the Vanguard codebase.
  *
- * @author dadler
+ * @author wesley
  */
 
 public class Constants {

@@ -8,7 +8,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
  * DAO APIs will only work with descendants of CasJsonDO, as cas
  * is prevalent in the couchbase world.
  *
- * @author dadler
+ * @author wesley
  */
 
 abstract public class CasJsonDO extends JsonDO {

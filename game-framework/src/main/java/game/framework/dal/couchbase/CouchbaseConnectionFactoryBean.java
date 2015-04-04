@@ -11,7 +11,7 @@ import java.util.List;
  * as a constructor parameter. Also accepts List<String>, a list of server addresses. Convenience bean that
  * can easily be configured from Spring XML.
  *
- * @author dadler
+ * @author wesley
  */
 
 public class CouchbaseConnectionFactoryBean extends CouchbaseConnectionFactory {

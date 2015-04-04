@@ -13,7 +13,7 @@ import java.util.List;
  * objects can be managed via a single interface but behind the scenes the documents are stored in
  * separate couchbase records.
  *
- * @author dadler
+ * @author wesley
  */
 public interface IMultiCouchbaseDAO<MultiDomainObject extends MultiJsonDO<DomainObject>, DomainObject extends JsonDO> {
 

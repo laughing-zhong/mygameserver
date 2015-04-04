@@ -6,7 +6,7 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import org.springframework.beans.factory.config.AbstractFactoryBean;
 
 /**
- * @author dadler
+ * @author wesley
  */
 public class ObjectMapperFactoryBean extends AbstractFactoryBean<ObjectMapper> {
 	@Override

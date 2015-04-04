@@ -3,7 +3,7 @@ package game.framework.helper;
 /**
  * Enums should implement this interface to use the EnumIdMap reverse lookup utility.
  *
- * @author dadler
+ * @author wesley
  */
 
 public interface EnumId {

@@ -11,7 +11,7 @@ import org.slf4j.LoggerFactory;
  * creates a new CouchbaseClient (with its own threads) when  makeObject() is called, and shuts down these threads
  * when destroyObject() is called.
  *
- * @author dadler
+ * @author wesley
  */
 
 public class CouchbaseClientObjectFactory implements PoolableObjectFactory<CloseableCouchbaseClient> {

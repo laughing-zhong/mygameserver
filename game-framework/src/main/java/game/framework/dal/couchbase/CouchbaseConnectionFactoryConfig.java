@@ -4,7 +4,7 @@ import java.util.List;
 
 /**
  * Value object to assist in configuring couchbase via Spring.
- * @author dadler
+ * @author wesly
  */
 
 

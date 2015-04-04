@@ -9,7 +9,7 @@ import org.slf4j.helpers.MessageFormatter;
  *
  * 		format( "{}, {}, {}", 1, 2, 3 ) returns "1, 2, 3"
  *
- * @author dadler
+ * @author wesley
  */
 
 public class Msg {

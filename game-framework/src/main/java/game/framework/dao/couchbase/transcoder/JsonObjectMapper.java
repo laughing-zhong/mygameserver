@@ -5,7 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 
 /**
- * @author dadler
+ * @author wesley
  */
 public class JsonObjectMapper {
 

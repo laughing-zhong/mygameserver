@@ -5,7 +5,7 @@ import game.framwork.rpc.Rpc;
 
 
 /**
- * @author dadler
+ * @author wesley
  */
 
 public class UnauthorizedException extends RuntimeException implements CodedException {

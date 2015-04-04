@@ -17,7 +17,7 @@ import org.slf4j.LoggerFactory;
  * For performance reasons, we might want to use a ThreadLocal<PoolableCouchbaseClient> to give out
  * the same connection throughout a request.
  *
- * @author dadler
+ * @author wesley
  */
 
 public class CouchbasePoolDataSource extends GenericObjectPool<CloseableCouchbaseClient>

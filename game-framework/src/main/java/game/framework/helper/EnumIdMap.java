@@ -22,7 +22,7 @@ import java.util.Map;
  * For deserialization from the enum id, mark the valueForId method with @JsonCreator
  * so that the Jackson deserializer can map from id->enum constant.
  *
- * @author dadler
+ * @author wesley
  */
 
 

@@ -3,7 +3,7 @@ package game.framework.domain.json;
 /**
  * Domain object that contains a single byte array.
  *
- * @author dadler
+ * @author wesley
  */
 
 public class ByteArrayDO extends CasJsonDO {

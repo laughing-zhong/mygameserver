@@ -4,7 +4,7 @@ import game.framework.exception.CodedException;
 import game.framwork.rpc.Rpc;
 
 /**
- * @author dadler
+ * @author wesley
  */
 public class ForceClientRestartException extends RuntimeException implements CodedException {
 

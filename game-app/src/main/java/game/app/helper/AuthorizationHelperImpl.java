@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 import javax.inject.Inject;
 
 /**
- * @author dadler
+ * @author wesley
  */
 
 @Component

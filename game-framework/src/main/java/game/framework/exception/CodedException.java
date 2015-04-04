@@ -3,7 +3,7 @@ package game.framework.exception;
 import game.framwork.rpc.Rpc;
 
 /**
- * @author dadler
+ * @author wesley
  */
 
 public interface CodedException {

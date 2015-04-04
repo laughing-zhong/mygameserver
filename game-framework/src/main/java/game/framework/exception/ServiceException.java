@@ -5,7 +5,7 @@ import game.framwork.rpc.Rpc;
 
 
 /**
- * @author dadler
+ * @author wesley
  */
 
 public class ServiceException extends RuntimeException implements CodedException {

@@ -9,11 +9,11 @@ import java.io.IOException;
 
 /**
  * CouchbaseClient that implements the AutoCloseable interface. This subclass of {@link com.couchbase.client.CouchbaseClient}
- * allows use of try-with-resources and {@link com.ea.vanguard.framework.dal.couchbase.CouchbasePoolDataSource}.getConnection().
+ * allows use of try-with-resources and {@link com.ea.game.framework.dal.couchbase.CouchbasePoolDataSource}.getConnection().
  * <p/>
  * This class is intended to be used along with an object pool to allow automatic retrieval/return of objects to the pool.
  *
- * @author dadler
+ * @author wesley
  */
 
 public class CloseableCouchbaseClient extends CouchbaseClient implements AutoCloseable {

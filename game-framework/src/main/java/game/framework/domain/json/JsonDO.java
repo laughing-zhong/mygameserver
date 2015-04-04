@@ -10,7 +10,7 @@ import com.google.common.collect.Lists;
 import java.util.List;
 
 /**
- * @author dadler
+ * @author wesley
  */
 abstract public class JsonDO extends KeyedDO<String> {
 	private static final String SEPARATOR = ":";

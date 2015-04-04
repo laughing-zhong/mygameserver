@@ -6,7 +6,7 @@ import org.perf4j.LoggingStopWatch;
 import org.perf4j.slf4j.Slf4JStopWatch;
 
 /**
- * @author dadler
+ * @author wesley
  */
 public class ProfilerAspect {
 
