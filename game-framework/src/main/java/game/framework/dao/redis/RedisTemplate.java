@@ -18,7 +18,6 @@ import javax.inject.Inject;
  * @author m.mcbride
  */
 
-@SuppressWarnings( "SpellCheckingInspection" )
 @Component
 public class RedisTemplate {
 
