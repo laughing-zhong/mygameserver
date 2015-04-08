@@ -7,7 +7,7 @@ import game.framework.dao.exception.DAOException;
 import game.framework.dao.exception.KeyAlreadyExistsException;
 import game.framework.dao.exception.KeyNotFoundException;
 import game.framework.domain.json.JsonDO;
-import game.framework.localcache.Cache;
+
 import game.framework.localcache.Cached;
 import game.framework.localcache.LocalCache;
 import game.framework.localcache.LocalCacheImpl;
@@ -52,6 +52,7 @@ public class CouchbaseDAO<DomainObject extends JsonDO> extends AbstractCouchbase
 	public CouchbaseDAO( CouchbaseDataSource dataSource, Class<DomainObject> domainObjectClass ) {
 		super( dataSource );
 		this.transcoder = new JsonTranscoder<>( domainObjectClass );
+		fillLocalCache(domainObjectClass);
 	}
 
 	
