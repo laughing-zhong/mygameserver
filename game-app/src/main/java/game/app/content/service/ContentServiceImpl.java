@@ -118,7 +118,7 @@ public class ContentServiceImpl implements ContentService, ApplicationEventPubli
 	 * @param allowRemoves safety check, must be enabled to remove records whose absence could break the game.
 	 */
 
-	@SuppressWarnings({ "StatementWithEmptyBody", "ConstantConditions" })
+
 	private void validateAndPrepData( Content content, boolean allowRemoves ) {
 		
 	}
