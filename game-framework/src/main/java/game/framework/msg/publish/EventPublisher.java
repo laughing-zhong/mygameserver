@@ -3,7 +3,7 @@ package game.framework.msg.publish;
 import game.framework.dao.couchbase.transcoder.JsonObjectMapper;
 
 import javax.annotation.PostConstruct;
-import javax.annotation.Resource;
+
 import javax.inject.Inject;
 import javax.jms.JMSException;
 import javax.jms.Message;

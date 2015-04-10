@@ -1,11 +1,11 @@
 package game.framework.dal.couchbase;
 
-import com.couchbase.client.CouchbaseClient;
-import com.couchbase.client.CouchbaseConnectionFactory;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import game.framework.domain.json.JsonDO;
 
-import java.io.IOException;
+import com.couchbase.client.java.view.View;
+
+
+
 
 /**
  * CouchbaseClient that implements the AutoCloseable interface. This subclass of {@link com.couchbase.client.CouchbaseClient}
@@ -16,27 +16,16 @@ import java.io.IOException;
  * @author wesley
  */
 
-public class CloseableCouchbaseClient extends CouchbaseClient implements AutoCloseable {
+public interface CloseableCouchbaseClient  {
+	
+	public boolean delete(String targetId);
+	
+	public View getView(String doc,String view);
+	public void add(String targetId,JsonDO jsonObj);
+	public void add(JsonDO  jsonObj);
+	public void replace(String targetId,JsonDO  jsonObj);
+	public void set(String targetId, int expire,JsonDO jsonObj);
+	public void set(String targetId,JsonDO jsonObj);
+	public <T extends JsonDO> T  get(String targetId,Class<T>  objClass);
 
-	private static final Logger LOGGER = LoggerFactory.getLogger( CloseableCouchbaseClient.class );
-	private CouchbaseDataSource dataSource;
-
-	public CloseableCouchbaseClient( CouchbaseConnectionFactory connectionFactory ) throws IOException {
-		super( connectionFactory );
-	}
-
-	@Override
-	public void close() {
-		try {
-			if ( dataSource != null ) dataSource.close( this );
-		} catch ( Exception e ) {
-			LOGGER.error( "close(): exception returning CB connection: {}", e );
-		} finally {
-			dataSource = null;
-		}
-	}
-
-	public void setDataSource( CouchbaseDataSource dataSource ) {
-		this.dataSource = dataSource;
-	}
 }

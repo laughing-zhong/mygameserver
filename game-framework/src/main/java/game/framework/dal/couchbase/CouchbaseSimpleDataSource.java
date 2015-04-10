@@ -26,43 +26,10 @@ public class CouchbaseSimpleDataSource implements CouchbaseDataSource {
 	//private CloseableCouchbaseClient client;
 	private List<CloseableCouchbaseClient> clientList = new ArrayList<CloseableCouchbaseClient>();
 
-	public CouchbaseSimpleDataSource( CouchbaseConnectionFactoryBean factory,int connectionCount ) throws IOException {
-		int maxRetries = 3;
-		int timeToWait = 15000;
-		couchBaseConnectionCount = connectionCount;
-		Exception lastException = null;
-	   
-		
-		for (int i = 0; i < couchBaseConnectionCount; ++i) {
-			int tries = 0;
-			while (tries < maxRetries) {
-				tries++;
-				CloseableCouchbaseClient client = null;
-				try {
-					CouchbaseConnectionFactoryBean  tmpFactory = new CouchbaseConnectionFactoryBean(factory.getConnectionFactoryConfig());
-					client = new CloseableCouchbaseClient(tmpFactory);
-					clientList.add(client);
-					break;
-				} catch (Exception e) {
-					lastException = e;
-					// http://www.couchbase.com/issues/browse/JCBC-324
-					LOGGER.warn(
-							"Unable to connect to couchbase, retrying in {} ms. {}",
-							tries * timeToWait, e.getMessage());
-					try {
-						Thread.sleep(tries * timeToWait);
-					} catch (InterruptedException ignore) {
-					}
-				}
+	public CouchbaseSimpleDataSource(CouchbaseConnectionConfigBean config,int connectionCount) throws IOException {
+		 CloseableCouchbaseClient client = new CloseableCouchbaseClientImpl(config);
+		clientList.add(client);
 
-				if (client == null) {
-					LOGGER.warn(
-							"Unable to connect to couchbase, app node is shutting down.",
-							lastException);
-					System.exit(-1);
-				}
-			}
-		}
 	}
 
 	@Override
@@ -75,9 +42,9 @@ public class CouchbaseSimpleDataSource implements CouchbaseDataSource {
 	}
 
 	public void shutdown() {
-		LOGGER.info( "Shutting down couchbase simple datasource." );
-		for(CloseableCouchbaseClient client : clientList)
-		 client.shutdown( 5, TimeUnit.SECONDS );
+//		LOGGER.info( "Shutting down couchbase simple datasource." );
+//		for(CloseableCouchbaseClient client : clientList)
+//		 client.shutdown( 5, TimeUnit.SECONDS );
 	}
 
 	public void close( CloseableCouchbaseClient connection ) {

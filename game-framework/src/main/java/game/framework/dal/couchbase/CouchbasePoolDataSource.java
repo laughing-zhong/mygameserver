@@ -48,7 +48,7 @@ public class CouchbasePoolDataSource extends GenericObjectPool<CloseableCouchbas
 	@Override
 	public CloseableCouchbaseClient getConnection() {
 		CloseableCouchbaseClient client = borrowObject();
-		if ( client != null ) client.setDataSource( this );
+	//	if ( client != null ) client.setDataSource( this );
 
 		return client;
 	}

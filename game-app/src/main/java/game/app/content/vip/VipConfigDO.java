@@ -17,7 +17,7 @@ public class VipConfigDO extends JsonDO {
 	}
 
 	public VipConfigDO(String targetId, VipConfig vipConfig){
-		this.setId(targetId);
+		//this.setId(targetId);
 		this.vipConfig = vipConfig;
 	}
 

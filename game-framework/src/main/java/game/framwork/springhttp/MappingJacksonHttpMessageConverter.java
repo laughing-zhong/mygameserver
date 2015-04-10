@@ -72,7 +72,7 @@ public class MappingJacksonHttpMessageConverter extends AbstractHttpMessageConve
 	 * This prefix does not affect the evaluation of JSON, but if JSON validation is performed on the
 	 * string, the prefix would need to be ignored.
 	 */
-	@SuppressWarnings({"UnusedDeclaration"})
+
 	public void setPrefixJson( boolean prefixJson ) {
 		this.prefixJson = prefixJson;
 	}

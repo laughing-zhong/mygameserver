@@ -64,9 +64,9 @@ public class HealthController {
 			case "couchbase":
 				serviceStatus = new ServiceCheckTemplate().execute(system, new ServiceCheck(){
 					public void check() {
-						try ( CloseableCouchbaseClient client = couchbaseDataSource.getConnection(); ) {
-							client.get("ping");
-						}
+//						try ( CloseableCouchbaseClient client = couchbaseDataSource.getConnection(); ) {
+//							client.get("ping");
+//						}
 					}
 					
 				});

@@ -91,11 +91,4 @@ public interface IDAO<DO> {
 	boolean delete( String targetId ) throws DAOException;
 	boolean delete( CloseableCouchbaseClient client, String targetId ) throws DAOException;
 
-	/**
-	 * Sets a new uuid onto the object.
-	 *
-	 * @param targetObject The new object to have the generated targetId
-	 * @return The new targetId
-	 */
-	String generateAndSetNewId( DO targetObject );
 }

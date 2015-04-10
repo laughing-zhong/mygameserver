@@ -4,6 +4,7 @@ import javax.inject.Inject;
 
 import game.app.DO.User;
 import game.app.cb.dao.UserCbDAO;
+import game.app.domain.Do.UserCbDO;
 import game.app.domain.Do.UserDO;
 import game.framework.service.JIService;
 
@@ -25,13 +26,13 @@ public class JLoginService  implements JIService {
 	{
 		user.setUserName(user.getUserName()+" ok");
 		
-		UserDO  userDo = new UserDO();
+		UserCbDO  userDo = new UserCbDO();
 		userDo.setUserName("wesly");
 		userDo.setId("1111111");
 		userCbDAO.create(userDo);
 		System.out.println("============  put cb  ");
 		
-		UserDO  cbUserDo = this.userCbDAO.findById(userDo.getId());
+		UserCbDO  cbUserDo = this.userCbDAO.findById(userDo.getId());
 		System.out.println("--------------  "+cbUserDo.getUserName());
 		return user;
 	}

@@ -7,21 +7,20 @@ import game.framework.dal.util.EntityUtils;
 import game.framework.dao.couchbase.IDAO;
 import game.framework.dao.exception.DAOException;
 import game.framework.domain.json.JsonDO;
-import game.framework.util.IdUtils;
+
 import com.google.common.base.Joiner;
 import com.google.common.base.Strings;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.concurrent.ExecutionException;
 
 /**
  * Abstract base implementation for Couchbase DAOs.
  *
  * @param <DomainObject> this domain object type this DAO will operate on
  */
-@SuppressWarnings( "SpellCheckingInspection" )
+
 abstract class AbstractCouchbaseDAO<DomainObject extends JsonDO> implements IDAO<DomainObject> {
 	protected final Logger LOGGER;
 
@@ -33,11 +32,7 @@ abstract class AbstractCouchbaseDAO<DomainObject extends JsonDO> implements IDAO
 	private final String entityKeyTemplate;
 
 
-	/**
-	 * The template of the key used to look up the value in couchbase
-	 * [class_prefix]:{targetId}:([other_class_prefix]) ex. "prfx:%s:" or
-	 * "plyr:%s:accts"
-	 */
+
 
 	public AbstractCouchbaseDAO( CouchbaseDataSource dataSource ) {
 		LOGGER = LoggerFactory.getLogger( getClass() );
@@ -70,14 +65,7 @@ abstract class AbstractCouchbaseDAO<DomainObject extends JsonDO> implements IDAO
 		return String.format( entityKeyTemplate, targetId );
 	}
 
-	public String generateAndSetNewId( DomainObject targetObject ) {
-		if ( targetObject.getId() != null )
-			throw new IllegalArgumentException( "Id already exist: " + targetObject.getId() );
 
-		targetObject.setId( IdUtils.generate() );
-
-		return targetObject.getId();
-	}
 
 	public boolean delete( DomainObject targetObject ) throws DAOException {
 		return delete( targetObject.getId() );
@@ -91,15 +79,8 @@ abstract class AbstractCouchbaseDAO<DomainObject extends JsonDO> implements IDAO
 		if ( Strings.isNullOrEmpty( targetId ) ) throw new IllegalArgumentException( "invalid targetId" );
 
 		String objectKey = getKeyFromId( targetId );
-
-		try ( CloseableCouchbaseClient client = dataSource.getConnection() ) {
-			/*
-				TODO: Should we provide a version without .get() so that we can asynchronously fire-and-forget?
-			*/
-			return client.delete( objectKey ).get();
-		} catch ( InterruptedException | ExecutionException e ) {
-			throw new DAOException( e );
-		}
+		CloseableCouchbaseClient client = dataSource.getConnection();
+		return client.delete( objectKey );	
 	}
 
 	@Override
@@ -107,15 +88,7 @@ abstract class AbstractCouchbaseDAO<DomainObject extends JsonDO> implements IDAO
 		if ( Strings.isNullOrEmpty( targetId ) ) throw new IllegalArgumentException( "invalid targetId" );
 
 		String objectKey = getKeyFromId( targetId );
-
-		try {
-			/*
-				TODO: Should we provide a version without .get() so that we can asynchronously fire-and-forget?
-			*/
-			return client.delete( objectKey ).get();
-		} catch ( InterruptedException | ExecutionException e ) {
-			throw new DAOException( e );
-		}
+		return client.delete( objectKey );
 	}
 
 	@Override

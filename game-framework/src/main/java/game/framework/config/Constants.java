@@ -1,6 +1,6 @@
 package game.framework.config;
 
-import net.spy.memcached.CachedData;
+
 
 /**
  * Global constant values. Before adding a value to this class, consider adding an entry to
@@ -21,5 +21,4 @@ public class Constants   {
 
 	public static final int COUCHBASE_CACHED_DATA_FLAGS_DEFAULT = 0; // Default flags, means something I'm sure
 
-	public static final int COUCHBASE_CACHED_DATA_SIZE_MAX = CachedData.MAX_SIZE;
 }

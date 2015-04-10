@@ -4,7 +4,8 @@ import game.framework.dao.exception.DAOException;
 import game.framework.dao.exception.KeyNotFoundException;
 import game.framework.dao.exception.OutOfDateDomainObjectException;
 import game.framework.dao.exception.UnableToApplyDeltaException;
-import game.framework.domain.json.CasJsonDO;
+import game.framework.domain.json.JsonDO;
+
 
 /**
  * Interface for all Couchbase DAOs with CAS functionality.
@@ -12,7 +13,7 @@ import game.framework.domain.json.CasJsonDO;
  * @param <DO> the CasJsonDO subtype this DAO will operate on
  */
 
-public interface ICasCouchbaseDAO<DO extends CasJsonDO> extends IDAO<DO> {
+public interface ICasCouchbaseDAO<DO extends JsonDO> extends IDAO<DO> {
 	/**
 	 * safeSave will ensure the data in couchbase database haven't been written
 	 * between the SafeSingleCouchbaseDomainObject loading and the saving of said object.

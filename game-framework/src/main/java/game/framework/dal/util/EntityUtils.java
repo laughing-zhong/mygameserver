@@ -12,7 +12,7 @@ import org.slf4j.LoggerFactory;
  * @author wesley
  */
 
-@SuppressWarnings( "UnusedDeclaration" )
+
 public class EntityUtils {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger( EntityUtils.class );

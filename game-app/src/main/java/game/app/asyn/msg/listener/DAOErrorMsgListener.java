@@ -1,4 +1,4 @@
-package game.app.asyn.msg.listner;
+package game.app.asyn.msg.listener;
 
 import game.framework.msg.publish.EventPublisher;
 

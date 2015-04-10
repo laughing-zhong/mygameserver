@@ -2,43 +2,24 @@ package game.framework.dao.couchbase.impl;
 
 import game.framework.dal.couchbase.CloseableCouchbaseClient;
 import game.framework.dal.couchbase.CouchbaseDataSource;
-import game.framework.dao.couchbase.transcoder.JsonTranscoder;
+
 import game.framework.dao.exception.DAOException;
-import game.framework.dao.exception.KeyAlreadyExistsException;
+
 import game.framework.dao.exception.KeyNotFoundException;
 import game.framework.domain.json.JsonDO;
-
 import game.framework.localcache.Cached;
 import game.framework.localcache.LocalCache;
 import game.framework.localcache.LocalCacheImpl;
 import game.framework.localcache.LocalCacheMock;
 
 import com.google.common.base.Strings;
-
-import net.spy.memcached.transcoders.Transcoder;
-
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.concurrent.ExecutionException;
-
-
-
-
-
-
-/**
- * Basic Dao that most of the game Daos should extend. Represents a single
- * objectKey/value store in couchbase. All daos that extends this should be scoped in
- * some way. As long as they are thread-safe, they can be scoped as Singletons.
- *
- * @param <DomainObject> domain object type that this DAO operates on
- */
-
 
 public class CouchbaseDAO<DomainObject extends JsonDO> extends AbstractCouchbaseDAO<DomainObject> {
-	protected final Transcoder<DomainObject> transcoder;
+
 	private LocalCache<DomainObject>  localCached;
+	Class<DomainObject>  domainObjectClass ;
 
 	//private LogServerService  logServerService;
 
@@ -51,7 +32,7 @@ public class CouchbaseDAO<DomainObject extends JsonDO> extends AbstractCouchbase
 	 */
 	public CouchbaseDAO( CouchbaseDataSource dataSource, Class<DomainObject> domainObjectClass ) {
 		super( dataSource );
-		this.transcoder = new JsonTranscoder<>( domainObjectClass );
+		this.domainObjectClass = domainObjectClass;
 		fillLocalCache(domainObjectClass);
 	}
 
@@ -77,9 +58,9 @@ public class CouchbaseDAO<DomainObject extends JsonDO> extends AbstractCouchbase
 	 * @param dataSource The IConnectionContainer to be based to it.
 	 * @param transcoder The transcoder you want to use.
 	 */
-	public CouchbaseDAO( CouchbaseDataSource dataSource, Transcoder<DomainObject> transcoder ) {
+	public CouchbaseDAO( CouchbaseDataSource dataSource) {
 		super( dataSource );
-		this.transcoder = transcoder;
+
 	}
 
 	/**
@@ -88,20 +69,15 @@ public class CouchbaseDAO<DomainObject extends JsonDO> extends AbstractCouchbase
 	 */
 	public void create( DomainObject objectToPersist ) throws DAOException {
 
-		if ( Strings.isNullOrEmpty( objectToPersist.getId() ) ) throw new IllegalArgumentException( "invalid Id" );
+		if (Strings.isNullOrEmpty(objectToPersist.getId()))
+			throw new IllegalArgumentException("invalid Id");
 
-		String objectKey = getKeyFromId( objectToPersist.getId() );
+		String objectKey = getKeyFromId(objectToPersist.getId());
 
-		try ( CloseableCouchbaseClient client = dataSource.getConnection() ) {
-			LOGGER.debug( "creating: {}", objectKey );
+		CloseableCouchbaseClient client = dataSource.getConnection();
 
-			localCached.cache(objectKey, objectToPersist);
-			boolean result = client.add( objectKey, 0, objectToPersist, transcoder ).get();
-			if ( !result ) throw new KeyAlreadyExistsException( objectKey );
-
-		} catch ( InterruptedException | ExecutionException e ) {
-			throw new DAOException( e );
-		}
+		localCached.cache(objectKey, objectToPersist);
+		client.add(objectKey,objectToPersist);
 	}
 
 	/**
@@ -112,18 +88,13 @@ public class CouchbaseDAO<DomainObject extends JsonDO> extends AbstractCouchbase
 	 */
 	public void replace( DomainObject objectToPersist ) throws KeyNotFoundException, DAOException {
 
-		if ( Strings.isNullOrEmpty( objectToPersist.getId() ) ) throw new IllegalArgumentException( "invalid Id" );
+		if (Strings.isNullOrEmpty(objectToPersist.getId()))
+			throw new IllegalArgumentException("invalid Id");
 
-		String objectKey = getKeyFromId( objectToPersist.getId() );
-
-		try ( CloseableCouchbaseClient client = dataSource.getConnection() ) {
-			LOGGER.debug( "replacing objectKey: {}", objectKey );
-
-			boolean result = client.replace( objectKey, 0, objectToPersist, transcoder ).get();
-			if ( !result ) throw new KeyNotFoundException( objectKey );
-		} catch ( InterruptedException | ExecutionException e ) {
-			throw new DAOException( e );
-		}
+		String objectKey = getKeyFromId(objectToPersist.getId());
+		CloseableCouchbaseClient client = dataSource.getConnection();
+		LOGGER.debug("replacing objectKey: {}", objectKey);
+		client.replace(objectKey, objectToPersist);
 	}
 
 	/**
@@ -146,16 +117,9 @@ public class CouchbaseDAO<DomainObject extends JsonDO> extends AbstractCouchbase
 		if ( Strings.isNullOrEmpty( objectToPersist.getId() ) ) throw new IllegalArgumentException( "invalid Id" );
 
 		String objectKey = getKeyFromId( objectToPersist.getId() );
-		System.out.println("++++++++++++++++++++++++++++  key = "+objectKey);
-
 		localCached.cache(objectKey, objectToPersist);
-		try ( CloseableCouchbaseClient client = dataSource.getConnection() ) {
-			boolean result = client.set( objectKey, expiry, objectToPersist, transcoder ).get();
-			if ( !result ) throw new DAOException( "Could not set: " + objectKey );
-		} catch ( InterruptedException | ExecutionException e ) {
-			throw new DAOException( e );
-		}
-
+	    CloseableCouchbaseClient client = dataSource.getConnection();
+		 client.set( objectKey, expiry, objectToPersist );
 	}
 
 	/**
@@ -174,10 +138,8 @@ public class CouchbaseDAO<DomainObject extends JsonDO> extends AbstractCouchbase
 		 if(obj != null){
 			 return obj;
 		 }
-		try ( CloseableCouchbaseClient client = dataSource.getConnection() ) {
-			return client.get( objectKey, transcoder );
-		}
-
+		CloseableCouchbaseClient client = dataSource.getConnection() ;
+		return client.get( objectKey, domainObjectClass);	
 	}
 
 	@Override
@@ -188,7 +150,7 @@ public class CouchbaseDAO<DomainObject extends JsonDO> extends AbstractCouchbase
 		 if(obj != null){
 			 return obj;
 		 }
-		return client.get( objectKey, transcoder );
+		return client.get( objectKey, domainObjectClass);
 	}
 
 	/**
@@ -201,27 +163,28 @@ public class CouchbaseDAO<DomainObject extends JsonDO> extends AbstractCouchbase
 	 */
 	public List<DomainObject> findByIds( List<String> targetIds ) throws DAOException {
 		List<String> targetKeys = new ArrayList<>( targetIds.size() );
-		for ( String targetId : targetIds ) {
-			if ( Strings.isNullOrEmpty( targetId ) ) continue;
-			targetKeys.add( getKeyFromId( targetId ) );
-		}
+//		for ( String targetId : targetIds ) {
+//			if ( Strings.isNullOrEmpty( targetId ) ) continue;
+//			targetKeys.add( getKeyFromId( targetId ) );
+//		}
+//
+//		Map<String, DomainObject> resultMap;
+//
+//	    CloseableCouchbaseClient client = dataSource.getConnection();
+//			resultMap = client.getBulk( targetKeys, transcoder );
+//		}
+//
+//		List<DomainObject> resultList = new ArrayList<>( resultMap == null ? 0 : resultMap.size() );
+//
+//		/* Return the empty list early */
+//		if ( resultMap == null ) return resultList;
+//
+//		for ( String objectKey : targetKeys ) {
+//			DomainObject resultObject = resultMap.get( objectKey );
+//			if ( resultObject != null ) resultList.add( resultObject );
+//		}
 
-		Map<String, DomainObject> resultMap;
-
-		try ( CloseableCouchbaseClient client = dataSource.getConnection() ) {
-			resultMap = client.getBulk( targetKeys, transcoder );
-		}
-
-		List<DomainObject> resultList = new ArrayList<>( resultMap == null ? 0 : resultMap.size() );
-
-		/* Return the empty list early */
-		if ( resultMap == null ) return resultList;
-
-		for ( String objectKey : targetKeys ) {
-			DomainObject resultObject = resultMap.get( objectKey );
-			if ( resultObject != null ) resultList.add( resultObject );
-		}
-
-		return resultList;
+	//	return resultList;
+		return null;
 	}
 }
