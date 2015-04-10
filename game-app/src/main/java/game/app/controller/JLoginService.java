@@ -27,8 +27,8 @@ public class JLoginService  implements JIService {
 		user.setUserName(user.getUserName()+" ok");
 		
 		UserCbDO  userDo = new UserCbDO();
-		userDo.setUserName("wesly");
-		userDo.setId("1111111");
+		userDo.setUserName(user.getUserName());
+		userDo.setId(user.getId());
 		userCbDAO.create(userDo);
 		System.out.println("============  put cb  ");
 		

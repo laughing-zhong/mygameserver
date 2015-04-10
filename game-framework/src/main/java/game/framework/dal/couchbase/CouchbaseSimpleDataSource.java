@@ -3,10 +3,14 @@ package game.framework.dal.couchbase;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import game.framework.msg.publish.EventPublisher;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
+
+import javax.inject.Inject;
+
 
 
 
@@ -23,11 +27,13 @@ public class CouchbaseSimpleDataSource implements CouchbaseDataSource {
 	//private static final int   COUCHBASE_CONNECTION = 8;
 	private int couchBaseConnectionCount;
 	
+	@Inject
+	private EventPublisher  eventPublisher;
 	//private CloseableCouchbaseClient client;
 	private List<CloseableCouchbaseClient> clientList = new ArrayList<CloseableCouchbaseClient>();
 
 	public CouchbaseSimpleDataSource(CouchbaseConnectionConfigBean config,int connectionCount) throws IOException {
-		 CloseableCouchbaseClient client = new CloseableCouchbaseClientImpl(config);
+		 CloseableCouchbaseClient client = new CloseableCouchbaseClientImpl(config,eventPublisher);
 		clientList.add(client);
 
 	}

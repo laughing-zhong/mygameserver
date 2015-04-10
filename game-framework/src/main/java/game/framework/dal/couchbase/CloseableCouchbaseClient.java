@@ -19,10 +19,8 @@ import com.couchbase.client.java.view.View;
 public interface CloseableCouchbaseClient  {
 	
 	public boolean delete(String targetId);
-	
 	public View getView(String doc,String view);
 	public void add(String targetId,JsonDO jsonObj);
-	public void add(JsonDO  jsonObj);
 	public void replace(String targetId,JsonDO  jsonObj);
 	public void set(String targetId, int expire,JsonDO jsonObj);
 	public void set(String targetId,JsonDO jsonObj);

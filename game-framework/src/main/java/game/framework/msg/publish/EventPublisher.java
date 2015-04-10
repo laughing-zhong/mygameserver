@@ -33,9 +33,10 @@ public class EventPublisher {
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger( EventPublisher.class );
 	
-	public void daoError(final String playerId,String data) {
+	public void publisDaoError(final String playerId,String data) {
 		DaoErrorMsg playerEvent = new DaoErrorMsg(data);
 		playerEvent.setPlayerId(playerId);
+		LOGGER.error("publish  dao access error id {} data = {}",playerId,data);
 
 		try {
 			final String message = objectMapper.writeValueAsString(playerEvent);
@@ -54,14 +55,13 @@ public class EventPublisher {
 	
 	@PostConstruct
 	public void Test(){
-		daoError("123","aaaaaaa");
+		publisDaoError("123","aaaaaaa");
 	}
 	
 	public static class DaoErrorMsg{
 		public DaoErrorMsg(String data){
 			
 		}
-		
 		private String playerId;
 
 		public String getPlayerId() {
@@ -72,5 +72,4 @@ public class EventPublisher {
 			this.playerId = playerId;
 		}
 	}
-
 }
