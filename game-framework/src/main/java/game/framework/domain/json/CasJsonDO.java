@@ -12,10 +12,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
  */
 
 abstract public class CasJsonDO extends JsonDO {
-
-	// The cas value is a timestamp -- the last time this domain object was modified.
-	// It is used to resolve conflicts and prevent data corruption
-	// when keys are being written to by many clients under high load.
 	@JsonIgnore
 	private long cas;
 

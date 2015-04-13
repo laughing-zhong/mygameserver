@@ -11,6 +11,7 @@ package game.framework.dal.couchbase;
 public interface CouchbaseDataSource {
 	CloseableCouchbaseClient getConnection();
 
+
 	void shutdown();
 
 	void close( CloseableCouchbaseClient connection );

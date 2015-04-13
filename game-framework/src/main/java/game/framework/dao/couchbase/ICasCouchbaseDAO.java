@@ -48,6 +48,6 @@ public interface ICasCouchbaseDAO<DO extends JsonDO> extends IDAO<DO> {
 	 * @throws DAOException
 	 * @throws UnableToApplyDeltaException If callable.applyDelta() fails for some reason
 	 */
-	<DeltaObject> DO safeUpdate( IUpdateDO<DeltaObject, DO> callable, DeltaObject deltaObject, String... targetIds ) throws KeyNotFoundException, DAOException, UnableToApplyDeltaException;
+	<DeltaObject> DO safeUpdate( IUpdateDO<DeltaObject, DO> callable, DeltaObject deltaObject, String targetIds ) throws KeyNotFoundException, DAOException, UnableToApplyDeltaException;
 
 }

@@ -1,26 +1,25 @@
 package game.framework.dal.couchbase;
-
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
 import javax.annotation.PreDestroy;
 
 import rx.Observable;
-import rx.functions.Func1;
+import game.framework.dao.couchbase.IUpdateDO;
 import game.framework.dao.couchbase.transcoder.JsonObjectMapper;
+import game.framework.domain.json.CasJsonDO;
 import game.framework.domain.json.JsonDO;
 import game.framework.msg.publish.EventPublisher;
 import game.framework.util.JsonUtil;
+import game.service.exception.IlligleDataException;
 
-import com.couchbase.client.deps.io.netty.handler.timeout.TimeoutException;
 import com.couchbase.client.java.AsyncBucket;
 import com.couchbase.client.java.Cluster;
 import com.couchbase.client.java.CouchbaseCluster;
-import com.couchbase.client.java.ReplicaMode;
-import com.couchbase.client.java.document.JsonDocument;
 import com.couchbase.client.java.document.RawJsonDocument;
 import com.couchbase.client.java.env.CouchbaseEnvironment;
 import com.couchbase.client.java.env.DefaultCouchbaseEnvironment;
+import com.couchbase.client.java.error.CASMismatchException;
 import com.couchbase.client.java.view.View;
 
 
@@ -61,11 +60,11 @@ public class CloseableCouchbaseClientImpl implements CloseableCouchbaseClient{
 	}
 
 	@Override
-	public void add(String targetId, JsonDO jsonObj) {
+	public void create(String targetId, JsonDO jsonObj) {
 		String jsonStr = JsonUtil.genJsonStr(jsonObj);
          if(jsonStr != null){
         	 RawJsonDocument doc = RawJsonDocument.create(targetId,jsonStr);
-        	 this.asynWrite(doc);
+        	 this.asynCreate(doc);
          }
 	}
 
@@ -75,36 +74,66 @@ public class CloseableCouchbaseClientImpl implements CloseableCouchbaseClient{
 	public void replace(String targetId, JsonDO jsonObj) {
 		String jsonStr = JsonUtil.genJsonStr(jsonObj);
         if(jsonStr != null){
-       	 RawJsonDocument doc = RawJsonDocument.create(targetId,jsonStr);
-         asynWrite(doc);
+        	if(jsonObj instanceof CasJsonDO){
+        		RawJsonDocument  doc = RawJsonDocument.create(targetId,jsonStr,((CasJsonDO) jsonObj).getCas());
+       	      asynReplace(doc);
+        	}
+        	else{
+        		RawJsonDocument doc = RawJsonDocument.create(targetId,jsonStr);	
+        		asynUpdate(doc);
+        	}
         }
 	}
-
+	
 	@Override
 	public void set(String targetId, int expire, JsonDO jsonObj) {
 		String jsonStr = JsonUtil.genJsonStr(jsonObj);
         if(jsonStr != null){
-       	 RawJsonDocument doc = RawJsonDocument.create(targetId,expire,jsonStr);
-       	 asynWrite(doc);
-        }		
+        	if(jsonObj instanceof CasJsonDO){
+        		RawJsonDocument  doc = RawJsonDocument.create(targetId,jsonStr,((CasJsonDO) jsonObj).getCas());
+       	        asynReplace(doc);
+        	}
+        	else{
+        		RawJsonDocument doc = RawJsonDocument.create(targetId,jsonStr);	
+        		asynUpdate(doc);
+        	}
+        }
 	}
 	
-	private void asynWrite(RawJsonDocument doc){
-    	 bucket.upsert(doc)
-    	 .timeout(30000, TimeUnit.MILLISECONDS)
-    	 .onErrorReturn(throwable -> {  		 
-       		this.onError(null, doc);
+	
+	private void asynReplace(RawJsonDocument doc){
+		 bucket.replace(doc)
+    	 .timeout(10000, TimeUnit.MILLISECONDS)
+    	 .onErrorReturn(throwable -> {  
+       		this.onError(null, doc,throwable);
 			return null;
-         });
+         })
+         .subscribe();
+	}
+	
+	private void asynUpdate(RawJsonDocument doc){
+		asynCreate(doc);
+	}
+
+	
+	private void asynCreate(RawJsonDocument doc){
+		 bucket.upsert(doc)
+    	 .timeout(10000, TimeUnit.MILLISECONDS)
+    	 .onErrorReturn(throwable -> { 
+       		this.onError(null, doc,throwable);
+			return null;
+         })
+         .subscribe();
 	}
 	
 	private void asynDel(String targetId){
 	   	 bucket.remove(targetId)
-	   	 .timeout(30000, TimeUnit.MILLISECONDS)
+	   	 .timeout(10000, TimeUnit.MILLISECONDS)
 	   	 .onErrorReturn(throwable -> {  		 
-       		 this.onError(targetId, null);
+       		 this.onError(targetId, null,throwable);
 			 return null;
-         });
+         })
+         .subscribe();
     
 	}
 
@@ -118,15 +147,46 @@ public class CloseableCouchbaseClientImpl implements CloseableCouchbaseClient{
 		RawJsonDocument  document = bucket.get(targetId, RawJsonDocument.class).toBlocking().singleOrDefault(null);
 		if(document == null) return null;
 		try {
-			return JsonObjectMapper.getInstance().readValue(document.content(), objClass);
+			 T  obj = JsonObjectMapper.getInstance().readValue(document.content(), objClass);
+			 if( obj instanceof CasJsonDO)
+				((CasJsonDO) obj).setCas(document.cas());
+			 return obj;
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		return null;
 	}
 	
-	private void onError(String targetId,RawJsonDocument doc){
+	private void onError(String targetId,RawJsonDocument doc, Throwable  throwable){
+		throwable.printStackTrace();
 		eventPublisher.publisDaoError(targetId, doc.toString());
 	}
-	
+
+
+	@Override
+	public <Delta, DO extends JsonDO> void safeUpdate(String targetId,Delta delta,Class<DO> domainClass, IUpdateDO<Delta, DO> callable) {
+			Observable
+					.defer(() -> bucket.get(targetId,RawJsonDocument.class))
+					.map(document -> {		     
+						try {
+							DO object = JsonObjectMapper.getInstance().readValue(document.content(),domainClass);
+							DO updatedObject = callable.applyDelta(delta,object);
+							String jsonStr = JsonUtil.genJsonStr(updatedObject);
+							return RawJsonDocument.from(document ,targetId, jsonStr);
+						} catch (Exception e) {
+							e.printStackTrace();
+						}
+						return null;
+					})
+					.flatMap(bucket::replace)
+					.retryWhen(
+							attempts -> attempts.flatMap(n -> {
+								if (!(n.getCause() instanceof CASMismatchException)) {
+									return Observable.error(n.getCause());
+								}
+								return Observable.timer(1, TimeUnit.SECONDS);
+							})).subscribe();
+		}
+
+
 }

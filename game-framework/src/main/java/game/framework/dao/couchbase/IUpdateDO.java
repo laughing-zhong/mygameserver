@@ -1,7 +1,6 @@
 package game.framework.dao.couchbase;
 
 
-import game.framework.dao.exception.UnableToApplyDeltaException;
 
 /**
  * Interface that facilitates applying delta objects to domain objects when using
@@ -24,5 +23,6 @@ public interface IUpdateDO<Delta, DO> {
 	 * @param objectToPersist The base object to alter
 	 * @return The modified domain object
 	 */
-	DO applyDelta( Delta delta, DO objectToPersist ) throws UnableToApplyDeltaException;
+	//DO applyDelta( Delta delta, DO objectToPersist ) throws UnableToApplyDeltaException;
+	DO applyDelta( Delta delta, DO objectToPersist );
 }

@@ -30,10 +30,18 @@ public class JLoginService  implements JIService {
 		userDo.setUserName(user.getUserName());
 		userDo.setId(user.getId());
 		userCbDAO.create(userDo);
+		userCbDAO.create(userDo);
+		
+		userCbDAO.put(userDo);
 		System.out.println("============  put cb  ");
 		
-		UserCbDO  cbUserDo = this.userCbDAO.findById(userDo.getId());
-		System.out.println("--------------  "+cbUserDo.getUserName());
+		for(int i = 0 ; i < 2; i++){
+			UserCbDO  cbUserDo = this.userCbDAO.findById(userDo.getId());
+			userCbDAO.put(cbUserDo);
+			//userCbDAO.put(cbUserDo);
+			System.out.println("--------------  "+cbUserDo.getUserName() + "cas = "+cbUserDo.getCas());
+		}
+		
 		return user;
 	}
 

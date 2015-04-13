@@ -15,7 +15,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 @EntityKey("user")
-@Cached(cacheCount = 100)
+
 public class UserCbDAO extends CouchbaseDAO<UserCbDO>{
 	
 	@Inject

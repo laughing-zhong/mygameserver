@@ -2,10 +2,12 @@ package game.framework.dao.couchbase.impl;
 
 import game.framework.dal.couchbase.CloseableCouchbaseClient;
 import game.framework.dal.couchbase.CouchbaseDataSource;
-
+import game.framework.dao.couchbase.IUpdateDO;
 import game.framework.dao.exception.DAOException;
-
 import game.framework.dao.exception.KeyNotFoundException;
+import game.framework.dao.exception.OutOfDateDomainObjectException;
+import game.framework.dao.exception.UnableToApplyDeltaException;
+import game.framework.domain.json.CasJsonDO;
 import game.framework.domain.json.JsonDO;
 import game.framework.localcache.Cached;
 import game.framework.localcache.LocalCache;
@@ -13,6 +15,7 @@ import game.framework.localcache.LocalCacheImpl;
 import game.framework.localcache.LocalCacheMock;
 
 import com.google.common.base.Strings;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,12 +41,12 @@ public class CouchbaseDAO<DomainObject extends JsonDO> extends AbstractCouchbase
 
 	
 	private void  fillLocalCache(Class<DomainObject> domainObjectClass ){
-		Cached  cached = domainObjectClass.getAnnotation(Cached.class);
+		Cached  cached = this.getClass().getAnnotation(Cached.class);
 		if(cached  == null){
 			this.localCached = new LocalCacheMock<DomainObject>();
 		}
 		else{
-			if(this.getClass().isAssignableFrom(CasCouchbaseDAO.class)){
+			if( CasJsonDO.class.isAssignableFrom(domainObjectClass)){
 				throw new RuntimeException(" CasCouchbaseDAO  not support  cached annotation");
 			}
 			this.localCached = new LocalCacheImpl<DomainObject>(cached.cacheCount());
@@ -77,7 +80,7 @@ public class CouchbaseDAO<DomainObject extends JsonDO> extends AbstractCouchbase
 		CloseableCouchbaseClient client = dataSource.getConnection();
 
 		localCached.cache(objectKey, objectToPersist);
-		client.add(objectKey,objectToPersist);
+		client.create(objectKey,objectToPersist);
 	}
 
 	/**
@@ -185,6 +188,30 @@ public class CouchbaseDAO<DomainObject extends JsonDO> extends AbstractCouchbase
 //		}
 
 	//	return resultList;
+		return null;
+	}
+
+
+	@Override
+	public void safeSave(DomainObject objectToPersist)
+			throws OutOfDateDomainObjectException, KeyNotFoundException,
+			DAOException {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	@Override
+	public <DeltaObject> DomainObject safeUpdate(IUpdateDO<DeltaObject, DomainObject> callable,DeltaObject deltaObject, String targetId)
+			throws KeyNotFoundException, DAOException,
+			UnableToApplyDeltaException {
+	
+		if ( Strings.isNullOrEmpty( targetId ) ) throw new IllegalArgumentException( "invalid Id" );
+		String objectKey = getKeyFromId( targetId );
+		CloseableCouchbaseClient client = dataSource.getConnection() ;
+	//	client.safeUpdate(targetId, deltaObject,domainObjectClass, callable );
+		client.safeUpdate(targetId, deltaObject, null, callable);
+
 		return null;
 	}
 }

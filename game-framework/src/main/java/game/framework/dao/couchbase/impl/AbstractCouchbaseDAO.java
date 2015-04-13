@@ -4,9 +4,12 @@ package game.framework.dao.couchbase.impl;
 import game.framework.dal.couchbase.CloseableCouchbaseClient;
 import game.framework.dal.couchbase.CouchbaseDataSource;
 import game.framework.dal.util.EntityUtils;
+import game.framework.dao.couchbase.ICasCouchbaseDAO;
 import game.framework.dao.couchbase.IDAO;
 import game.framework.dao.exception.DAOException;
 import game.framework.domain.json.JsonDO;
+
+
 
 import com.google.common.base.Joiner;
 import com.google.common.base.Strings;
@@ -21,7 +24,7 @@ import org.slf4j.LoggerFactory;
  * @param <DomainObject> this domain object type this DAO will operate on
  */
 
-abstract class AbstractCouchbaseDAO<DomainObject extends JsonDO> implements IDAO<DomainObject> {
+abstract class AbstractCouchbaseDAO<DomainObject extends JsonDO> implements ICasCouchbaseDAO<DomainObject> {
 	protected final Logger LOGGER;
 
 	protected static final int DEFAULT_CAS_VALUE = 0;

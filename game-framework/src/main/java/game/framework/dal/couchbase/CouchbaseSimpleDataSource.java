@@ -48,14 +48,13 @@ public class CouchbaseSimpleDataSource implements CouchbaseDataSource {
 	}
 
 	public void shutdown() {
-//		LOGGER.info( "Shutting down couchbase simple datasource." );
-//		for(CloseableCouchbaseClient client : clientList)
-//		 client.shutdown( 5, TimeUnit.SECONDS );
+	
 	}
 
 	public void close( CloseableCouchbaseClient connection ) {
 		// noop
 	}
 	private  volatile  int currentIndex ;
+
 
 }

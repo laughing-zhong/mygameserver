@@ -1,10 +1,9 @@
 package game.app.content.vip;
 
-import game.framework.domain.json.JsonDO;
+import game.framework.domain.json.CasJsonDO;
 
 
-
-public class VipConfigDO extends JsonDO {
+public class VipConfigDO extends CasJsonDO {
 	public VipConfigDO(){}
 	private VipConfig  vipConfig;
 	
