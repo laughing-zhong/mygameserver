@@ -209,9 +209,7 @@ public class CouchbaseDAO<DomainObject extends JsonDO> extends AbstractCouchbase
 		if ( Strings.isNullOrEmpty( targetId ) ) throw new IllegalArgumentException( "invalid Id" );
 		String objectKey = getKeyFromId( targetId );
 		CloseableCouchbaseClient client = dataSource.getConnection() ;
-	//	client.safeUpdate(targetId, deltaObject,domainObjectClass, callable );
-		client.safeUpdate(targetId, deltaObject, null, callable);
-
+		client.safeUpdate(objectKey, deltaObject, domainObjectClass, callable);
 		return null;
 	}
 }

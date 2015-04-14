@@ -1,5 +1,8 @@
 package game.app.domain.Do;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import game.framework.dao.redis.EntityKey;
 
 
@@ -25,5 +28,13 @@ public class UserCbDO extends CasJsonDO {
 	public void setUserName(String userName) {
 		this.userName = userName;
 	}
+	
+  private List<Integer> itemIds = new ArrayList<Integer>();
 
+public List<Integer> getItemIds() {
+	return itemIds;
+}
+public void setItemIds(List<Integer> itemIds) {
+	this.itemIds = itemIds;
+}
 }

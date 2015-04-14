@@ -181,7 +181,7 @@ public class CloseableCouchbaseClientImpl implements CloseableCouchbaseClient{
 					.flatMap(bucket::replace)
 					.retryWhen(
 							attempts -> attempts.flatMap(n -> {
-								if (!(n.getCause() instanceof CASMismatchException)) {
+								if (!(n instanceof CASMismatchException)) {
 									return Observable.error(n.getCause());
 								}
 								return Observable.timer(1, TimeUnit.SECONDS);
