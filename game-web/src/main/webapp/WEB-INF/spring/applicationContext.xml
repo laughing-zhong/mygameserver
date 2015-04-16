@@ -39,13 +39,7 @@
         <property name="ignoreResourceNotFound" value="true"/>
         <property name="ignoreUnresolvablePlaceholders" value="true"/>
     </bean>
-
-
-    <!--    <bean id="objectMapper" class="com.ea.vanguard.framework.helper.ObjectMapperFactoryBean"/>   -->
-
-
-   
-    
+ 
     <!--   <security:authentication-manager>
         <security:authentication-provider>
             <security:user-service>
@@ -88,10 +82,7 @@
 	
 	<amq:connectionFactory id="amqConnectionFactory" brokerURL="${activemq.client.url}"/>
 	
-	<!--
-		CachingConnectionFactory Definition, sessionCacheSize property is the
-		number of sessions to cache
-	-->
+
 	<bean id="connectionFactory" class="org.springframework.jms.connection.CachingConnectionFactory" destroy-method="destroy">
 		<constructor-arg ref="amqConnectionFactory" />
 		<property name="sessionCacheSize" value="100" />

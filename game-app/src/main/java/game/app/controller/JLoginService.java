@@ -8,7 +8,7 @@ import game.app.domain.Do.UserCbDO;
 import game.framework.dao.couchbase.IUpdateDO;
 import game.framework.dao.exception.DAOException;
 import game.framework.dao.exception.KeyNotFoundException;
-import game.framework.dao.exception.UnableToApplyDeltaException;
+
 import game.framework.service.JIService;
 
 import org.springframework.stereotype.Component;
@@ -64,11 +64,7 @@ public class JLoginService  implements JIService {
 		} catch (DAOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		} catch (UnableToApplyDeltaException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
+		} 
 		return user;
 	}
 	

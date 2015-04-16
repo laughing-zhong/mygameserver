@@ -14,4 +14,10 @@ public class LocalCacheMock<T>  implements LocalCache<T> {
 		return null;
 	}
 
+	@Override
+	public void remove(String key) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

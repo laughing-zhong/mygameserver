@@ -31,7 +31,7 @@ public interface ICasCouchbaseDAO<DO extends JsonDO> extends IDAO<DO> {
 	 * @throws KeyNotFoundException
 	 * @throws DAOException
 	 */
-	void safeSave( DO objectToPersist ) throws OutOfDateDomainObjectException, KeyNotFoundException, DAOException;
+	boolean safeSave( DO objectToPersist );
 
 	/**
 	 * Calling safeUpdate would first load the object from couchbase.
@@ -48,6 +48,5 @@ public interface ICasCouchbaseDAO<DO extends JsonDO> extends IDAO<DO> {
 	 * @throws DAOException
 	 * @throws UnableToApplyDeltaException If callable.applyDelta() fails for some reason
 	 */
-	<DeltaObject> DO safeUpdate( IUpdateDO<DeltaObject, DO> callable, DeltaObject deltaObject, String targetIds ) throws KeyNotFoundException, DAOException, UnableToApplyDeltaException;
-
+	<DeltaObject> void safeUpdate( IUpdateDO<DeltaObject, DO> callable, DeltaObject deltaObject, String targetIds );
 }

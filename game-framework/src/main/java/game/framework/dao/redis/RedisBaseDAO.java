@@ -8,9 +8,9 @@ import game.framework.dao.exception.DAOException;
 import game.framework.dao.exception.KeyNotFoundException;
 import game.framework.dao.redis.service.RedisService;
 import game.framework.domain.json.CasJsonDO;
-
 import game.framework.util.IdUtils;
 import game.service.exception.FwNotSupportedException;
+
 
 
 
@@ -198,6 +198,12 @@ public class RedisBaseDAO<DomainObject  extends CasJsonDO> implements IDAO<Domai
 
 	public String generateAndSetNewId(DomainObject targetObject) {
 		   throw new FwNotSupportedException(" no surpport");
+	}
+
+	@Override
+	public void onFError(String targetId) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

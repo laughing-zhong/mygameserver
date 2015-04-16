@@ -20,5 +20,10 @@ public class LocalCacheImpl<T extends JsonDO>  implements LocalCache<T>{
 	public T get(String key) {
 		return map.get(key);
 	}
+	@Override
+	public void remove(String key) {
+	    map.remove(key);
+		
+	}
 
 }

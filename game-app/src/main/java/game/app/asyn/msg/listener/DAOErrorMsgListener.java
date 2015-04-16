@@ -1,7 +1,11 @@
 package game.app.asyn.msg.listener;
 
+import java.util.List;
+
+import game.framework.dao.couchbase.IFAccessEorror;
 import game.framework.msg.publish.EventPublisher;
 
+import javax.inject.Inject;
 import javax.jms.JMSException;
 import javax.jms.Message;
 import javax.jms.MessageListener;
@@ -16,17 +20,28 @@ import org.springframework.stereotype.Component;
 public class DAOErrorMsgListener implements MessageListener{
 
 	private static final Logger LOGGER = LoggerFactory.getLogger( DAOErrorMsgListener.class );
+	
+	@Inject
+	private List<IFAccessEorror>  frameDAOErrorProcessList;
+	
 	@Override
 	public void onMessage(Message message) {		
 		if (message instanceof TextMessage) {
 			try {
-				String playerId = message.getStringProperty(EventPublisher.DAO_IO_ERROR);
+				String targetId = message.getStringProperty(EventPublisher.DAO_IO_ERROR);
 				String data = ((TextMessage) message).getText();
-				LOGGER.error("receive dao error id ={} data{}",playerId,data);
+				onError(targetId);	
+				LOGGER.error("receive dao error id ={} data{}",targetId,data);
+				// send error msg to log server
 			} catch (JMSException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}	
+	}
+	
+	private void onError(String targetId){
+		for(IFAccessEorror  processer : frameDAOErrorProcessList){
+			processer.onFError(targetId);
+		}
 	}
 }

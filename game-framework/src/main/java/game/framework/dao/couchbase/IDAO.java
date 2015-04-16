@@ -12,7 +12,7 @@ import java.util.List;
  * @param <DO> The domain object type this DAO will operate on
  */
 
-public interface IDAO<DO> {
+public interface IDAO<DO>  extends IFAccessEorror {
 	/**
 	 * Creates a T object in the database. If the
 	 * object already exists in the database, this will return false.

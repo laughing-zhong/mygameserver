@@ -1,8 +1,11 @@
 package game.framework.dal.couchbase;
 
+import java.util.List;
+
 import game.framework.dao.couchbase.IUpdateDO;
 import game.framework.domain.json.CasJsonDO;
 import game.framework.domain.json.JsonDO;
+
 
 
 
@@ -56,5 +59,23 @@ public interface CloseableCouchbaseClient  {
 	 * @param updateDo
 	 */
 	public <DeltaObject, DO extends JsonDO> void safeUpdate(String targetId, DeltaObject deltaObject,Class<DO> domainObjectClass, IUpdateDO<DeltaObject, DO> callable);
+	
+	
+	/**
+	 * it will observe the data persistance and replicate 
+	 * notice: this method is slow so only used for the importance data
+	 */
+	
+	public boolean safeSave(String targetId,JsonDO jsonObj);
+	
+	/**
+	 * lockTime the time to write lock the document (max. 30 seconds).
+	 * @param targetId
+	 * @param seconds
+	 * @return
+	 */
+	public boolean  lock(String targetId,int seconds);
+	
+	public <DO extends JsonDO> List<DO> getByIds(List<String> targetIds);
 
 }

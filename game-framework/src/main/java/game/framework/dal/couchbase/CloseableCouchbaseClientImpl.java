@@ -1,21 +1,27 @@
 package game.framework.dal.couchbase;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
 import javax.annotation.PreDestroy;
 
 import rx.Observable;
+import rx.functions.Action1;
 import game.framework.dao.couchbase.IUpdateDO;
 import game.framework.dao.couchbase.transcoder.JsonObjectMapper;
 import game.framework.domain.json.CasJsonDO;
 import game.framework.domain.json.JsonDO;
 import game.framework.msg.publish.EventPublisher;
 import game.framework.util.JsonUtil;
-import game.service.exception.IlligleDataException;
 
 import com.couchbase.client.java.AsyncBucket;
+import com.couchbase.client.java.Bucket;
 import com.couchbase.client.java.Cluster;
 import com.couchbase.client.java.CouchbaseCluster;
+import com.couchbase.client.java.PersistTo;
+import com.couchbase.client.java.ReplicateTo;
 import com.couchbase.client.java.document.RawJsonDocument;
 import com.couchbase.client.java.env.CouchbaseEnvironment;
 import com.couchbase.client.java.env.DefaultCouchbaseEnvironment;
@@ -25,7 +31,8 @@ import com.couchbase.client.java.view.View;
 
 public class CloseableCouchbaseClientImpl implements CloseableCouchbaseClient{
 	
-	private final AsyncBucket bucket;
+	private final AsyncBucket asynBucket;
+	private final Bucket   blockBucket;
 	private final Cluster cluster;
 	private final EventPublisher  eventPublisher;
 	public CloseableCouchbaseClientImpl(CouchbaseConnectionConfigBean  config,EventPublisher  eventPublisher){
@@ -36,7 +43,8 @@ public class CloseableCouchbaseClientImpl implements CloseableCouchbaseClient{
 			    .connectTimeout(20000)
 			    .build();
 		this.cluster = CouchbaseCluster.create(env,config.getNodes());
-		this.bucket = cluster.openBucket(config.getBucket(), config.getPassword()).async();	
+		blockBucket = cluster.openBucket(config.getBucket(), config.getPassword());	
+		this.asynBucket  = blockBucket.async();
 		this.eventPublisher =eventPublisher;
 	}
 	
@@ -102,7 +110,7 @@ public class CloseableCouchbaseClientImpl implements CloseableCouchbaseClient{
 	
 	
 	private void asynReplace(RawJsonDocument doc){
-		 bucket.replace(doc)
+		 asynBucket.replace(doc)
     	 .timeout(10000, TimeUnit.MILLISECONDS)
     	 .onErrorReturn(throwable -> {  
        		this.onError(null, doc,throwable);
@@ -117,7 +125,7 @@ public class CloseableCouchbaseClientImpl implements CloseableCouchbaseClient{
 
 	
 	private void asynCreate(RawJsonDocument doc){
-		 bucket.upsert(doc)
+		 asynBucket.upsert(doc)
     	 .timeout(10000, TimeUnit.MILLISECONDS)
     	 .onErrorReturn(throwable -> { 
        		this.onError(null, doc,throwable);
@@ -127,7 +135,7 @@ public class CloseableCouchbaseClientImpl implements CloseableCouchbaseClient{
 	}
 	
 	private void asynDel(String targetId){
-	   	 bucket.remove(targetId)
+	   	 asynBucket.remove(targetId)
 	   	 .timeout(10000, TimeUnit.MILLISECONDS)
 	   	 .onErrorReturn(throwable -> {  		 
        		 this.onError(targetId, null,throwable);
@@ -144,7 +152,7 @@ public class CloseableCouchbaseClientImpl implements CloseableCouchbaseClient{
 
 	@Override
 	public <T extends JsonDO> T get(String targetId, Class<T> objClass) {
-		RawJsonDocument  document = bucket.get(targetId, RawJsonDocument.class).toBlocking().singleOrDefault(null);
+		RawJsonDocument  document = blockBucket.get(targetId, RawJsonDocument.class);
 		if(document == null) return null;
 		try {
 			 T  obj = JsonObjectMapper.getInstance().readValue(document.content(), objClass);
@@ -166,7 +174,7 @@ public class CloseableCouchbaseClientImpl implements CloseableCouchbaseClient{
 	@Override
 	public <Delta, DO extends JsonDO> void safeUpdate(String targetId,Delta delta,Class<DO> domainClass, IUpdateDO<Delta, DO> callable) {
 			Observable
-					.defer(() -> bucket.get(targetId,RawJsonDocument.class))
+					.defer(() -> asynBucket.get(targetId,RawJsonDocument.class))
 					.map(document -> {		     
 						try {
 							DO object = JsonObjectMapper.getInstance().readValue(document.content(),domainClass);
@@ -178,7 +186,7 @@ public class CloseableCouchbaseClientImpl implements CloseableCouchbaseClient{
 						}
 						return null;
 					})
-					.flatMap(bucket::replace)
+					.flatMap(asynBucket::replace)
 					.retryWhen(
 							attempts -> attempts.flatMap(n -> {
 								if (!(n instanceof CASMismatchException)) {
@@ -188,5 +196,44 @@ public class CloseableCouchbaseClientImpl implements CloseableCouchbaseClient{
 							})).subscribe();
 		}
 
+	@Override
+	public boolean safeSave(String targetId, JsonDO jsonObj) {
+		String content = JsonUtil.genJsonStr(jsonObj);
+		RawJsonDocument doc = RawJsonDocument.create(targetId,content);
+		RawJsonDocument  savedDoc = blockBucket.upsert(doc, PersistTo.MASTER,ReplicateTo.ONE,10,TimeUnit.SECONDS);
+		if(savedDoc.equals(doc)){
+			return true;
+		}    
+		return false;
+	}
 
+	@Override
+	public boolean lock(String targetId,int seconds) {
+		try{
+		RawJsonDocument  doc = this.blockBucket.getAndLock(targetId, seconds,RawJsonDocument.class);
+		if(doc == null)  return false;
+		} catch(RuntimeException e){
+			e.printStackTrace();
+			return  false;
+		}
+		return true;
+	}
+
+	@Override
+	public <DO extends JsonDO> List<DO> getByIds(List<String> targetIds) {
+		
+//		List<DO>  docs = new ArrayList<DO>(targetIds.size());
+//		final CountDownLatch latch = new CountDownLatch(targetIds.size());
+//		Observable.range(0, targetIds.size())
+//		.subscribe(new Action1<RawJsonDocument>() {
+//		        @Override
+//		        public void call(RawJsonDocument doc) {
+//		            latch.countDown();
+//		        }
+//		    });
+//
+//		latch.await();
+//		return docs;
+		return null;
+	}
 }

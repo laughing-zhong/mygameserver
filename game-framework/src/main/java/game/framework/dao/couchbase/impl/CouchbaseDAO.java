@@ -193,23 +193,25 @@ public class CouchbaseDAO<DomainObject extends JsonDO> extends AbstractCouchbase
 
 
 	@Override
-	public void safeSave(DomainObject objectToPersist)
-			throws OutOfDateDomainObjectException, KeyNotFoundException,
-			DAOException {
-		// TODO Auto-generated method stub
-		
+	public boolean safeSave(DomainObject objectToPersist) {
+		CloseableCouchbaseClient client = dataSource.getConnection() ;
+		String objectKey = this.getKeyFromId(objectToPersist.getId());
+		return client.safeSave(objectKey, objectToPersist);
 	}
 
 
 	@Override
-	public <DeltaObject> DomainObject safeUpdate(IUpdateDO<DeltaObject, DomainObject> callable,DeltaObject deltaObject, String targetId)
-			throws KeyNotFoundException, DAOException,
-			UnableToApplyDeltaException {
+	public <DeltaObject>  void safeUpdate(IUpdateDO<DeltaObject, DomainObject> callable,DeltaObject deltaObject, String targetId) {
 	
 		if ( Strings.isNullOrEmpty( targetId ) ) throw new IllegalArgumentException( "invalid Id" );
 		String objectKey = getKeyFromId( targetId );
 		CloseableCouchbaseClient client = dataSource.getConnection() ;
 		client.safeUpdate(objectKey, deltaObject, domainObjectClass, callable);
-		return null;
+	}
+
+
+	@Override
+	public void onFError(String targetId) {
+		localCached.remove(targetId);
 	}
 }
