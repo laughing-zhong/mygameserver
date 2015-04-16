@@ -22,17 +22,18 @@ import javax.inject.Inject;
  */
 
 public class CouchbaseSimpleDataSource implements CouchbaseDataSource {
-	private static final Logger LOGGER = LoggerFactory.getLogger( CouchbaseSimpleDataSource.class );
+	//private static final Logger LOGGER = LoggerFactory.getLogger( CouchbaseSimpleDataSource.class );
 
 	//private static final int   COUCHBASE_CONNECTION = 8;
 	private int couchBaseConnectionCount;
 	
-	@Inject
-	private EventPublisher  eventPublisher;
+
+
 	//private CloseableCouchbaseClient client;
 	private List<CloseableCouchbaseClient> clientList = new ArrayList<CloseableCouchbaseClient>();
 
-	public CouchbaseSimpleDataSource(CouchbaseConnectionConfigBean config,int connectionCount) throws IOException {
+	@Inject
+	public CouchbaseSimpleDataSource(CouchbaseConnectionConfigBean config,int connectionCount,EventPublisher  eventPublisher) throws IOException {
 		 CloseableCouchbaseClient client = new CloseableCouchbaseClientImpl(config,eventPublisher);
 		clientList.add(client);
 

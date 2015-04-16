@@ -108,7 +108,7 @@
 		<jms:listener destination="REWARD.TX.QUEUE" ref="rewardTxListener"  /> -->
 	</jms:listener-container>
 	
-	<context:component-scan base-package="com.ea.vanguard.game.message"/>
+	<!-- <context:component-scan base-package="com.ea.vanguard.game.message"/> -->
 	
 	<bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">
 		<property name="basename">

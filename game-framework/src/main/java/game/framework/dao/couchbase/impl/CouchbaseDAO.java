@@ -96,7 +96,6 @@ public class CouchbaseDAO<DomainObject extends JsonDO> extends AbstractCouchbase
 
 		String objectKey = getKeyFromId(objectToPersist.getId());
 		CloseableCouchbaseClient client = dataSource.getConnection();
-		LOGGER.debug("replacing objectKey: {}", objectKey);
 		client.replace(objectKey, objectToPersist);
 	}
 

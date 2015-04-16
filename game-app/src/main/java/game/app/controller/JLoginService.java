@@ -38,33 +38,33 @@ public class JLoginService  implements JIService {
 //		userCbDAO.put(userDo);
 		System.out.println("============  put cb   age = "+user.getAge());
 		
-//		for(int i = 0 ; i < 2; i++){
-//			UserCbDO  cbUserDo = this.userCbDAO.findById(userDo.getId());
-//			userCbDAO.put(cbUserDo);
-//			//userCbDAO.put(cbUserDo);
-//			System.out.println("--------------  "+cbUserDo.getUserName() + "cas = "+cbUserDo.getCas());
-//		}
+		for(int i = 0 ; i < 2; i++){
+			UserCbDO  cbUserDo = this.userCbDAO.findById(user.getId());
+			userCbDAO.put(cbUserDo);
+			userCbDAO.put(cbUserDo);
+			System.out.println("--------------  "+cbUserDo.getUserName() + "cas = "+cbUserDo.getCas());
+		}
 		
 	//	UserCbDO  cbUserDo = this.userCbDAO.findById(user.getId());
-		IUpdateDO<Integer,UserCbDO> updateDo = new IUpdateDO<Integer,UserCbDO>(){
-			@Override
-			
-			public UserCbDO applyDelta( Integer delta, UserCbDO objectToPersist ){
-				objectToPersist.getItemIds().add(delta);
-				return objectToPersist;
-			}	
-		};
-		
+//		IUpdateDO<Integer,UserCbDO> updateDo = new IUpdateDO<Integer,UserCbDO>(){
+//			@Override
+//			
+//			public UserCbDO applyDelta( Integer delta, UserCbDO objectToPersist ){
+//				objectToPersist.getItemIds().add(delta);
+//				return objectToPersist;
+//			}	
+//		};
+//		
 		//cbUserDo.getItemIds().add(user.getAge());
-		try {
-			userCbDAO.safeUpdate(updateDo, user.getAge(), user.getId());
-		} catch (KeyNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (DAOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} 
+//		try {
+//			userCbDAO.safeUpdate(updateDo, user.getAge(), user.getId());
+//		} catch (KeyNotFoundException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		} catch (DAOException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		} 
 		return user;
 	}
 	

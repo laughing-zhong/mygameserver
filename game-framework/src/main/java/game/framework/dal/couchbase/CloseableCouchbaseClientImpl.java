@@ -65,7 +65,7 @@ public class CloseableCouchbaseClientImpl implements CloseableCouchbaseClient{
 		String jsonStr = JsonUtil.genJsonStr(jsonObj);
          if(jsonStr != null){
         	 RawJsonDocument doc = RawJsonDocument.create(targetId,jsonStr);
-        	 this.asynCreate(doc);
+        	 this.asynCreate(targetId,doc);
          }
 	}
 	
@@ -75,11 +75,11 @@ public class CloseableCouchbaseClientImpl implements CloseableCouchbaseClient{
         if(jsonStr != null){
         	if(jsonObj instanceof CasJsonDO){
         		RawJsonDocument  doc = RawJsonDocument.create(targetId,jsonStr,((CasJsonDO) jsonObj).getCas());
-       	        asynReplace(doc);
+       	        asynReplace(targetId,doc);
         	}
         	else{
         		RawJsonDocument doc = RawJsonDocument.create(targetId,jsonStr);	
-        		asynUpdate(doc);
+        		asynUpdate(targetId,doc);
         	}
         }
 	}
@@ -90,32 +90,32 @@ public class CloseableCouchbaseClientImpl implements CloseableCouchbaseClient{
         if(jsonStr != null){
         	if(jsonObj instanceof CasJsonDO){
         		RawJsonDocument  doc = RawJsonDocument.create(targetId,jsonStr,((CasJsonDO) jsonObj).getCas());
-       	        asynReplace(doc);
+       	        asynReplace(targetId,doc);
         	}
         	else{
         		RawJsonDocument doc = RawJsonDocument.create(targetId,jsonStr);	
-        		asynUpdate(doc);
+        		asynUpdate(targetId,doc);
         	}
         }
 	}
 	
 	
-	private void asynReplace(RawJsonDocument doc){
+	private void asynReplace(String targetId,RawJsonDocument doc){
 		 asynBucket.replace(doc)
     	 .timeout(10000, TimeUnit.MILLISECONDS)
     	 .onErrorReturn(throwable -> {  
-       		this.onError(null, doc,throwable);
+       		this.onError(targetId, doc,throwable);
 			return null;
          })
          .subscribe();
 	}
 	
-	private void asynUpdate(RawJsonDocument doc){
-		asynCreate(doc);
+	private void asynUpdate(String targetId,RawJsonDocument doc){
+		asynCreate(targetId,doc);
 	}
 
 	
-	private void asynCreate(RawJsonDocument doc){
+	private void asynCreate(String targetId,RawJsonDocument doc){
 		asynBucket.upsert(doc)
     	 .timeout(10000, TimeUnit.MILLISECONDS)
     	 .onErrorReturn(throwable -> { 
@@ -157,7 +157,7 @@ public class CloseableCouchbaseClientImpl implements CloseableCouchbaseClient{
 	
 	private void onError(String targetId,RawJsonDocument doc, Throwable  throwable){
 		throwable.printStackTrace();
-		eventPublisher.publisDaoError(targetId, doc.toString());
+		eventPublisher.publisDaoError(targetId, doc.content());
 	}
 	
 	private void onError(String targetId,String doc,Throwable  throwable){

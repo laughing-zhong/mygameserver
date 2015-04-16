@@ -9,54 +9,34 @@
     </appender>
     
     <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <filter class="com.ea.vanguard.log.filter.LevelCountingFilter">
-    		<domain>com.ea.walrus</domain>
-    		<name>warncount</name>
-    		<level>WARN</level>
-  		</filter>
-  		<filter class="com.ea.vanguard.log.filter.LevelCountingFilter">
-    		<domain>com.ea.walrus</domain>
-    		<name>errorcount</name>
-    		<level>ERROR</level>
-  		</filter>
+
         <file>${CATALINA_BASE}/logs/vanguard.log</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             <!-- daily rollover -->
             <fileNamePattern>${CATALINA_BASE}/logs/vanguard.%d{yyyy-MM-dd}.log.gz</fileNamePattern>
         </rollingPolicy>
         <encoder>
-            <pattern>%-4relative [%thread] %-5level %logger{35} - %msg%n</pattern>
+            <pattern>%-4relative [%thread] %-5level %logger{36} - %msg%n</pattern>
         </encoder>
         <layout class="ch.qos.logback.classic.PatternLayout">
             <Pattern>%date [%thread] %-5level %logger{36} - %msg%n</Pattern>
         </layout>
     </appender>
     
-     <logger name="com.ea.vanguard.framework.rpc.RpcFrontControllerTemplate" additivity="false">
+     <logger name="game.framework.rpc.JsonServiceRpc" additivity="false">
         <level value="DEBUG"/>
-        <appender-ref ref="STDOUT"/>
+        <appender-ref ref="FILE"/>
     </logger>
-<!--     <logger name="com.ea.vanguard.game" additivity="false">
-        <level value="DEBUG"/>
-        <appender-ref ref="STDOUT"/>
-    </logger>  --> 
+
 
 	<!-- Setting to debug to see battle sim during development. -->
-	<logger name="com.ea.vanguard.game.service.BattleLog" level="INFO"/>
-	<logger name="com.ea.vanguard.game.service.impl.BattleServiceImpl" level="INFO"/>
 	<logger name="org.apache.velocity.app.VelocityEngine" level="OFF"/>
-	<logger name="com.ea.vanguard.framework.rpc.RpcFrontControllerTemplate" level="DEBUG"/>
+
+
 
     <root level="${root.log.level:-INFO}">
         <appender-ref ref="FILE"/>
     </root>
-
-    <appender name="perf4jJmxAppender" class="org.perf4j.logback.JmxAttributeStatisticsAppender">
-        <TagNamesToExpose>AllyListController.getAllyList,AllyListController.requestAlly,AllyListController.approveAlly,AllyListController.removeAlly,AllyListController.grantRandomAllies,AuthController.doAuthFacebook,AuthController.doAuthGuest,AuthController.doLogout,BattleController.doBattle,BattleController.getHistory,BattleController.getReplay,BattleController.doPVE,BattleController.getPVEStatus,BattleController.getSquadForNode,ContentController.getMetadata,GameController.getGameData,LeaderboardController.getLeaderboard,MatchMakingController.findPlayer,MatchMakingController.initiateRevenge,MatchMakingController.getPlayer,PlayerController.reset,PlayerController.getPlayer,PlayerController.submitHelpRequest,PlayerController.updateFtueState,StoreController.beginTransaction,StoreController.cancelTransaction,StoreController.getStore,StoreController.buyItem,StoreController.refreshStamina,StoreController.refreshEnergy,StoreController.makeMeRich,UnitController.applyRunes,UnitController.getRoster,UnitController.updateSquad,UnitController.trainUnit,UnitController.promoteUnit,UnitController.grantAllRunes,UnitController.grantAllUnits,UnitController.increaseSquadLevel,UnitController.getRunes</TagNamesToExpose>
-        <NotificationThresholds>firstBlockMax(0-800),secondBlockMax(&lt;1500)</NotificationThresholds>
-        <MBeanName>com.ea.walrus:type=StatisticsExposingMBean,name=Vanguard</MBeanName>
-    </appender>
-
 
     <appender name="CoalescingStatistics" class="org.perf4j.logback.AsyncCoalescingStatisticsAppender">
         <param name="TimeSlice" value="60000"/>
@@ -66,37 +46,24 @@
         <appender-ref ref="perf4jJmxAppender"/>
     </appender>
     
-    <appender name="perf4jFileAppender" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <File>${CATALINA_BASE}/logs/perf4j.log</File>
-        <encoder>
-            <Pattern>%date %-5level [%thread] %logger{36} [%file:%line] %msg%n</Pattern>
-        </encoder>
-        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <FileNamePattern>${CATALINA_BASE}/logs/perf4j.%d{yyyy-MM-dd}.log.gz</FileNamePattern>
-        </rollingPolicy>
-    </appender>
-
     <logger name="org.perf4j.TimingLogger" additivity="false">
         <level value="DEBUG"/>
         <appender-ref ref="CoalescingStatistics"/>
         <appender-ref ref="perf4jFileAppender"/>
     </logger>
     
-    <appender name="clientAppender" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <File>${CATALINA_BASE}/logs/client.log</File>
+    <appender name="daoErrorAppender" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <File>${CATALINA_BASE}/logs/dao_error.log</File>
         <encoder>
-            <Pattern>%date %-5level [%thread] %logger{36} [%file:%line] %msg%n</Pattern>
+            <Pattern>%date %-5level [%file:%line] %msg%n</Pattern>
         </encoder>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <FileNamePattern>${CATALINA_BASE}/logs/client.%d{yyyy-MM-dd}.log.gz</FileNamePattern>
+            <FileNamePattern>${CATALINA_BASE}/logs/dao_error.%d{yyyy-MM-dd}.log.gz</FileNamePattern>
         </rollingPolicy>
     </appender>
-
-
-    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
-        <encoder>
-            <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
-        </encoder>
-    </appender>
+    
+    <logger name ="game.app.asyn.msg.listener.DAOErrorMsgListener" level="INFO"  >
+	      <appender-ref ref ="daoErrorAppender"/>
+	</logger>
 
 </configuration>

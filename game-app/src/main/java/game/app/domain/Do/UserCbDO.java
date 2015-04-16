@@ -8,7 +8,7 @@ import game.framework.dao.redis.EntityKey;
 
 
 import game.framework.domain.json.CasJsonDO;
-import game.framework.domain.json.JsonDO;
+
 import game.framework.localcache.Cached;
 
 import org.springframework.stereotype.Repository;

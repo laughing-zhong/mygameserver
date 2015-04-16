@@ -60,9 +60,18 @@ public class EventPublisher {
 	
 	public static class DaoErrorMsg{
 		public DaoErrorMsg(String data){
-			
+		  this.data = data;	
 		}
 		private String playerId;
+		private String data;
+
+		public String getData() {
+			return data;
+		}
+
+		public void setData(String data) {
+			this.data = data;
+		}
 
 		public String getPlayerId() {
 			return playerId;

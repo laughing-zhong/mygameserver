@@ -31,7 +31,7 @@ public class DAOErrorMsgListener implements MessageListener{
 				String targetId = message.getStringProperty(EventPublisher.DAO_IO_ERROR);
 				String data = ((TextMessage) message).getText();
 				onError(targetId);	
-				LOGGER.error("receive dao error id ={} data{}",targetId,data);
+				LOGGER.error("id ={} data{}",targetId,data);
 				// send error msg to log server
 			} catch (JMSException e) {
 				e.printStackTrace();
