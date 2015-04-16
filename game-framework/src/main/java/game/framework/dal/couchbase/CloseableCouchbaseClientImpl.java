@@ -1,21 +1,15 @@
 package game.framework.dal.couchbase;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
-
 import javax.annotation.PreDestroy;
-
 import rx.Observable;
-import rx.functions.Action1;
 import game.framework.dao.couchbase.IUpdateDO;
 import game.framework.dao.couchbase.transcoder.JsonObjectMapper;
 import game.framework.domain.json.CasJsonDO;
 import game.framework.domain.json.JsonDO;
 import game.framework.msg.publish.EventPublisher;
 import game.framework.util.JsonUtil;
-
 import com.couchbase.client.java.AsyncBucket;
 import com.couchbase.client.java.Bucket;
 import com.couchbase.client.java.Cluster;
@@ -33,7 +27,7 @@ public class CloseableCouchbaseClientImpl implements CloseableCouchbaseClient{
 	
 	private final AsyncBucket asynBucket;
 	private final Bucket   blockBucket;
-	private final Cluster cluster;
+	private final Cluster  cluster;
 	private final EventPublisher  eventPublisher;
 	public CloseableCouchbaseClientImpl(CouchbaseConnectionConfigBean  config,EventPublisher  eventPublisher){
 		
@@ -75,9 +69,7 @@ public class CloseableCouchbaseClientImpl implements CloseableCouchbaseClient{
         	 this.asynCreate(doc);
          }
 	}
-
-
-
+	
 	@Override
 	public void replace(String targetId, JsonDO jsonObj) {
 		String jsonStr = JsonUtil.genJsonStr(jsonObj);
@@ -131,18 +123,17 @@ public class CloseableCouchbaseClientImpl implements CloseableCouchbaseClient{
        		this.onError(null, doc,throwable);
 			return null;
          })
-         .subscribe();
+         .subscribe();	
 	}
 	
 	private void asynDel(String targetId){
-	   	 asynBucket.remove(targetId)
+	    asynBucket.remove(targetId)
 	   	 .timeout(10000, TimeUnit.MILLISECONDS)
 	   	 .onErrorReturn(throwable -> {  		 
-       		 this.onError(targetId, null,throwable);
+       		 this.onError(targetId, "",throwable);
 			 return null;
          })
          .subscribe();
-    
 	}
 
 	@Override
@@ -169,6 +160,12 @@ public class CloseableCouchbaseClientImpl implements CloseableCouchbaseClient{
 		throwable.printStackTrace();
 		eventPublisher.publisDaoError(targetId, doc.toString());
 	}
+	
+	private void onError(String targetId,String doc,Throwable  throwable){
+		eventPublisher.publisDaoError(targetId, doc);
+		throwable.printStackTrace();
+	}
+
 
 
 	@Override
@@ -190,6 +187,12 @@ public class CloseableCouchbaseClientImpl implements CloseableCouchbaseClient{
 					.retryWhen(
 							attempts -> attempts.flatMap(n -> {
 								if (!(n instanceof CASMismatchException)) {
+									try {
+										String strObject = JsonObjectMapper.getInstance().writeValueAsString(delta);
+										onError(targetId,strObject,n);
+									} catch (Exception e) {
+										e.printStackTrace();
+									}	
 									return Observable.error(n.getCause());
 								}
 								return Observable.timer(1, TimeUnit.SECONDS);
