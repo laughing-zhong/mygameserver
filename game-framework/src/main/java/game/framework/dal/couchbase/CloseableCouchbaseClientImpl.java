@@ -33,7 +33,6 @@ public class CloseableCouchbaseClientImpl implements CloseableCouchbaseClient{
 		
 		CouchbaseEnvironment env = DefaultCouchbaseEnvironment
 			    .builder()
-			    .computationPoolSize(5)
 			    .connectTimeout(20000)
 			    .build();
 		this.cluster = CouchbaseCluster.create(env,config.getNodes());
@@ -52,7 +51,7 @@ public class CloseableCouchbaseClientImpl implements CloseableCouchbaseClient{
 	@Override
 	public boolean delete(String targetId) {
 		asynDel(targetId);
-		return false;
+		return true;
 	}
 
 	@Override
@@ -76,7 +75,7 @@ public class CloseableCouchbaseClientImpl implements CloseableCouchbaseClient{
         if(jsonStr != null){
         	if(jsonObj instanceof CasJsonDO){
         		RawJsonDocument  doc = RawJsonDocument.create(targetId,jsonStr,((CasJsonDO) jsonObj).getCas());
-       	      asynReplace(doc);
+       	        asynReplace(doc);
         	}
         	else{
         		RawJsonDocument doc = RawJsonDocument.create(targetId,jsonStr);	
@@ -117,7 +116,7 @@ public class CloseableCouchbaseClientImpl implements CloseableCouchbaseClient{
 
 	
 	private void asynCreate(RawJsonDocument doc){
-		 asynBucket.upsert(doc)
+		asynBucket.upsert(doc)
     	 .timeout(10000, TimeUnit.MILLISECONDS)
     	 .onErrorReturn(throwable -> { 
        		this.onError(null, doc,throwable);
@@ -165,8 +164,15 @@ public class CloseableCouchbaseClientImpl implements CloseableCouchbaseClient{
 		eventPublisher.publisDaoError(targetId, doc);
 		throwable.printStackTrace();
 	}
-
-
+	
+	private void onError(String targetId,Object obj,Throwable  throwable){
+		try {
+			String strObject = JsonObjectMapper.getInstance().writeValueAsString(obj);
+			onError(targetId,strObject,throwable);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}		
+	}
 
 	@Override
 	public <Delta, DO extends JsonDO> void safeUpdate(String targetId,Delta delta,Class<DO> domainClass, IUpdateDO<Delta, DO> callable) {
@@ -187,12 +193,7 @@ public class CloseableCouchbaseClientImpl implements CloseableCouchbaseClient{
 					.retryWhen(
 							attempts -> attempts.flatMap(n -> {
 								if (!(n instanceof CASMismatchException)) {
-									try {
-										String strObject = JsonObjectMapper.getInstance().writeValueAsString(delta);
-										onError(targetId,strObject,n);
-									} catch (Exception e) {
-										e.printStackTrace();
-									}	
+									onError(targetId,delta,n);
 									return Observable.error(n.getCause());
 								}
 								return Observable.timer(1, TimeUnit.SECONDS);
@@ -203,10 +204,13 @@ public class CloseableCouchbaseClientImpl implements CloseableCouchbaseClient{
 	public boolean safeSave(String targetId, JsonDO jsonObj) {
 		String content = JsonUtil.genJsonStr(jsonObj);
 		RawJsonDocument doc = RawJsonDocument.create(targetId,content);
+		try{
 		RawJsonDocument  savedDoc = blockBucket.upsert(doc, PersistTo.MASTER,ReplicateTo.ONE,10,TimeUnit.SECONDS);
-		if(savedDoc.equals(doc)){
-			return true;
-		}    
+		if(savedDoc.equals(doc)) return true;
+		else   return false;	
+		}catch(RuntimeException e){
+			e.printStackTrace();
+		}
 		return false;
 	}
 

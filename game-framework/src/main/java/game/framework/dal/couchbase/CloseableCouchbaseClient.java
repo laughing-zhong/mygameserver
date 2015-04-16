@@ -3,7 +3,7 @@ package game.framework.dal.couchbase;
 import java.util.List;
 
 import game.framework.dao.couchbase.IUpdateDO;
-import game.framework.domain.json.CasJsonDO;
+
 import game.framework.domain.json.JsonDO;
 
 
@@ -63,7 +63,7 @@ public interface CloseableCouchbaseClient  {
 	
 	/**
 	 * it will observe the data persistance and replicate 
-	 * notice: this method is slow so only used for the importance data
+	 * notice: this method is slow so only used for the important data
 	 */
 	
 	public boolean safeSave(String targetId,JsonDO jsonObj);
