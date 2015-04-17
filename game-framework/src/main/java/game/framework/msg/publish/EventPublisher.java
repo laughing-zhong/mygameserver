@@ -2,7 +2,6 @@ package game.framework.msg.publish;
 
 import game.framework.dao.couchbase.transcoder.JsonObjectMapper;
 
-import javax.annotation.PostConstruct;
 
 import javax.inject.Inject;
 import javax.jms.JMSException;
@@ -53,10 +52,15 @@ public class EventPublisher {
 	}
 	
 	
-	@PostConstruct
-	public void Test(){
-		publisDaoError("123","aaaaaaa");
-	}
+//	@PostConstruct
+//	public void Test(){
+//		long begin = System.currentTimeMillis();
+//		for(int i = 0 ; i < 10000; ++i)
+//		   publisDaoError("123","aaaaaaa");
+//		
+//		long end = System.currentTimeMillis();
+//		System.out.println("===============================  publish cost = "+(end - begin));
+//	}
 	
 	public static class DaoErrorMsg{
 		public DaoErrorMsg(String data){

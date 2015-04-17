@@ -85,14 +85,14 @@
 
 	<bean id="connectionFactory" class="org.springframework.jms.connection.CachingConnectionFactory" destroy-method="destroy">
 		<constructor-arg ref="amqConnectionFactory" />
-		<property name="sessionCacheSize" value="100" />
+		<property name="sessionCacheSize" value="500" />
 	</bean>
 	<!-- JmsTemplate Definition -->
 	<bean id="jmsTemplate" class="org.springframework.jms.core.JmsTemplate">
 		<constructor-arg ref="connectionFactory" />
 	</bean>
 	
-	<jms:listener-container concurrency="${activemq.client.concurrency}" acknowledge="transacted">
+	<jms:listener-container concurrency="${activemq.client.concurrency}" acknowledge="dups-ok">
 		
 		<jms:listener destination="FRAMEWORK.DAO.ERROR" ref="daoErrorListener"  />
 		<!-- <jms:listener destination="PLAYER.SESSION.END.EVENT" ref="swrveSessionEndListener"  /> -->

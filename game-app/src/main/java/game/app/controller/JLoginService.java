@@ -8,7 +8,7 @@ import game.app.domain.Do.UserCbDO;
 import game.framework.dao.couchbase.IUpdateDO;
 import game.framework.dao.exception.DAOException;
 import game.framework.dao.exception.KeyNotFoundException;
-
+import game.framework.msg.publish.EventPublisher;
 import game.framework.service.JIService;
 
 import org.springframework.stereotype.Component;
@@ -25,27 +25,30 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 public class JLoginService  implements JIService {
 	@Inject
 	private UserCbDAO  userCbDAO;
+	
+	@Inject
+	private EventPublisher   publisher;
 	public User  login(User user) throws JsonProcessingException
 	{
-//		user.setUserName(user.getUserName()+" ok");
-//		
-//		UserCbDO  userDo = new UserCbDO();
-//		userDo.setUserName(user.getUserName());
-//		userDo.setId(user.getId());
-//		userCbDAO.create(userDo);
+		user.setUserName(user.getUserName()+" ok");
+		
+		UserCbDO  userDo = new UserCbDO();
+		userDo.setUserName(user.getUserName());
+		userDo.setId(user.getId());
+		userCbDAO.create(userDo);
 //		userCbDAO.create(userDo);
 //		
 //		userCbDAO.put(userDo);
-		System.out.println("============  put cb   age = "+user.getAge());
-		
-		for(int i = 0 ; i < 2; i++){
-			UserCbDO  cbUserDo = this.userCbDAO.findById(user.getId());
-			userCbDAO.put(cbUserDo);
-			userCbDAO.put(cbUserDo);
-			System.out.println("--------------  "+cbUserDo.getUserName() + "cas = "+cbUserDo.getCas());
-		}
-		
-	//	UserCbDO  cbUserDo = this.userCbDAO.findById(user.getId());
+//		System.out.println("============  put cb   age = "+user.getAge());
+//		
+//		for(int i = 0 ; i < 2; i++){
+//			UserCbDO  cbUserDo = this.userCbDAO.findById(user.getId());
+//			userCbDAO.put(cbUserDo);
+//			userCbDAO.put(cbUserDo);
+//			System.out.println("--------------  "+cbUserDo.getUserName() + "cas = "+cbUserDo.getCas());
+//		}
+//		
+//	//	UserCbDO  cbUserDo = this.userCbDAO.findById(user.getId());
 //		IUpdateDO<Integer,UserCbDO> updateDo = new IUpdateDO<Integer,UserCbDO>(){
 //			@Override
 //			
@@ -55,7 +58,7 @@ public class JLoginService  implements JIService {
 //			}	
 //		};
 //		
-		//cbUserDo.getItemIds().add(user.getAge());
+//	//	cbUserDo.getItemIds().add(user.getAge());
 //		try {
 //			userCbDAO.safeUpdate(updateDo, user.getAge(), user.getId());
 //		} catch (KeyNotFoundException e) {
@@ -65,6 +68,13 @@ public class JLoginService  implements JIService {
 //			// TODO Auto-generated catch block
 //			e.printStackTrace();
 //		} 
+		
+//		long begin = System.currentTimeMillis();
+//		for(int i = 0 ; i < 10000000; ++i){
+//		  publisher.publisDaoError(""+i, "dfsdafsdfsdfsd");
+//		}
+//		long end = System.currentTimeMillis();
+//		System.out.println(" --------------  cost = "+(end -begin));
 		return user;
 	}
 	
