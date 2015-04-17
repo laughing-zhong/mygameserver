@@ -5,7 +5,7 @@ import game.framework.dal.couchbase.CloseableCouchbaseClient;
 import game.framework.dal.couchbase.CouchbaseDataSource;
 import game.framework.dal.util.EntityUtils;
 import game.framework.dao.couchbase.ICasCouchbaseDAO;
-import game.framework.dao.couchbase.IDAO;
+
 import game.framework.dao.exception.DAOException;
 import game.framework.domain.json.JsonDO;
 

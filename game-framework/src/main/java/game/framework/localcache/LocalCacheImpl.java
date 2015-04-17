@@ -25,5 +25,9 @@ public class LocalCacheImpl<T extends JsonDO>  implements LocalCache<T>{
 	    map.remove(key);
 		
 	}
+	@Override
+	public void clear() {
+		map.clear();	
+	}
 
 }

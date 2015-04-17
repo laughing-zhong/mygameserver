@@ -20,4 +20,10 @@ public class LocalCacheMock<T>  implements LocalCache<T> {
 		
 	}
 
+	@Override
+	public void clear() {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

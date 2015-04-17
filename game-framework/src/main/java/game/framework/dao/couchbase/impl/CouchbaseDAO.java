@@ -5,8 +5,7 @@ import game.framework.dal.couchbase.CouchbaseDataSource;
 import game.framework.dao.couchbase.IUpdateDO;
 import game.framework.dao.exception.DAOException;
 import game.framework.dao.exception.KeyNotFoundException;
-import game.framework.dao.exception.OutOfDateDomainObjectException;
-import game.framework.dao.exception.UnableToApplyDeltaException;
+
 import game.framework.domain.json.CasJsonDO;
 import game.framework.domain.json.JsonDO;
 import game.framework.localcache.Cached;
@@ -16,7 +15,7 @@ import game.framework.localcache.LocalCacheMock;
 
 import com.google.common.base.Strings;
 
-import java.util.ArrayList;
+
 import java.util.List;
 
 public class CouchbaseDAO<DomainObject extends JsonDO> extends AbstractCouchbaseDAO<DomainObject> {
@@ -164,7 +163,7 @@ public class CouchbaseDAO<DomainObject extends JsonDO> extends AbstractCouchbase
 	 * @return The list of objects found
 	 */
 	public List<DomainObject> findByIds( List<String> targetIds ) throws DAOException {
-		List<String> targetKeys = new ArrayList<>( targetIds.size() );
+	//	List<String> targetKeys = new ArrayList<>( targetIds.size() );
 //		for ( String targetId : targetIds ) {
 //			if ( Strings.isNullOrEmpty( targetId ) ) continue;
 //			targetKeys.add( getKeyFromId( targetId ) );
@@ -211,6 +210,7 @@ public class CouchbaseDAO<DomainObject extends JsonDO> extends AbstractCouchbase
 
 	@Override
 	public void onFError(String targetId) {
-		localCached.remove(targetId);
+		//localCached.remove(targetId);
+		localCached.clear();
 	}
 }

@@ -1,18 +1,15 @@
 package game.framework.dao.couchbase.impl;
 
 
-import game.framework.dal.couchbase.CloseableCouchbaseClient;
 import game.framework.dal.couchbase.CouchbaseDataSource;
 import game.framework.dao.exception.DAOException;
 import game.framework.domain.json.ViewJsonDO;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.couchbase.client.java.query.Query;
-import com.couchbase.client.java.view.View;
 
-import java.util.ArrayList;
+
+
 import java.util.List;
 
 
