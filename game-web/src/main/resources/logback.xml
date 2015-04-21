@@ -62,7 +62,7 @@
         </rollingPolicy>
     </appender>
     
-    <logger name ="game.app.asyn.msg.listener.DAOErrorMsgListener" level="ERROR" additivity="false" >
+    <logger name ="game.app.asyn.msg.listener" level="ERROR" additivity="false" >
 	      <appender-ref ref ="daoErrorAppender"/>
 	</logger>
 

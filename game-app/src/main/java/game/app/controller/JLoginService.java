@@ -69,12 +69,12 @@ public class JLoginService  implements JIService {
 //			e.printStackTrace();
 //		} 
 		
-//		long begin = System.currentTimeMillis();
-//		for(int i = 0 ; i < 10000000; ++i){
-//		  publisher.publisDaoError(""+i, "dfsdafsdfsdfsd");
-//		}
-//		long end = System.currentTimeMillis();
-//		System.out.println(" --------------  cost = "+(end -begin));
+		long begin = System.currentTimeMillis();
+		for(int i = 0 ; i < 1000; ++i){
+		  publisher.publisDaoError(""+i, "dfsdafsdfsdfsd");
+		}
+		long end = System.currentTimeMillis();
+		System.out.println(" --------------  cost = "+(end -begin));
 		return user;
 	}
 	

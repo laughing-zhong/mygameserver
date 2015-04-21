@@ -115,4 +115,28 @@
 			<value>locale.messages</value>
 		</property>
 	</bean>	
+	
+		<beans profile="broker">
+		<amq:broker useJmx="true" persistent="false" useShutdownHook="true">
+		    <amq:networkConnectors>
+		    	<amq:networkConnector uri="${activemq.broker.networkconnector}"/>
+		    </amq:networkConnectors>
+		    <amq:transportConnectors>
+				<amq:transportConnector uri="${activemq.broker.transportconnector}" />
+			</amq:transportConnectors>
+			<amq:systemUsage>
+				<amq:systemUsage>
+					<amq:memoryUsage>
+						<amq:memoryUsage limit="${activemq.broker.systemmemoryusage}"/>
+					</amq:memoryUsage>
+					<amq:storeUsage>
+						<amq:storeUsage limit="${activemq.broker.systemstoreusage}"/>
+					</amq:storeUsage>
+					<amq:tempUsage>
+						<amq:tempUsage limit="${activemq.broker.systemtempusage}"/>
+					</amq:tempUsage>
+				</amq:systemUsage>
+			</amq:systemUsage>
+		</amq:broker>
+	</beans>
 </beans>
