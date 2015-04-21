@@ -9,8 +9,8 @@
 
    <mvc:annotation-driven>
         <mvc:message-converters>
-            <bean class="game.framwork.springhttp.MappingJacksonHttpMessageConverter"/>  
-            <bean class="game.framwork.springhttp.ProtobufHttpMessageConverter"/>  
+            <bean class="game.framework.springhttp.MappingJacksonHttpMessageConverter"/>  
+            <bean class="game.framework.springhttp.ProtobufHttpMessageConverter"/>  
         </mvc:message-converters>
     </mvc:annotation-driven>
      
