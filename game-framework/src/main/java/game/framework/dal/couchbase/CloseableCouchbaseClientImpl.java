@@ -1,15 +1,22 @@
 package game.framework.dal.couchbase;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
+
 import javax.annotation.PreDestroy;
+
 import rx.Observable;
+import game.framework.dal.couchbase.transaction.CbTransaction;
+import game.framework.dal.couchbase.transaction.CbTransaction.TsState;
 import game.framework.dao.couchbase.IUpdateDO;
+import game.framework.dao.couchbase.IUpdateMultiOpt;
 import game.framework.dao.couchbase.transcoder.JsonObjectMapper;
 import game.framework.domain.json.CasJsonDO;
 import game.framework.domain.json.JsonDO;
 import game.framework.msg.publish.EventPublisher;
 import game.framework.util.JsonUtil;
+
 import com.couchbase.client.java.AsyncBucket;
 import com.couchbase.client.java.Bucket;
 import com.couchbase.client.java.Cluster;
@@ -21,6 +28,7 @@ import com.couchbase.client.java.env.CouchbaseEnvironment;
 import com.couchbase.client.java.env.DefaultCouchbaseEnvironment;
 import com.couchbase.client.java.error.CASMismatchException;
 import com.couchbase.client.java.view.View;
+import com.fasterxml.jackson.core.JsonProcessingException;
 
 
 public class CloseableCouchbaseClientImpl implements CloseableCouchbaseClient{
@@ -243,4 +251,94 @@ public class CloseableCouchbaseClientImpl implements CloseableCouchbaseClient{
 //		return docs;
 		return null;
 	}
+
+	@Override
+	public <DeltaData1, DO1 ,DeltaData2, DO2> boolean commitTransaction(
+			String targetId, DO1 domainSrc, DO2 domainDest,
+			DeltaData1 deltaData1, DeltaData2 deltaData2,
+			IUpdateMultiOpt<DeltaData1, DO1, DeltaData2, DO2> callable,
+			CbTransaction transaction) {
+
+		if (transaction.getState() != TsState.INIT) {
+			throw new RuntimeException("the trasaction state is error  should "
+					+ TsState.INIT);
+		}
+
+		callable.applyDo1Delta(deltaData1, domainSrc);
+		callable.applyDo2Delta(deltaData2, domainDest);
+		try {
+			String daltaStr = JsonObjectMapper.getInstance().writeValueAsString(deltaData1);
+			transaction.setSrc(daltaStr);
+		} catch (JsonProcessingException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		
+		
+		try {
+			// step 1 create and set transaction to couchbase
+			updateCbTransaction(targetId, transaction);
+
+			// step 2 update 2 DO
+
+			// first data
+			this.blockUpsert(targetId, domainSrc);
+			transaction.setState(TsState.SRC_PENDING);
+			updateCbTransaction(targetId, transaction);
+
+			// second data
+			this.blockUpsert(targetId, domainDest);
+			transaction.setState(TsState.DEST_PENDING);
+			updateCbTransaction(targetId, transaction);
+
+			// step 3 committed
+			transaction.setState(TsState.COMMITED);
+			updateCbTransaction(targetId, transaction);
+		} catch (RuntimeException e) {
+			rollback(targetId,deltaData1,domainSrc,deltaData2,domainDest,callable,transaction);
+			return false;
+		}
+		return true;
+	}
+	
+	
+	private <DeltaData1, DeltaData2, DO1, DO2> void  rollback(String targetId, DeltaData1 delta1,DO1 domainSrc,DeltaData2 delta2, DO2 domainDest,
+			IUpdateMultiOpt<DeltaData1, DO1, DeltaData2, DO2> callable,CbTransaction transaction){
+		switch(transaction.getState()){
+		case SRC_PENDING:
+			callable.revertDo1Delta(delta1, domainSrc);
+			this.blockUpsert(targetId, domainSrc);
+			break;
+		case DEST_PENDING://the data have put to db
+			
+			break;
+		case COMMITED:
+			break;
+			default:
+			break;
+		}
+		
+		
+	}
+	
+	private void  updateCbTransaction(String targetId,CbTransaction  transaction){
+      	String jsonStr = JsonUtil.genJsonStr(transaction); 	
+      	 RawJsonDocument doc =  RawJsonDocument.create(targetId,30,jsonStr,0);	
+	     this.blockBucket.upsert(doc, 10, TimeUnit.SECONDS);
+	}
+	
+	private <DO> void blockUpsert(String targetId,DO  jsonDo){
+        String content1 = null;
+		try {
+			content1 = JsonObjectMapper.getInstance().writeValueAsString(jsonDo);
+		} catch (JsonProcessingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+        RawJsonDocument doc1 = RawJsonDocument.create(targetId,content1);
+        this.blockBucket.upsert(doc1);
+	}
+
+
+	
 }

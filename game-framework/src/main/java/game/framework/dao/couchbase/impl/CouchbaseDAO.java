@@ -2,10 +2,11 @@ package game.framework.dao.couchbase.impl;
 
 import game.framework.dal.couchbase.CloseableCouchbaseClient;
 import game.framework.dal.couchbase.CouchbaseDataSource;
+import game.framework.dal.couchbase.transaction.CbTransaction;
 import game.framework.dao.couchbase.IUpdateDO;
+import game.framework.dao.couchbase.IUpdateMultiOpt;
 import game.framework.dao.exception.DAOException;
 import game.framework.dao.exception.KeyNotFoundException;
-
 import game.framework.domain.json.CasJsonDO;
 import game.framework.domain.json.JsonDO;
 import game.framework.localcache.Cached;
@@ -14,6 +15,9 @@ import game.framework.localcache.LocalCacheImpl;
 import game.framework.localcache.LocalCacheMock;
 
 import com.google.common.base.Strings;
+
+
+
 
 
 import java.util.List;
@@ -212,5 +216,27 @@ public class CouchbaseDAO<DomainObject extends JsonDO> extends AbstractCouchbase
 	public void onFError(String targetId) {
 		//localCached.remove(targetId);
 		localCached.clear();
+	}
+
+	/**
+	 * if the transaction success return true  and the "domainSrc" and "domainDest"  will be  changed 
+	 * failed return false  and the "domainSrc" and "domainDest"  will be not changed 
+	 * 
+	 */
+
+
+
+	@Override
+	public <DeltaData1, DeltaData2, DO1, DO2> boolean transaction(
+			String targetId, DO1 domainSrc, DO2 domainDest,
+			DeltaData1 deltaData1, DeltaData2 deltaData2,
+			IUpdateMultiOpt<DeltaData1, DO1, DeltaData2, DO2> callable) {
+
+		if ( Strings.isNullOrEmpty( targetId ) ) throw new IllegalArgumentException( "invalid Id" );
+		String objectKey = getKeyFromId( targetId );
+		CloseableCouchbaseClient client = dataSource.getConnection() ;
+		CbTransaction transaction = new CbTransaction();
+		transaction.setId(objectKey);
+		return client.commitTransaction(objectKey, domainSrc, domainDest, deltaData1,deltaData2, callable, transaction);
 	}
 }

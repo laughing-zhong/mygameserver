@@ -12,7 +12,7 @@ import game.framework.domain.KeyedDO;
 import java.util.List;
 
 /**
- * @author dadler
+ * @author zhongwq
  */
 abstract public class JsonDO extends KeyedDO<String> {
 	private static final String SEPARATOR = ":";

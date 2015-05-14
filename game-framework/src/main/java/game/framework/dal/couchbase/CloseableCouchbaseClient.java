@@ -2,9 +2,12 @@ package game.framework.dal.couchbase;
 
 import java.util.List;
 
+import game.framework.dal.couchbase.transaction.CbTransaction;
 import game.framework.dao.couchbase.IUpdateDO;
-
+import game.framework.dao.couchbase.IUpdateMultiOpt;
 import game.framework.domain.json.JsonDO;
+
+
 
 
 
@@ -58,8 +61,9 @@ public interface CloseableCouchbaseClient  {
 	 * @param object
 	 * @param updateDo
 	 */
-	public <DeltaObject, DO extends JsonDO> void safeUpdate(String targetId, DeltaObject deltaObject,Class<DO> domainObjectClass, IUpdateDO<DeltaObject, DO> callable);
-	
+	public <DeltaObject, DO extends JsonDO> void safeUpdate(String targetId,
+			DeltaObject deltaObject, Class<DO> domainObjectClass,
+			IUpdateDO<DeltaObject, DO> callable);
 	
 	/**
 	 * it will observe the data persistance and replicate 
@@ -77,5 +81,15 @@ public interface CloseableCouchbaseClient  {
 	public boolean  lock(String targetId,int seconds);
 	
 	public <DO extends JsonDO> List<DO> getByIds(List<String> targetIds);
+	
+	/**
+	 * 2 pc 
+	 */
+	
+	public <DeltaData1, DO1 ,DeltaData2, DO2>  boolean commitTransaction(String targetId,
+			DO1 domainSrc, DO2 domainDest,
+			DeltaData1 deltaData1, DeltaData2  deltaData2,
+			IUpdateMultiOpt<DeltaData1, DO1,DeltaData2, DO2> callable,
+			CbTransaction  trasaction);
 
 }
