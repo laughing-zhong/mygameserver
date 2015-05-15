@@ -226,17 +226,4 @@ public class CouchbaseDAO<DomainObject extends JsonDO> extends AbstractCouchbase
 
 
 
-	@Override
-	public <DeltaData1, DeltaData2, DO1, DO2> boolean transaction(
-			String targetId, DO1 domainSrc, DO2 domainDest,
-			DeltaData1 deltaData1, DeltaData2 deltaData2,
-			IUpdateMultiOpt<DeltaData1, DO1, DeltaData2, DO2> callable) {
-
-		if ( Strings.isNullOrEmpty( targetId ) ) throw new IllegalArgumentException( "invalid Id" );
-		String objectKey = getKeyFromId( targetId );
-		CloseableCouchbaseClient client = dataSource.getConnection() ;
-		CbTransaction transaction = new CbTransaction();
-		transaction.setId(objectKey);
-		return client.commitTransaction(objectKey, domainSrc, domainDest, deltaData1,deltaData2, callable, transaction);
-	}
 }

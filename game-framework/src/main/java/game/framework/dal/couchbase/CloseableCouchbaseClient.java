@@ -82,14 +82,5 @@ public interface CloseableCouchbaseClient  {
 	
 	public <DO extends JsonDO> List<DO> getByIds(List<String> targetIds);
 	
-	/**
-	 * 2 pc 
-	 */
-	
-	public <DeltaData1, DO1 ,DeltaData2, DO2>  boolean commitTransaction(String targetId,
-			DO1 domainSrc, DO2 domainDest,
-			DeltaData1 deltaData1, DeltaData2  deltaData2,
-			IUpdateMultiOpt<DeltaData1, DO1,DeltaData2, DO2> callable,
-			CbTransaction  trasaction);
 
 }

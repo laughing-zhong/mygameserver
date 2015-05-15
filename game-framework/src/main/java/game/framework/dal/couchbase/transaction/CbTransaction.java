@@ -18,26 +18,43 @@ public class CbTransaction  extends JsonDO{
 		FINISH
 	}
 	
-		public String src;
-		public String getSrc() {
-			return src;
+		public String srcDelta;
+        public String srcId;
+        public String getSrcDelta() {
+			return srcDelta;
 		}
-		public void setSrc(String src) {
-			this.src = src;
+		public void setSrcDelta(String srcDelta) {
+			this.srcDelta = srcDelta;
 		}
-		public String getDest() {
-			return dest;
+		public String getSrcId() {
+			return srcId;
 		}
-		public void setDest(String dest) {
-			this.dest = dest;
+		public void setSrcId(String srcId) {
+			this.srcId = srcId;
 		}
-		public TsState getState() {
-			return state;
+		public String getDestId() {
+			return destId;
+		}
+		public void setDestId(String destId) {
+			this.destId = destId;
+		}
+		public String getDestDelta() {
+			return destDelta;
+		}
+		public void setDestDelta(String destDelta) {
+			this.destDelta = destDelta;
 		}
 		public void setState(TsState state) {
 			this.state = state;
 		}
-		public String dest;
+
+		public String destId;
+
+		public TsState getState() {
+			return state;
+		}
+	
+		public String destDelta;
 		public TsState state;
 		public CbTransaction(){
 			state = TsState.INIT;

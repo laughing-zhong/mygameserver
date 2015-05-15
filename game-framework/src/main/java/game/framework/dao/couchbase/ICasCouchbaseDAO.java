@@ -53,19 +53,5 @@ public interface ICasCouchbaseDAO<DO extends JsonDO> extends IDAO<DO> {
 	 */
 	<DeltaObject> void safeUpdate( IUpdateDO<DeltaObject, DO> callable, DeltaObject deltaObject, String targetIds );
 	
-	/**
-	 * Two Phase Commit
-	 * @param targetId
-	 * @param domainSrc
-	 * @param domainDest
-	 * @param deltaData
-	 * @param callable
-	 * @return
-	 */
-	public <DeltaData1,DeltaData2, DO1,DO2> boolean transaction(String targetId,
-	DO1 domainSrc, DO2 domainDest,
-	DeltaData1 deltaData1, DeltaData2  deltaData2,
-	IUpdateMultiOpt<DeltaData1, DO1,DeltaData2, DO2> callable
-	);
 
 }
