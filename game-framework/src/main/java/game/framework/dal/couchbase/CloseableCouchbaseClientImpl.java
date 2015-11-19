@@ -42,6 +42,7 @@ public class CloseableCouchbaseClientImpl implements CloseableCouchbaseClient{
 		CouchbaseEnvironment env = DefaultCouchbaseEnvironment
 			    .builder()
 			    .connectTimeout(20000)
+			    .kvEndpoints(2)
 			    .build();
 		this.cluster = CouchbaseCluster.create(env,config.getNodes());
 		blockBucket = cluster.openBucket(config.getBucket(), config.getPassword());	

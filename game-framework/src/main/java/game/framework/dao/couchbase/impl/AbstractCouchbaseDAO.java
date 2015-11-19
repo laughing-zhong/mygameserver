@@ -35,8 +35,6 @@ abstract class AbstractCouchbaseDAO<DomainObject extends JsonDO> implements ICas
 	private final String entityKeyTemplate;
 
 
-
-
 	public AbstractCouchbaseDAO( CouchbaseDataSource dataSource ) {
 		LOGGER = LoggerFactory.getLogger( getClass() );
 		this.dataSource = dataSource;

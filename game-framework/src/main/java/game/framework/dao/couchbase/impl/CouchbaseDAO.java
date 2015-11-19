@@ -53,8 +53,7 @@ public class CouchbaseDAO<DomainObject extends JsonDO> extends AbstractCouchbase
 				throw new RuntimeException(" CasCouchbaseDAO  not support  cached annotation");
 			}
 			this.localCached = new LocalCacheImpl<DomainObject>(cached.cacheCount());
-		}
-		
+		}	
 	}
 	/**
 	 * Useful for mocking with a custom transcoder. Shouldn't be used most of the
