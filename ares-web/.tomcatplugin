@@ -7,10 +7,9 @@
     <updateXml>true</updateXml>
     <warLocation></warLocation>
     <extraInfo></extraInfo>
-    <webPath>/game</webPath>
+    <webPath>/ROOT</webPath>
     <webClassPathEntries>
         <webClassPathEntry>/ares-framework/target/classes</webClassPathEntry>
-        <webClassPathEntry>/ares-framework/target/test-classes</webClassPathEntry>
         <webClassPathEntry>/ares-web/target/classes</webClassPathEntry>
         <webClassPathEntry>D:/Users/zhongwq/.m2/repository/aopalliance/aopalliance/1.0/aopalliance-1.0.jar</webClassPathEntry>
         <webClassPathEntry>D:/Users/zhongwq/.m2/repository/cglib/cglib-nodep/2.2.2/cglib-nodep-2.2.2.jar</webClassPathEntry>
