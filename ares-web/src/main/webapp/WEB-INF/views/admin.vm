@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>Admin Portal</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	
+	<link rel="stylesheet" href="https://code.jquery.com/ui/1.10.2/themes/smoothness/jquery-ui.css" />
+	<link rel="stylesheet" href="/admin/resources/css/main.css" type="text/css" />
+	
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.10.2/jquery-ui.min.js"></script>
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.4.2/underscore-min.js"></script>
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/backbone.js/0.9.2/backbone-min.js"></script>
+	<script type="text/javascript" src="/admin/resources/scripts/libs/date.format.js"></script>
+	
+	<!-- First load the Models -->
+	<script type="text/javascript" src="/admin/resources/scripts/models/inventory.js"></script>
+	<script type="text/javascript" src="/admin/resources/scripts/models/player.js"></script>
+	<script type="text/javascript" src="/admin/resources/scripts/models/storetransaction.js"></script>
+	<script type="text/javascript" src="/admin/resources/scripts/models/supportevent.js"></script>
+	
+	<!-- Then load the Collections -->
+	<script type="text/javascript" src="/admin/resources/scripts/collections/storetransactions.js"></script>
+	<script type="text/javascript" src="/admin/resources/scripts/collections/supporthistory.js"></script>
+	
+	<!-- Finally load the Views & Controllers -->
+	<script type="text/javascript" src="/admin/resources/scripts/views/player.js"></script>
+	<script type="text/javascript" src="/admin/resources/scripts/views/storetransactions.js"></script>
+	<script type="text/javascript" src="/admin/resources/scripts/views/supporthistory.js"></script>
+	
+	<script type="text/javascript" src="/admin/resources/scripts/playermgmt.js"></script>
+	
+	<script type="text/javascript">
+		var PM = PM || {};
+		PM.B = {
+			'Packs': ${packs},
+			'Units': ${units},
+			'Runes': ${runes}
+		};
+	</script>
+</head>
+<body>
+<div id="pageWrapper">
+	<div id="pageHeader">
+		<h1>
+			<img src="/admin/resources/images/Icon-152.png" id="damlogo" />
+			HoDA Customer Support Portal
+		</h1>
+		<div id="logoutContainer">[${username}] <a href="/logout"/>Logout</a></div>
+	</div>
+	<div id="pageContent">
+		<div id="playerLookupContainer">
+			<form>
+				<label>Player ID:</label>
+				<input type="text" id="playerId" maxlength="64" autofocus="autofocus" />
+				<input type="submit" value="Lookup" />
+				<span id="loadingError" class="hide">There was an error loading all player data. Please retry.<span>
+			</form>
+		</div>
+		<div id="playerContainer">
+			<div id="playerInventory" class="hide">
+				<div id="goldBalanceContainer">
+					<form>
+						<div><label>Gold Balance: </label><span id="goldBalance"/></div>
+						<div><input id="creditGoldAmount" /><input type="submit" value="Credit" /></div>
+					</form>
+				</div>
+				<div id="gemBalanceContainer">
+					<form>
+						<div><label>Gem Balance: </label><span id="gemBalance" /></div>
+						<div><input id="creditGemsAmount" /><input type="submit" value="Credit" /></div>
+					</form>
+				</div>
+				<div id="givePackContainer">
+					<form>
+						<div><select id="givePackDropDown"><option id="">--- Select Pack ---</option></select><input type="submit" value="Give Pack" /></div>
+					</form>
+				</div>
+				<div id="giveUnitContainer">
+					<form>
+						<div><select id="giveUnitDropDown"><option id="">--- Select Unit ---</option></select><input type="submit" value="Give Unit" /></div>
+					</form>
+				</div>
+				<div id="giveRuneContainer">
+					<form>
+						<div><select id="giveRuneDropDown"><option id="">--- Select Rune ---</option></select><input type="submit" value="Give Rune" /></div>
+					</form>
+				</div>
+			</div>
+			<div id="playerDetails"></div>
+		</div>
+	</div>
+	<div id="pageFooter">
+		&copy; 2013 EA Capital Games
+	</div>
+</div>
+</body>
+</html>

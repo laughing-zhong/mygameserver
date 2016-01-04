@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.1.xsd
+
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.1.xsd">
+
+    <context:annotation-config/>
+
+
+    <bean id="cbDataSource" class="com.ares.framework.dal.couchbase.CouchbaseSimpleDataSource" destroy-method="shutdown">
+        <constructor-arg ref="cbConnectionFactoryConfig"/>
+        <constructor-arg type ="int"  value="${couchbase.connection.count}"/> 
+    </bean>
+    
+    <bean id="cbConnectionFactoryConfig" class="com.ares.framework.dal.couchbase.CouchbaseConnectionConfigBean">
+        <constructor-arg type= "java.lang.String" value ="${couchbase.host.list}" />
+        <property name="bucket" value="${couchbase.bucket.name}"/>
+        <property name="password" value="${couchbase.bucket.password}"/>
+    </bean>
+
+</beans>

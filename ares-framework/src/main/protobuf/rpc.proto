@@ -1,0 +1,81 @@
+
+package org.game.framwork.rpc;
+
+option java_package = "game.framwork.rpc";
+option java_outer_classname = "Rpc";
+message RequestEnvelope {
+  optional string service_name = 1;
+  optional string method_name  = 2;
+  optional bytes  playLoad = 4;
+  optional string session_id  = 5;
+  optional string token_id    = 6;
+  optional string client_version = 7;
+}
+
+enum ResponseCode {
+     // The request was successful with no errors.
+	 OK = 1;
+
+	 // A standard error.
+	 ERROR = 2;
+
+	 // An unexpected error / exception. Something bad happened and bubbled up.
+	 SERVER_ERROR = 3;
+
+	 // The session record doesn't exist, expired, or the player has logged out.
+	 SESSION_EXPIRED = 4;
+
+	 // Credentials failed. Couldn't find account, or token didn't match.
+	 AUTH_FAILED = 5;
+
+	 // Too many requests/second per user
+	 RATE_EXCEEDED = 6;
+
+	 // To Communicate to the client that the game is down right now, but it will come right back up
+	 // right when we figure out why they are getting sent an obscure error message.
+	 SERVER_UNAVAILABLE = 7;
+
+	 // The client sent us a request and/or data that is junk.
+	 INVALID_REQUEST = 8;
+	 // We found data on our side, and it made no sense.
+	 INVALID_DATA = 9;
+	 // Leaderboard/Matchmaking error
+	 LEADERBOARD_MATCHMAKING_ERROR = 10;
+
+     // Sent when the calling user is not authorized to access a given rpc, service, or action.
+     UNAUTHORIZED = 11;
+
+	 // We might not use SEQUENCE_HIGH & SEQUENCE_LOW below, unless we start atomically incrementing requests again.
+
+	 // You sent a sequence number higher than we were expecting. Either packets were lost on our side, or you are haxing.
+	 SEQUENCE_HIGH = 30;
+	 // Sequence low. We think you should be on a higher sequence number. You're retransmitting packets that we already processed.
+	 SEQUENCE_LOW = 31;
+
+	 // These will get moved to a per-action enum when we re-add batching to the transport layer
+	 RECORD_NOT_FOUND = 32;
+
+	 // There are insufficient resources (ex. stamina & energy) or currency to process the request
+	 INSUFFICIENT_RESOURCES = 40;
+
+	 INVALID_CLIENT_VERSION = 50;
+
+     // The client must be restarted as it is out of sync with the server data.
+     FORCE_CLIENT_RESTART = 51;
+
+     // The device is blacklisted or otherwise incompatible.
+     INCOMPATIBLE_DEVICE = 52;
+
+	 INVALID_RECEIPT = 60;
+	 NO_SERVICE     = 61;
+	 NO_METHOD      = 62;
+	 UNLOCKED_FUNCTION = 1001;
+
+}
+
+message ResponseEnvelope {
+
+	 optional bytes payload = 1;
+	 optional ResponseCode code = 2 [default = OK];
+	 optional string err_message = 3;
+}

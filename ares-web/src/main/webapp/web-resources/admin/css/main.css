@@ -1,0 +1,228 @@
+html {
+	height: 100%;
+}
+
+body {
+	height: 100%;
+	min-height: 100%;
+	margin: 0 auto;
+	padding: 0;
+}
+
+body, .ui-widget {
+	font-family: Arial,sans-serif;
+	font-size: 1em;
+}
+
+div {
+	margin: 0;
+	padding: 0;
+}
+
+.hide {
+	display: none;
+}
+
+#pageWrapper {
+	margin: 0 auto;
+	padding: 1em 0 0;
+	width: 90%;
+}
+
+#pageHeader, #pageContent, #pageFooter {
+	-moz-border-radius: 15px;
+	-webkit-border-radius: 15px;
+	-khtml-border-radius: 15px;
+	border-radius: 15px;
+	padding: 15px;
+	margin-bottom: 1em;
+}
+
+#pageHeader, #pageFooter {
+	position: relative;
+	background-color: #148997;
+	color: #FFF;
+}
+
+#pageContent {
+	background-color: #A8DBE0;
+	min-height: 200px;
+}
+
+#pageHeader #damlogo {
+	-moz-border-radius: 8px;
+	-webkit-border-radius: 8px;
+	-khtml-border-radius: 8px;
+	border-radius: 8px;
+	-moz-box-shadow: 1px 1px 2px #000;
+	-webkit-box-shadow: 1px 1px 2px #000;
+	box-shadow: 1px 1px 2px #000;
+	width: 1.6em;
+	height: 1.6em;
+	vertical-align: middle;
+	margin: 0em 0.1em 0.1em 0.2em;
+}
+
+#pageHeader h1 {
+	margin: 0.2em 0;
+}
+
+#logoutContainer {
+	position: absolute;
+	top: 0.5em;
+	right: 1.5em;
+}
+
+#logoutContainer > a {
+	color: #D5EFF2;
+}
+
+#logoutContainer > a:hover {
+	color: #FFF;
+}
+
+#playerLookupContainer {
+	padding: 0 0 0.6em;
+	border-bottom: 1px solid #148997;
+}
+
+#playerLookupContainer #playerId {
+	width: 20em;
+}
+
+#loadingError {
+	color: red;
+}
+
+#playerInventory {
+	padding: 1.2em 0;
+}
+
+#playerInventory > div {
+	padding: 0.3em 0;
+}
+
+#creditGoldAmount, #creditGemsAmount {
+	width: 20em;
+}
+
+#playerDetails {
+	margin: 0 0 0 2px;
+	padding: 0;
+	border: 0 none #FFF;
+	height: 100%;
+	overflow: hidden;
+	background: none;
+}
+
+#playerDetails > div > div {
+	padding: 0;
+}
+
+#playerDetails > ul {
+	margin: 0;
+	padding: 0;
+	border: 0 none #FFF;
+	background: none;
+}
+
+#playerDetails > ul > li {
+	margin: 0;
+	padding: 0;
+	line-height: 1em;
+	background: #D5EFF2;
+	border-color: #148997;
+}
+
+#playerDetails > ul > li.ui-state-active {
+	background: #148997;
+}
+
+#playerDetails > ul > li > a {
+	margin: 0;
+	padding: 0.3em 0.6em;
+	line-height: 1em;
+	color: #148997;
+}
+
+#playerDetails > ul > li.ui-state-active > a {
+	color: #FFF;
+}
+
+#playerDetails > div {
+	border-top: 3px solid #148997;
+	border-bottom: 3px solid #148997;
+	padding: 0;
+	background-color: #FFF;
+	max-height: 500px;
+	overflow: auto;
+}
+
+#playerDetails table {
+	width: 100%;
+	margin: 0;
+}
+
+#playerDetails tr > td {
+	color: #666699;
+	background-color: #D5EFF2;
+	white-space: nowrap;
+	overflow: hidden;
+	vertical-align: top;
+}
+
+#playerDetails tr > td.allowWrap {
+	white-space: normal;
+}
+
+#playerDetails tr:hover > td {
+	color: #333399;
+	background-color: #8AC4CB;
+}
+
+#playerDetails tr.norecordsrow td {
+	text-align: center;
+}
+
+#playerDetails th {
+	width: 3em;
+	color: #fff;
+	background-color: #148997;
+}
+
+#playerDetails th, #playerDetails td {
+	text-align: left;
+	padding: 0.1em 0.3em;
+}
+
+span.gems {
+	color: #03F;
+	font-weight: bold;
+	font-style: italic;
+}
+
+span.gold {
+	color: #F60;
+	font-weight: bold;
+	font-style: italic;
+}
+
+span.pack {
+	color: #090;
+	font-weight: bold;
+	font-style: italic;
+}
+
+span.unit, span.rune {
+	color: #000;
+	font-weight: normal;
+	font-style: italic;
+}
+
+span.system {
+	color: darkred;
+}
+
+ul.packContents {
+	margin: 0;
+}

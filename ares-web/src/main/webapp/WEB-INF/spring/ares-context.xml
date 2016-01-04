@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.1.xsd
+       http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.1.xsd
+       http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.1.xsd">
+
+	 <bean id="validator" class="org.springframework.validation.beanvalidation.LocalValidatorFactoryBean" />
+
+    <!-- Services 
+    <context:component-scan base-package="com.ea.vanguard.com.ares.service" />
+    <context:component-scan base-package="com.ea.vanguard.com.ares.swrve" />
+    -->
+    
+         
+    <!-- Rpc Controllers -->
+    <context:component-scan base-package="com.ares.framework.dao.redis.service" />
+    <context:component-scan base-package="com.ares.framework.dao.redis" />
+    <context:component-scan base-package="com.ares.framework.service" />
+    <context:component-scan base-package="com.ares.framework.msg.publish" />
+    
+    
+    <context:component-scan base-package="com.ares.app" />
+     
+
+    <!-- Helpers 
+    <context:component-scan base-package="com.ea.vanguard.com.ares.helper" />
+   -->
+    <!-- Data Access / Repositories 
+    <context:component-scan base-package="com.ea.vanguard.com.ares.dao" />
+    <context:component-scan base-package="com.ea.vanguard.framework.dao" />
+
+    <context:component-scan base-package="com.ea.vanguard.com.ares.apple" />
+    <context:component-scan base-package="com.ea.vanguard.com.ares.google" />
+    <context:component-scan base-package="com.ea.vanguard.com.ares.simulator" />
+    <context:component-scan base-package="com.ea.vanguard.com.ares.notification" />
+   -->
+    <!--
+        Per-Request data, such as the authenticated playerId
+        This bean is request scoped, and should be used to get the playerId
+        at the Controller layer
+    -->
+   <!-- <!-<bean id="rpcContext" class="com.ea.vanguard.com.ares.rpc.RpcContext" scope="request" /> 
+
+    <bean id="profiler" class="com.ea.vanguard.com.ares.helper.ProfilerAspect" /> 
+     --> 
+
+
+
+
+    <aop:aspectj-autoproxy/>
+
+    <!-- Perf4j timing aspect configuration -->
+
+
+</beans>

@@ -3,17 +3,17 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>server</groupId>
-  <artifactId>game-parent</artifactId>
+  <artifactId>ares-parent</artifactId>
   <version>0.0.1-SNAPSHOT</version>
   <packaging>pom</packaging>
 
-  <name>game-parent</name>
+  <name>ares-parent</name>
   <url>http://maven.apache.org</url>
 
   <modules>
-  	<module>game-framework</module>
-  	<module>game-app</module>
-  	<module>game-web</module>
+  	<module>ares-framework</module>
+  	<module>ares-app</module>
+  	<module>ares-web</module>
   </modules>
   <properties>
         <java.version>1.8</java.version>

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+
+    <bean id="jedisConfig" class="redis.clients.jedis.JedisPoolConfig">
+        <property name="maxIdle" value="${redis.max.idle}"/>
+        <property name="minIdle" value="${redis.min.idle}"/>
+        <property name="maxTotal" value="${redis.max.active}"/>
+        <property name="maxWaitMillis" value="${redis.max.wait}"/>
+        <property name="testOnBorrow" value="${redis.test.on.borrow}"/>
+        <property name="testOnReturn" value="${redis.test.on.return}"/>
+        <property name="testWhileIdle" value="${redis.test.while.idle}"/>
+        <property name="timeBetweenEvictionRunsMillis" value="${redis.time.between.eviction.run.millis}"/>
+        <property name="numTestsPerEvictionRun" value="${redis.num.tests.per.eviction.run}"/>
+        <property name="minEvictableIdleTimeMillis" value="${redis.min.evictable.idle.time.millis}"/>
+        <property name="softMinEvictableIdleTimeMillis" value="${redis.soft.min.evictable.idle.time.millis}"/>
+    </bean>
+
+    <bean id="jedisPool" class="redis.clients.jedis.JedisPool" destroy-method="destroy">
+        <constructor-arg ref="jedisConfig"/>
+        <constructor-arg value="${redis.host}"/>
+        <constructor-arg type="int" value="${redis.port}"/>
+        <constructor-arg type="int" value="${redis.timeout}"/>
+    </bean>
+
+
+</beans>
