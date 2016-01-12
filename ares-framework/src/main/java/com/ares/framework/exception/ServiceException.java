@@ -1,6 +1,6 @@
 package com.ares.framework.exception;
 
-import game.framwork.rpc.Rpc;
+import com.ares.framwork.rpc.Rpc;
 
 
 

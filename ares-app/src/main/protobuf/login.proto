@@ -1,7 +1,7 @@
 
-package game.app;
+package com.ares.app;
 
-option java_package = "org.game.app";
+option java_package = "com.ares.app";
 option java_outer_classname = "Login";
 message RequestLogin {
   optional string user_id       = 1;

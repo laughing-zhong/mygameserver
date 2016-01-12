@@ -1,6 +1,6 @@
 package com.ares.app.service;
 
-import org.game.app.Login;
+import com.ares.app.Login;
 import org.springframework.stereotype.Service;
 
 import com.ares.framework.service.IService;

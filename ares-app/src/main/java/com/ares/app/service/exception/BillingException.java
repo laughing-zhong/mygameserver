@@ -2,7 +2,7 @@ package com.ares.app.service.exception;
 
 import com.ares.framework.exception.CodedException;
 
-import game.framwork.rpc.Rpc;
+import com.ares.framwork.rpc.Rpc;
 
 public class BillingException extends RuntimeException implements CodedException {
 

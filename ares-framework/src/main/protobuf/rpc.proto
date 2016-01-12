@@ -1,7 +1,7 @@
 
 package org.game.framwork.rpc;
 
-option java_package = "game.framwork.rpc";
+option java_package = "com.ares.framwork.rpc";
 option java_outer_classname = "Rpc";
 message RequestEnvelope {
   optional string service_name = 1;
