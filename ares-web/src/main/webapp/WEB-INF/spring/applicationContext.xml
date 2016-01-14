@@ -133,7 +133,7 @@
 		</property>
 	</bean>	
 	
-		<beans profile="broker">
+	<beans profile="broker">
 		<amq:broker useJmx="true" persistent="false" useShutdownHook="true">
 		    <amq:networkConnectors>
 		    	<amq:networkConnector uri="${activemq.broker.networkconnector}"/>
