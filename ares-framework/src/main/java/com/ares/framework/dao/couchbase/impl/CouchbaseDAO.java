@@ -2,9 +2,8 @@ package com.ares.framework.dao.couchbase.impl;
 
 import com.ares.framework.dal.couchbase.CloseableCouchbaseClient;
 import com.ares.framework.dal.couchbase.CouchbaseDataSource;
-import com.ares.framework.dal.couchbase.transaction.CbTransaction;
 import com.ares.framework.dao.couchbase.IUpdateDO;
-import com.ares.framework.dao.couchbase.IUpdateMultiOpt;
+
 import com.ares.framework.dao.exception.DAOException;
 import com.ares.framework.dao.exception.KeyNotFoundException;
 import com.ares.framework.domain.json.CasJsonDO;
@@ -14,17 +13,6 @@ import com.ares.framework.localcache.LocalCache;
 import com.ares.framework.localcache.LocalCacheImpl;
 import com.ares.framework.localcache.LocalCacheMock;
 import com.google.common.base.Strings;
-
-
-
-
-
-
-
-
-
-
-
 import java.util.List;
 
 public class CouchbaseDAO<DomainObject extends JsonDO> extends AbstractCouchbaseDAO<DomainObject> {
