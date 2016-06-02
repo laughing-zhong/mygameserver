@@ -8,8 +8,6 @@ import com.ares.app.domain.Do.UserCbDO;
 import com.ares.framework.dal.couchbase.CouchbaseDataSource;
 import com.ares.framework.dao.couchbase.impl.CouchbaseDAO;
 import com.ares.framework.dao.redis.EntityKey;
-import com.ares.framework.localcache.Cached;
-
 
 
 @Repository
