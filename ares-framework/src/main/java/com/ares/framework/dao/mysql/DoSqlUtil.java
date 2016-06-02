@@ -24,7 +24,7 @@ import com.ares.service.exception.PrimaryKeyNullException;
  * @see 	 
  */
 public class DoSqlUtil {	
-	public static Object[] getInsertFields(Class<?>doClass){
+	public static Object[] getInsertFields(Class<?> doClass){
 		Field[] fields = doClass.getDeclaredFields();
 		int fieldCount = fields.length;
 		Object[] filedsArray = new Object[fieldCount];
@@ -33,6 +33,7 @@ public class DoSqlUtil {
 		}
 		return fields;
 	}
+
 	public static Object[] getUpdateFields(Class<?>doClass){
 		Field[] fields = doClass.getDeclaredFields();
 		int fieldCount = fields.length - 1;
@@ -52,12 +53,20 @@ public class DoSqlUtil {
 		Field[] fields = doClass.getDeclaredFields();
 		int fieldCount = fields.length ;
 		
+		String pk = null;
 		for(int i = 0 ; i < fieldCount; ++i){
 			Field filed = fields[i];
+			PKey pkEntity = filed.getAnnotation(PKey.class);
+			if(pkEntity != null){
+				pk = filed.getName();
+				continue;
+			}
 			insertSql.append(filed.getName());
 			insertSql.append(",");
 		}
-		insertSql.replace(insertSql.length() - 1, insertSql.length(), ")");
+		insertSql.append(pk);
+		//insertSql.replace(insertSql.length() - 1, insertSql.length(), ")");
+		insertSql.append(")");
 		insertSql.append(" values (");
 		for(int i = 0; i < fieldCount; ++i){
 			insertSql.append("?,");
@@ -71,21 +80,34 @@ public class DoSqlUtil {
 		
 		StringBuilder updateSql = new StringBuilder("update ");
 		updateSql.append(tableName);
-		updateSql.append(" set ");	
+		updateSql.append(" set ");
+		String pk = null;
 		for(int i = 0 ; i < fieldCount; ++i){
 			Field filed = fields[i];
-			if(filed.getAnnotation(PKey.class) != null)
+			PKey pkEntity =  filed.getAnnotation(PKey.class) ;
+			if(pkEntity != null){
+				pk = filed.getName();
 				continue;
+			}		
 			updateSql.append(filed.getName());
 			updateSql.append("= ?,");
 		}
 		updateSql.deleteCharAt(updateSql.length() - 1);
 		updateSql.append(" where ");
-		updateSql.append(getPk(doClass));
+		updateSql.append(pk);
 		updateSql.append(" = ?");
 		return  updateSql.toString();	
 	}
-	public static String   getSelectSql(Class<?>doClass, String tableName){		
+	public static String   getSelectOneObjSql(Class<?> doClass, String tableName){		
+		StringBuilder selectSql = new StringBuilder("select * from ");
+		selectSql.append(tableName);
+		selectSql.append(" where ");
+		selectSql.append(getPk(doClass));
+		selectSql.append(" = ? limit 1");
+		return selectSql.toString();	
+	}
+	
+	public static String getSelectObjListSql(Class<?> doClass, String tableName){
 		StringBuilder selectSql = new StringBuilder("select * from ");
 		selectSql.append(tableName);
 		selectSql.append(" where ");

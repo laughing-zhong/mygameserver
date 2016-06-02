@@ -42,7 +42,6 @@ public class EntityUtils {
 
 			// Default value, overrides everything else
 			String value = entityKeyAnnotation.value();
-
 			if ( !Strings.isNullOrEmpty( value ) ) return buildSingleEntityKey( value, separator );
 
 			String prefix = entityKeyAnnotation.prefix();
