@@ -1,17 +1,10 @@
 package com.ares.framework.dal.couchbase;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
-
 import javax.annotation.PreDestroy;
-
 import rx.Observable;
-
-import com.ares.framework.dal.couchbase.transaction.CbTransaction;
-import com.ares.framework.dal.couchbase.transaction.CbTransaction.TsState;
 import com.ares.framework.dao.couchbase.IUpdateDO;
-import com.ares.framework.dao.couchbase.IUpdateMultiOpt;
 import com.ares.framework.dao.couchbase.transcoder.JsonObjectMapper;
 import com.ares.framework.domain.json.CasJsonDO;
 import com.ares.framework.domain.json.JsonDO;
@@ -28,7 +21,6 @@ import com.couchbase.client.java.env.CouchbaseEnvironment;
 import com.couchbase.client.java.env.DefaultCouchbaseEnvironment;
 import com.couchbase.client.java.error.CASMismatchException;
 import com.couchbase.client.java.view.View;
-import com.fasterxml.jackson.core.JsonProcessingException;
 
 
 public class CloseableCouchbaseClientImpl implements CloseableCouchbaseClient{

@@ -24,7 +24,7 @@ import lombok.Data;
 @Data
 public class InventoryDO {
 	private String name;
-	@PKey
+	@Index
 	private int id;
 	private int count;
 }

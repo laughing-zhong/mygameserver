@@ -9,7 +9,7 @@ import java.net.URI;
 import java.util.List;
 
 /**
- * @author dadler
+ * @author wesley
  */
 
 public abstract class UriUtils {

@@ -4,11 +4,11 @@ import com.google.protobuf.InvalidProtocolBufferException;
 
 /**
  * 
- * @author m.mcbride
+ * @author wesley
  *
  * @param <T>
  */
-@SuppressWarnings("SpellCheckingInspection")
+
 public interface UnmarshalCommand<T>{
 
 	T unmarshal (byte[] bytes) throws InvalidProtocolBufferException;

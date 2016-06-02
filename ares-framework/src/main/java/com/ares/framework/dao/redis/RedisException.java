@@ -3,10 +3,10 @@ package com.ares.framework.dao.redis;
 /**
  * Exception used in the case we encountered an exception with redis.
  *
- * @author m.mcbride
+ * @author wesley
  */
 
-@SuppressWarnings( {"UnusedDeclaration", "SpellCheckingInspection"} )
+
 public class RedisException extends RuntimeException  {
 	protected static final long serialVersionUID = 1L;
 

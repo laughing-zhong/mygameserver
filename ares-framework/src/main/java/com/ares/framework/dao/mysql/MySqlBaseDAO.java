@@ -23,7 +23,7 @@ import org.testng.util.Strings;
 import com.ares.service.exception.TableNameNullException;
 
 
-public class MysqlDAO<T> {
+public class MySqlBaseDAO<T> {
 	private Class<?> doClass;
 	private String tableName;
 	private JdbcTemplate jdbcTemplate;
@@ -51,7 +51,7 @@ public class MysqlDAO<T> {
 		}
 	}
 
-	public MysqlDAO(Class<?> doClass) {
+	public MySqlBaseDAO(Class<?> doClass) {
 		this.doClass = doClass;
 		try {
 			initDoMethod();
@@ -143,7 +143,7 @@ public class MysqlDAO<T> {
 		for (int i = 0; i < fields.length; ++i) {
 			Field field = fields[i];
 			String filedName = field.getName();
-			PKey pkey = field.getAnnotation(PKey.class);
+			Index pkey = field.getAnnotation(Index.class);
 				
 			String fieldSetMethodName = "set" + toUpperCaseFirstOne(filedName);
 			Method fiedSetMethod = doClass.getDeclaredMethod(fieldSetMethodName,field.getType());

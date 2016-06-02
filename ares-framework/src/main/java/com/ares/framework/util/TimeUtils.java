@@ -4,7 +4,7 @@ import java.util.concurrent.TimeUnit;
 
 
 /**
- * @author dadler
+ * @author wesley
  */
 public class TimeUtils {
 
@@ -50,7 +50,7 @@ public class TimeUtils {
 	 * @param shiftMilliseconds milliseconds offset to be added to the current time
 	 * @return the current time plus shiftMilliseconds
 	 */
-	@SuppressWarnings({"UnusedDeclaration"})
+
 	public static long getCurrentTimeInMillisecondsShiftedForwardBy( long shiftMilliseconds )
 	{
 		return getCurrentTimeInMilliseconds() + shiftMilliseconds;

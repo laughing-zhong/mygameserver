@@ -27,7 +27,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 @Table("inventory")
-public class InventoryDAO  extends MysqlDAO<InventoryDO>{
+public class InventoryDAO  extends MySqlBaseDAO<InventoryDO>{
 	public InventoryDAO(){
 		super(InventoryDO.class);
 	}

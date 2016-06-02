@@ -58,8 +58,5 @@ public class RedisService {
 				return jedis.evalsha(luaSha, keyCount, params);
 			}
 		});
-	}
-
-
-	
+	}	
 }

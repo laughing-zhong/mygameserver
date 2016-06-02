@@ -24,7 +24,7 @@ import java.lang.annotation.RetentionPolicy;
  */
 
 @Retention(RetentionPolicy.RUNTIME)
-public @interface PKey {
+public @interface Index {
 	String value() default "";
 	String prefix() default "";
 	String suffix() default "";

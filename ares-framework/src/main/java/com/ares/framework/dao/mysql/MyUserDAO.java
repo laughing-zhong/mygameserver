@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 @Table("myuser")
-public class MyUserDAO extends MysqlDAO<MyUser> {
+public class MyUserDAO extends MySqlBaseDAO<MyUser> {
 	
 	public MyUserDAO(){
 		super(MyUser.class);

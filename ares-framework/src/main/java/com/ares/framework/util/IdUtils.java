@@ -11,16 +11,10 @@ import java.io.DataOutputStream;
 import java.util.UUID;
 
 /**
- * @author dadler
+ * @author  wesley
  */
 
 
-/**
- * Utility class that generates and compacts UUIDs into shorter
- * strings
- *
- * @author dadler
- */
 
 public class IdUtils {
 	private static final Logger LOGGER = LoggerFactory.getLogger( IdUtils.class );
@@ -56,7 +50,7 @@ public class IdUtils {
 
 		byte[] uuidBytes = baos.toByteArray();
 
-		return Base64.encodeBase64URLSafeString( uuidBytes );
+		return Base64.encodeBase64URLSafeString(uuidBytes);
 	}
 
 	/**
@@ -66,7 +60,6 @@ public class IdUtils {
 	 * @return a java.util.UUID matching the input
 	 */
 
-	@SuppressWarnings("UnusedDeclaration")
 	public static UUID expand( String uniqueId ) {
 		long mostSigBits = 0;
 		long leastSigBits = 0;

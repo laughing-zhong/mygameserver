@@ -5,8 +5,7 @@ import lombok.Data;
 
 @Data
 public class MyUser {
-	@PKey
+	@Index
 	private int userid;
 	private String name;
-
 }

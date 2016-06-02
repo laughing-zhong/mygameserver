@@ -11,10 +11,10 @@ import javax.jms.Message;
 /**
  * Template to reuse boilerplate jms message/proto unmarshalling code.
  * 
- * @author m.mcbride
+ * @author wesley
  *
  */
-@SuppressWarnings("SpellCheckingInspection")
+
 public class UnmarshalTemplate {
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger( UnmarshalTemplate.class );

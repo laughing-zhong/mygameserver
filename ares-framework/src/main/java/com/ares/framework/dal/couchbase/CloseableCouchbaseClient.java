@@ -1,21 +1,7 @@
 package com.ares.framework.dal.couchbase;
 
 import java.util.List;
-
-
-
-
-
-
-
-
-
-
-
-
-import com.ares.framework.dal.couchbase.transaction.CbTransaction;
 import com.ares.framework.dao.couchbase.IUpdateDO;
-import com.ares.framework.dao.couchbase.IUpdateMultiOpt;
 import com.ares.framework.domain.json.JsonDO;
 import com.couchbase.client.java.view.View;
 

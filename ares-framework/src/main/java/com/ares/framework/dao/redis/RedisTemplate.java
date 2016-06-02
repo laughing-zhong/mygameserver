@@ -1,7 +1,5 @@
 package com.ares.framework.dao.redis;
 
-
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -15,7 +13,7 @@ import javax.inject.Inject;
 /**
  * Template class that removes the need to fetch and return a jedis connection from the pool.
  *
- * @author m.mcbride
+ * @author wesley
  */
 
 @Component

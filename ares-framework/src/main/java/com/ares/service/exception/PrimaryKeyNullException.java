@@ -19,6 +19,9 @@ package com.ares.service.exception;
  * @see 	 
  */
 public class PrimaryKeyNullException  extends RuntimeException{
+
+	private static final long serialVersionUID = 1L;
+
 	public PrimaryKeyNullException(String msg){
 		super(msg);
 	}

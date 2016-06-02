@@ -1,8 +1,4 @@
 package com.ares.framework.msg.publish;
-
-
-
-
 import javax.inject.Inject;
 import javax.jms.JMSException;
 import javax.jms.Message;

@@ -1,6 +1,5 @@
 package com.ares.framework.dao.exception;
 
-@SuppressWarnings( "UnusedDeclaration" )
 public class UnableToApplyDeltaException extends Exception {
 	private static final long serialVersionUID = 1L;
 

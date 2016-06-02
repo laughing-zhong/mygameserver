@@ -56,7 +56,7 @@ public class DoSqlUtil {
 		String pk = null;
 		for(int i = 0 ; i < fieldCount; ++i){
 			Field filed = fields[i];
-			PKey pkEntity = filed.getAnnotation(PKey.class);
+			Index pkEntity = filed.getAnnotation(Index.class);
 			if(pkEntity != null){
 				pk = filed.getName();
 				continue;
@@ -84,7 +84,7 @@ public class DoSqlUtil {
 		String pk = null;
 		for(int i = 0 ; i < fieldCount; ++i){
 			Field filed = fields[i];
-			PKey pkEntity =  filed.getAnnotation(PKey.class) ;
+			Index pkEntity =  filed.getAnnotation(Index.class) ;
 			if(pkEntity != null){
 				pk = filed.getName();
 				continue;
@@ -129,7 +129,7 @@ public class DoSqlUtil {
 		Field[] fields = doClass.getDeclaredFields();
 		for(int i = 0 ; i < fields.length; ++i){
 			Field field = fields[i];
-			if(field.getAnnotation(PKey.class) != null)
+			if(field.getAnnotation(Index.class) != null)
 				return field.getName();
 		}
 		throw new PrimaryKeyNullException(" do obj primary key not foung should do like @Pkey ");	

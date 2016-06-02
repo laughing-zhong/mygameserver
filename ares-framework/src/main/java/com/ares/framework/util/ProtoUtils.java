@@ -2,6 +2,7 @@ package com.ares.framework.util;
 
 import com.google.protobuf.BlockingService;
 import com.google.protobuf.Service;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -18,22 +19,23 @@ public abstract class ProtoUtils {
 	private static final String NEW_BLOCKING_SERVICE_METHOD = "newReflectiveBlockingService";
 	private static final String NEW_SERVICE_METHOD = "newReflectiveService";
 
-	@SuppressWarnings({"UnusedDeclaration"})
+
 	public static Service wrapService( final Object impl ) {
 		return wrapGenericService( impl, NEW_SERVICE_METHOD );
 	}
 
-	@SuppressWarnings({"UnusedDeclaration"})
+
 	public static BlockingService wrapBlockingService( final Object impl ) {
 		return wrapGenericService( impl, NEW_BLOCKING_SERVICE_METHOD );
 	}
+
 
 	@SuppressWarnings("unchecked")
 	public static <T> T wrapGenericService( final Object impl, final String newServiceMethodName ) {
 
 		T wrapper = null;
 
-		Class[] interfaces = impl.getClass().getInterfaces();
+		Class<?>[] interfaces = impl.getClass().getInterfaces();
 		for ( Class<?> interfaze : interfaces ) {
 			if ( interfaze == null ) continue;
 			Class<?> clazz = interfaze.getEnclosingClass();

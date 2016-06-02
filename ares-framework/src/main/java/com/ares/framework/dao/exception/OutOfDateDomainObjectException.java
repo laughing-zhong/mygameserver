@@ -9,7 +9,7 @@ import com.ares.framework.domain.KeyedDO;
  * and the time of the write.
  */
 
-@SuppressWarnings( {"SpellCheckingInspection", "UnusedDeclaration"} )
+
 public class OutOfDateDomainObjectException extends RuntimeException {
 	private static final long serialVersionUID = 1L;
 	private KeyedDO<?> obj;

@@ -1,7 +1,6 @@
 package com.ares.framework.dal.couchbase;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
 
 import com.ares.framework.msg.publish.EventPublisher;
 
@@ -13,13 +12,6 @@ import javax.inject.Inject;
 
 
 
-
-
-/**
- * Implementation of CouchbaseDataSource that uses only one cb client for all the datasource clients.
- *
- * @author mark.mcbride
- */
 
 public class CouchbaseSimpleDataSource implements CouchbaseDataSource {
 	//private static final Logger LOGGER = LoggerFactory.getLogger( CouchbaseSimpleDataSource.class );

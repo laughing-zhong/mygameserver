@@ -1,8 +1,5 @@
 package com.ares.framework.dao.couchbase;
 
-import java.util.List;
-
-import com.ares.framework.dal.couchbase.transaction.CbTransaction;
 import com.ares.framework.dao.exception.DAOException;
 import com.ares.framework.dao.exception.KeyNotFoundException;
 import com.ares.framework.dao.exception.OutOfDateDomainObjectException;
