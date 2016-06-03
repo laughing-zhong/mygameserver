@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:security="http://www.springframework.org/schema/security"
+       	xmlns:amq="http://activemq.apache.org/schema/core"
+		xmlns:jms="http://www.springframework.org/schema/jms"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.1.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.1.xsd
+		http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-4.0.xsd
+		http://activemq.apache.org/schema/core http://activemq.apache.org/schema/core/activemq-core-5.8.0.xsd
+       	http://www.springframework.org/schema/jms http://www.springframework.org/schema/jms/spring-jms-4.1.xsd"
+        >
+
+	<amq:connectionFactory id="amqConnectionFactory" brokerURL="${activemq.client.url}"/>
+	
+
+	<bean id="connectionFactory" class="org.springframework.jms.connection.CachingConnectionFactory" destroy-method="destroy">
+		<constructor-arg ref="amqConnectionFactory" />
+		<property name="sessionCacheSize" value="500" />
+	</bean>
+	<!-- JmsTemplate Definition -->
+	<bean id="jmsTemplate" class="org.springframework.jms.core.JmsTemplate">
+		<constructor-arg ref="connectionFactory" />
+	</bean>
+	
+	<jms:listener-container concurrency="${activemq.client.concurrency}" acknowledge="dups-ok">
+		
+		<jms:listener destination="FRAMEWORK.DAO.ERROR" ref="daoErrorListener"  />
+		<!-- <jms:listener destination="PLAYER.SESSION.END.EVENT" ref="swrveSessionEndListener"  /> -->
+		<!-- <jms:listener destination="PLAYER.GAME.EVENT" ref="swrveGameEventListener"  /> -->
+		<!-- <jms:listener destination="PLAYER.PURCHASE.EVENT" ref="swrvePurchaseListener"  /> -->
+		<!-- 这个消息只在buyInAppPurchaseItem中发送 -->
+		<!-- <jms:listener destination="PLAYER.BUY.IN.EVENT" ref="swrveBuyInListener"  /> -->
+		<!-- <jms:listener destination="PLAYER.CURRENCY.GIVEN.EVENT" ref="swrveCurrencyGivenListener"  /> -->
+		<!-- <jms:listener destination="PLAYER.DETAIL.CHANGED.EVENT" ref="swrveUserListener"  /> -->
+		<!-- 中国版本中不需要使用synergy发送P2P的战斗信息 -->
+		<!-- <jms:listener destination="PLAYER.ATTACKED.EVENT" ref="synergyPushNotificationListener"  /> -->	
+		<!-- <jms:listener destination="HELP.REQUEST.QUEUE" ref="helpRequestListener"  />
+		<jms:listener destination="REWARD.TX.QUEUE" ref="rewardTxListener"  /> -->
+	</jms:listener-container>
+	
+	<!-- <context:component-scan base-package="com.ea.vanguard.game.message"/> -->
+	
+	<bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">
+		<property name="basename">
+			<value>locale.messages</value>
+		</property>
+	</bean>	
+	
+	<beans profile="broker">
+		<amq:broker useJmx="true" persistent="false" useShutdownHook="true">
+		    <amq:networkConnectors>
+		    	<amq:networkConnector uri="${activemq.broker.networkconnector}"/>
+		    </amq:networkConnectors>
+		    <amq:transportConnectors>
+				<amq:transportConnector uri="${activemq.broker.transportconnector}" />
+			</amq:transportConnectors>
+			<amq:systemUsage>
+				<amq:systemUsage>
+					<amq:memoryUsage>
+						<amq:memoryUsage limit="${activemq.broker.systemmemoryusage}"/>
+					</amq:memoryUsage>
+					<amq:storeUsage>
+						<amq:storeUsage limit="${activemq.broker.systemstoreusage}"/>
+					</amq:storeUsage>
+					<amq:tempUsage>
+						<amq:tempUsage limit="${activemq.broker.systemtempusage}"/>
+					</amq:tempUsage>
+				</amq:systemUsage>
+			</amq:systemUsage>
+		</amq:broker>
+	</beans>
+	</beans>

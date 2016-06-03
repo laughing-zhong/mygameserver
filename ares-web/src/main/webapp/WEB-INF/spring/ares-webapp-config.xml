@@ -32,10 +32,6 @@
         <property name="ignoreUnresolvablePlaceholders" value="true"/>
     </bean>
 
-   <!--  <context:component-scan base-package="com.ea.vanguard.game.simulator.rest"/>  --> 
-
-
-
 
 	<!-- selects a static view for rendering without the need for an explicit 
 		controller -->

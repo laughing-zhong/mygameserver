@@ -24,6 +24,4 @@
         <constructor-arg type="int" value="${redis.port}"/>
         <constructor-arg type="int" value="${redis.timeout}"/>
     </bean>
-
-
 </beans>

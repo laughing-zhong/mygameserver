@@ -24,7 +24,7 @@ import java.util.concurrent.ThreadFactory;
 /**
  * Listener subscribes to CONTENT_CHANGE topic and invalidates the content cache manager when it receives messages.
  * 
- * @author m.mcbride
+ * @author wesley
  *
  */
 @Component

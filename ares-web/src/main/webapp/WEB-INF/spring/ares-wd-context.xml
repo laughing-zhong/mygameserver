@@ -16,14 +16,11 @@
     
          
     <!-- Rpc Controllers -->
-    <context:component-scan base-package="com.ares.framework.dao.redis.service" />
-    <context:component-scan base-package="com.ares.framework.dao.redis" />
     <context:component-scan base-package="com.ares.framework.dao.mysql" />
     <context:component-scan base-package="com.ares.framework.service" />
-    <context:component-scan base-package="com.ares.framework.msg.publish" />
     
     
-    <context:component-scan base-package="com.ares.app" />
+    <context:component-scan base-package="com.ares.app.controller" />
      
     <!--
         Per-Request data, such as the authenticated playerId

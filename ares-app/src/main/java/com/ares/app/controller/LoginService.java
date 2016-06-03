@@ -1,4 +1,4 @@
-package com.ares.app.service;
+package com.ares.app.controller;
 
 import com.ares.app.Login;
 import org.springframework.stereotype.Service;
