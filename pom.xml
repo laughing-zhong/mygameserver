@@ -1,75 +1,66 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <modelVersion>4.0.0</modelVersion>
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
 
-  <groupId>server</groupId>
-  <artifactId>ares-parent</artifactId>
-  <version>0.0.1-SNAPSHOT</version>
-  <packaging>pom</packaging>
+	<groupId>server</groupId>
+	<artifactId>ares-parent</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<packaging>pom</packaging>
 
-  <name>bangyou-parent</name>
-  <url>http://maven.apache.org</url>
+	<name>bangyou-parent</name>
+	<url>http://maven.apache.org</url>
 
-  <modules>
-  	<module>ares-framework</module>
-  	<module>ares-app</module>
-  	<module>ares-web</module>
-  </modules>
-  <properties>
-        <java.version>1.8</java.version>
-        <jackson.version>2.5.2</jackson.version>
-        <protobuf.plugin.version>0.6.5</protobuf.plugin.version>
-        <slf4j.version>1.7.5</slf4j.version>
-        <spring.version>4.1.6.RELEASE</spring.version>
-        <spring.security.version>4.0.0.RELEASE</spring.security.version>
-        <testng.version>6.8.7</testng.version>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <logback.version>1.1.2</logback.version>
-        <slf4j.version>1.7.5</slf4j.version>
-    </properties>
-    
-    
-    <build>
-        <pluginManagement>
-            <plugins>
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-compiler-plugin</artifactId>
-                    <version>3.0</version>
-                    <configuration>
-                        <source>1.7</source>
-                        <target>1.7</target>
-                    </configuration>
-                </plugin>
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-jxr-plugin</artifactId>
-                    <version>2.3</version>
-                </plugin>
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-pmd-plugin</artifactId>
-                    <version>3.0</version>
-                    <configuration>
-                        <linkXref>true</linkXref>
-                    </configuration>
-                </plugin>
-               <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.0</version>
-                <configuration>
-                    <source>${java.version}</source>
-                    <target>${java.version}</target>
-                </configuration>
-            </plugin>
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-javadoc-plugin</artifactId>
-                    <version>2.9</version>
-                </plugin>
-            </plugins>
-        </pluginManagement>
-    </build>
-    
+	<modules>
+		<module>ares-framework</module>
+		<module>ares-app</module>
+		<module>ares-web</module>
+	</modules>
+	<properties>
+		<java.version>1.8</java.version>
+		<jackson.version>2.5.2</jackson.version>
+		<protobuf.plugin.version>0.6.5</protobuf.plugin.version>
+		<slf4j.version>1.7.5</slf4j.version>
+		<spring.version>4.1.6.RELEASE</spring.version>
+		<spring.security.version>4.0.0.RELEASE</spring.security.version>
+		<testng.version>6.8.7</testng.version>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<logback.version>1.1.2</logback.version>
+		<slf4j.version>1.7.5</slf4j.version>
+	</properties>
+
+
+	<build>
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-jxr-plugin</artifactId>
+					<version>2.3</version>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-pmd-plugin</artifactId>
+					<version>3.0</version>
+					<configuration>
+						<linkXref>true</linkXref>
+					</configuration>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-compiler-plugin</artifactId>
+					<version>3.0</version>
+					<configuration>
+						<source>${java.version}</source>
+						<target>${java.version}</target>
+					</configuration>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-javadoc-plugin</artifactId>
+					<version>2.9</version>
+				</plugin>
+			</plugins>
+		</pluginManagement>
+	</build>
+
 </project>
