@@ -243,9 +243,5 @@ public class CloseableCouchbaseClientImpl implements CloseableCouchbaseClient{
 //		latch.await();
 //		return docs;
 		return null;
-	}
-
-	
-
-	
+	}	
 }

@@ -1,14 +1,4 @@
 package com.ares.framework.dao.couchbase.impl;
-
-
-
-
-
-
-
-
-
-
 import com.ares.framework.dal.couchbase.CloseableCouchbaseClient;
 import com.ares.framework.dal.couchbase.CouchbaseDataSource;
 import com.ares.framework.dal.util.EntityUtils;
