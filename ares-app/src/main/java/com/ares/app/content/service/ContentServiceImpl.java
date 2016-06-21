@@ -31,7 +31,7 @@ import redis.clients.jedis.Jedis;
 
 
 /**
- * @author m.mcbride
+ * @author wesley
  */
 @Service
 public class ContentServiceImpl implements ContentService, ApplicationEventPublisherAware {

@@ -1,4 +1,4 @@
-package game.web.controller;
+package com.ares.web.content.controller;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -20,7 +20,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import redis.clients.jedis.Jedis;
 
-import com.ares.framework.dal.couchbase.CloseableCouchbaseClient;
 import com.ares.framework.dal.couchbase.CouchbaseDataSource;
 import com.ares.framework.dao.redis.RedisCallback;
 import com.ares.framework.dao.redis.RedisTemplate;

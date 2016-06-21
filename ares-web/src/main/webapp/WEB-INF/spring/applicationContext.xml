@@ -56,7 +56,7 @@
          <!--  <security:remember-me key="vanguard" user-service-ref="userService"/> -->
     </security:http>  
  
-     <bean id="portProcessingFilter" class="game.web.controller.PortProcessingFilter"/>
+     <bean id="portProcessingFilter" class="com.ares.web.content.controller.PortProcessingFilter"/>
      
       <security:authentication-manager>
         <security:authentication-provider>

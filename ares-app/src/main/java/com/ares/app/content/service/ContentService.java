@@ -8,7 +8,7 @@ import com.ares.app.content.vip.VipConfig;
 /**
  * Service responsible for publishing and retrieving content from the game.
  *
- * @author m.mcbride
+ * @author wesley
  */
  
 public interface ContentService {

@@ -8,12 +8,12 @@
 		<param-value>fblogin-default,synergy-mock,swrve-mock,help-listener-default,graphite-reporter-mock</param-value>
 	</context-param>
 
-   <context-param>
+	<context-param>
 		<param-name>contextConfigLocation</param-name>
 		<param-value>
             /WEB-INF/spring/applicationContext.xml
-            /WEB-INF/spring/mysql-dal-context.xml
-            /WEB-INF/spring/ares-wd-context.xml
+            /WEB-INF/spring/ares-context.xml
+            /WEB-INF/spring/mysql-dal-context.xml      
         </param-value>
 	</context-param>
 	<filter>
@@ -25,9 +25,9 @@
 		<filter-name>springSecurityFilterChain</filter-name>
 		<url-pattern>/*</url-pattern>
 	</filter-mapping>
-	
-	 
-	 <filter>
+
+
+	<filter>
 		<filter-name>CharactorFilter</filter-name>
 		<filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
 		<init-param>
@@ -41,13 +41,13 @@
 	</filter>
 
 	<filter-mapping>
-  		<filter-name>CharactorFilter</filter-name>   
-  		<url-pattern>/*</url-pattern>  
-    </filter-mapping>	
+		<filter-name>CharactorFilter</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
 
 
-   	<servlet>
-	    <servlet-name>ares-rpc</servlet-name>
+	<servlet>
+		<servlet-name>ares-rpc</servlet-name>
 		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
 		<init-param>
 			<param-name>contextConfigLocation</param-name>
@@ -60,10 +60,8 @@
 		<servlet-name>ares-rpc</servlet-name>
 		<url-pattern>/rpc/*</url-pattern>
 	</servlet-mapping>
-	
 
-
-<!--  	<servlet>
+	<servlet>
 		<servlet-name>ares-webapp</servlet-name>
 		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
 		<init-param>
@@ -72,12 +70,10 @@
 		</init-param>
 		<load-on-startup>2</load-on-startup>
 	</servlet>
-
 	<servlet-mapping>
 		<servlet-name>ares-webapp</servlet-name>
 		<url-pattern>/*</url-pattern>
-	</servlet-mapping>
--->
+	</servlet-mapping> 
 
 	<!-- Creates the Spring Container shared by all Servlets and Filters -->
 

@@ -1,11 +1,9 @@
-package game.web.controller;
+package com.ares.web.content.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-/**
- * @author dadler
- */
+
 
 @Controller
 public class IndexController {

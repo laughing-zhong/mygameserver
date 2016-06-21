@@ -1,4 +1,4 @@
-package game.web.controller;
+package com.ares.web.content.controller;
 
 import java.io.ByteArrayInputStream;
 
