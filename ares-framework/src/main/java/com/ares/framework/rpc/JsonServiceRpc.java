@@ -6,6 +6,7 @@ import java.lang.reflect.Method;
 
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
+import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -31,23 +32,24 @@ import com.fasterxml.jackson.databind.ObjectMapper;
  */
 
 
-@Controller
+
 @RequestMapping("/jrpc")
-public class JsonServiceRpc {
+public abstract class JsonServiceRpc {
 	@Inject
 	private ServiceMgr  serviceMgr;
 	private ObjectMapper objectMapper;
 	
-	public JsonServiceRpc()
-	{
+	public JsonServiceRpc(){
 		
 	}
 	
 	@PostConstruct
-	public void Init()
-	{
+	public void Init(){
 		objectMapper = new ObjectMapper();
 	}
+	
+	abstract public  void checkSession(JsonRpcRequest req);
+	abstract public  void postProcess();//no use
 	
 	@RequestMapping(method = RequestMethod.POST)
 	@ResponseBody
@@ -55,7 +57,7 @@ public class JsonServiceRpc {
 	{
 	
 		JsonResponse   response = new JsonResponse();
-		JIService service = serviceMgr.GetJService(request.getServiceName());
+		JIService service = serviceMgr.GetService(request.getServiceName());
 		if(service == null)
 		{
 			response.setStatus(MsgState.NO_SERVICE);
@@ -76,10 +78,8 @@ public class JsonServiceRpc {
 	private Method GetMethod(Object obj, String methodName)
 	{
 		Method[] methods = obj.getClass().getMethods();
-		for(int i = 0 ; i < methods.length ; ++i)
-		{
-			if(methods[i].getName().equals(methodName))
-			{
+		for(int i = 0 ; i < methods.length ; ++i){
+			if(methods[i].getName().equals(methodName)){
 				return methods[i];
 			}
 		}
@@ -91,7 +91,6 @@ public class JsonServiceRpc {
 		 Class<?> methosParamType = method.getParameterTypes()[0];  
 		 Object object =  objectMapper.readValue(requestData, methosParamType);
 	     Object retObj =  method.invoke(service, object);
-	     return objectMapper.writeValueAsBytes(retObj);
-	       
+	     return objectMapper.writeValueAsBytes(retObj);       
 	}
 }

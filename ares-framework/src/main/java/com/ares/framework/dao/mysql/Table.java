@@ -12,16 +12,7 @@ package com.ares.framework.dao.mysql;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
-/**
- * ClassName:TBEntity <br/>
- * Function: TODO ADD FUNCTION. <br/>
- * Reason:	 TODO ADD REASON. <br/>
- * Date:     2016年5月31日 上午11:36:07 <br/>
- * @author   zhongwq
- * @version  
- * @since    JDK 1.6
- * @see 	 
- */
+
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Table {
 	String value() default "";
