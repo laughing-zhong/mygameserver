@@ -32,5 +32,9 @@
 		<property name="testWhileIdle" value="${jdbc.testWhileIdle}" />
 		<property name="timeBetweenEvictionRunsMillis" value="${jdbc.timeBetweenEvictionRunsMillis}" />
 	</bean>
+
+	<bean id="dbUtilsTemplate" class="com.ares.framework.dao.mysql.DbUtilsTemplate">
+		<property name="dataSource" ref="dataSource" />
+	</bean> 
 	 
 </beans>

@@ -8,7 +8,9 @@ package com.ares.app.m.controller;
 
 import org.springframework.stereotype.Component;
 
+import com.ares.app.DO.User;
 import com.ares.framework.service.JIService;
+import com.fasterxml.jackson.core.JsonProcessingException;
 
 /**
  *@author wesley E-mail:wiqi.zhong@gmail.com
@@ -18,6 +20,12 @@ import com.ares.framework.service.JIService;
 
 @Component
 public class MLoginService  implements JIService{
+	
+	public User  login(User user) throws JsonProcessingException
+	{
+		
+		return user;
+	}
 
 
 }
