@@ -1,4 +1,4 @@
-package com.ares.app.controller;
+package com.ares.app.cb.controller;
 
 import javax.inject.Inject;
 

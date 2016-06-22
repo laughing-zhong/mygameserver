@@ -97,7 +97,6 @@ public class MappingJacksonHttpMessageConverter extends AbstractHttpMessageConve
 
 	@Override
 	protected Object readInternal( Class<?> clazz, HttpInputMessage inputMessage ) throws IOException, HttpMessageNotReadableException {
-
 		JavaType javaType = getJavaType( clazz );
 		try {
 			return this.objectMapper.readValue( inputMessage.getBody(), javaType );
@@ -108,7 +107,6 @@ public class MappingJacksonHttpMessageConverter extends AbstractHttpMessageConve
 
 	@Override
 	protected void writeInternal( Object object, HttpOutputMessage outputMessage ) throws IOException, HttpMessageNotWritableException {
-
 		JsonEncoding encoding = getJsonEncoding( outputMessage.getHeaders().getContentType() );
 		JsonGenerator jsonGenerator = this.objectMapper.getFactory().createGenerator( outputMessage.getBody(), encoding );
 		try {

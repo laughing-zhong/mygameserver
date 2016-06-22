@@ -7,7 +7,7 @@
  *
 */
 
-package com.ares.app.controller;
+package com.ares.app.cb.controller;
 
 import org.springframework.stereotype.Component;
 

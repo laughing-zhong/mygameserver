@@ -1,4 +1,6 @@
-package com.ares.framework.dao.mysql;
+package com.ares.app.DO;
+
+import com.ares.framework.dao.mysql.Index;
 
 import lombok.Data;
 

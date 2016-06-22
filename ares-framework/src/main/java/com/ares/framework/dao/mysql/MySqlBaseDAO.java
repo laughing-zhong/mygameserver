@@ -28,8 +28,8 @@ public class MySqlBaseDAO<T> {
 	private String tableName;
 	private JdbcTemplate jdbcTemplate;
 
-	private static Map<String, Class<?>> methodNames = new HashMap<String, Class<?>>();
-	private static Map<Class<?>, Method> methodMap = new HashMap<Class<?>, Method>();
+	protected static Map<String, Class<?>> methodNames = new HashMap<String, Class<?>>();
+	protected static Map<Class<?>, Method> methodMap   = new HashMap<Class<?>, Method>();
 	static {
 		methodNames.put("getString", String.class);
 		methodNames.put("getInt", int.class);
@@ -184,7 +184,6 @@ public class MySqlBaseDAO<T> {
 					dofiledSetClass.setFiledValue(objInstance, rs);
 				}
 				return objInstance;
-
 			} catch (InstantiationException e) {
 				e.printStackTrace();
 			} catch (IllegalAccessException e) {

@@ -11,24 +11,20 @@
 
          
     <!-- Rpc Controllers -->
-    <context:component-scan base-package="com.ares.framework.dao.redis.service" />
-    <context:component-scan base-package="com.ares.framework.dao.redis" />
     <context:component-scan base-package="com.ares.framework.dao.mysql" />
     <context:component-scan base-package="com.ares.framework.service" />
-    <context:component-scan base-package="com.ares.framework.msg.publish" />
-    <context:component-scan base-package="com.ares.framework.service" />
-    
-    
-    <context:component-scan base-package="com.ares.app" />
-     
+    <!--  <context:component-scan base-package="com.ares.framework.msg.publish" /> -->
+    <context:component-scan base-package="com.ares.framework.rpc" /> 
+    <context:component-scan base-package="com.ares.app.mysql.dao" />
+    <context:component-scan base-package="com.ares.app.m.controller" /> 
     <!--
         Per-Request data, such as the authenticated playerId
         This bean is request scoped, and should be used to get the playerId
         at the Controller layer
     -->
-   <!-- <!-<bean id="rpcContext" class="com.ea.vanguard.com.ares.rpc.RpcContext" scope="request" /> 
+     <bean id="rpcContext" class="com.ares.framework.rpc.context.RpcContext" scope="request" /> 
 
-    <bean id="profiler" class="com.ea.vanguard.com.ares.helper.ProfilerAspect" /> 
+    <!--<bean id="profiler" class="com.ea.vanguard.com.ares.helper.ProfilerAspect" /> 
      --> 
     <aop:aspectj-autoproxy/>
 

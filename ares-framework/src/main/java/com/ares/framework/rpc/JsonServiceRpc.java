@@ -31,9 +31,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 * @author wesly  wiqi.zhong@gmail.com
  */
 
-
-
-@RequestMapping("/jrpc")
 public abstract class JsonServiceRpc {
 	@Inject
 	private ServiceMgr  serviceMgr;
@@ -55,19 +52,15 @@ public abstract class JsonServiceRpc {
 	@ResponseBody
 	public JsonResponse  JCallRpc(@RequestBody  JsonRpcRequest   request) throws JsonParseException, JsonMappingException, NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, IOException
 	{
-	
 		JsonResponse   response = new JsonResponse();
 		JIService service = serviceMgr.GetService(request.getServiceName());
-		if(service == null)
-		{
+		if(service == null){
 			response.setStatus(MsgState.NO_SERVICE);
 			return response;
 		}
-		String   methodName  = request.getMethodName();
-		
+		String   methodName  = request.getMethodName();		
 		Method method = this.GetMethod(service, methodName);
-		if(method == null)
-		{
+		if(method == null){
 			response.setStatus(MsgState.NO_METHOD);
 			return response;
 		}

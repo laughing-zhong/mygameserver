@@ -11,8 +11,6 @@ import lombok.Data;
  */
 @Data
 public class JsonRpcRequest {
-	
-
 	private String serviceName;
 	private String methodName;
 	private String userId;

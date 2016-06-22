@@ -8,9 +8,8 @@ package com.ares.app.service.rpc;
 
 import javax.inject.Inject;
 import javax.inject.Provider;
-import javax.servlet.http.HttpServletRequest;
-
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.ares.framework.rpc.JsonServiceRpc;
 import com.ares.framework.rpc.context.RpcContext;
@@ -22,6 +21,7 @@ import com.ares.framework.rpc.json.JsonRpcRequest;
  */
 
 @Controller
+@RequestMapping("/jrpc")
 public class AppJRequestRpc extends JsonServiceRpc {
 
 	@Inject
@@ -32,6 +32,7 @@ public class AppJRequestRpc extends JsonServiceRpc {
 		// TODO Auto-generated method stub
 		
 	}
+	
 
 
 	@Override

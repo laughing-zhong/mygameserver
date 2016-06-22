@@ -1,10 +1,14 @@
-package com.ares.framework.dao.mysql;
+package com.ares.app.mysql.dao;
 
 import java.util.List;
 
 import javax.annotation.PostConstruct;
 
 import org.springframework.stereotype.Component;
+
+import com.ares.app.DO.MyUser;
+import com.ares.framework.dao.mysql.MySqlBaseDAO;
+import com.ares.framework.dao.mysql.Table;
 
 
 @Component
