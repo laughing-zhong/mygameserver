@@ -3,21 +3,13 @@ package com.ares.framework.dao.mysql;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.security.Timestamp;
-import java.sql.Date;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 
-import javax.annotation.Resource;
-import javax.sql.DataSource;
+import javax.inject.Inject;
 
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.RowMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.testng.util.Strings;
 
 import com.ares.service.exception.TableNameNullException;
@@ -26,30 +18,10 @@ import com.ares.service.exception.TableNameNullException;
 public class MySqlBaseDAO<T> {
 	private Class<?> doClass;
 	private String tableName;
-	private JdbcTemplate jdbcTemplate;
+	private static Logger logger =LoggerFactory.getLogger(MySqlBaseDAO.class);
 
-	protected static Map<String, Class<?>> methodNames = new HashMap<String, Class<?>>();
-	protected static Map<Class<?>, Method> methodMap   = new HashMap<Class<?>, Method>();
-	static {
-		methodNames.put("getString", String.class);
-		methodNames.put("getInt", int.class);
-		methodNames.put("getTimestamp", Timestamp.class);
-		methodNames.put("getDate", Date.class);
-		methodNames.put("getLong", Long.class);
-		Iterator<String> mdIter = methodNames.keySet().iterator();
-		try {
-			while (mdIter.hasNext()) {
-				String methodName = mdIter.next();
-				Class<?> classType = methodNames.get(methodName);
-				Method method = ResultSet.class.getMethod(methodName, String.class);
-				methodMap.put(classType, method);
-			}
-		} catch (NoSuchMethodException e) {
-			e.printStackTrace();
-		} catch (SecurityException e) {
-			e.printStackTrace();
-		}
-	}
+	@Inject
+	private DbUtilsTemplate  dbUtilsTmpl;
 
 	public MySqlBaseDAO(Class<?> doClass) {
 		this.doClass = doClass;
@@ -68,54 +40,66 @@ public class MySqlBaseDAO<T> {
 				|| Strings.isNullOrEmpty(tableEntity.value())){
 			throw new TableNameNullException( this.doClass.getSimpleName() +" table is null you should set like @Table(\"table_name\")");
 		}
-		this.tableName = tableEntity.value();
-
-		//--------------------------select sql-----------------------------------
+		this.tableName    = tableEntity.value();
+		logger.debug("table name:{}", tableName);
 		this.selectObjSql = DoSqlUtil.getSelectOneObjSql(doClass, tableName);
-		this.selectObjListSql = DoSqlUtil.getSelectObjListSql(doClass, tableName);		
-		//------------------- insert sql--------------------------------------------
+		logger.debug("selectObjSql  :{}", selectObjSql);
 		this.insertObjSql = DoSqlUtil.getInsertSql(doClass, tableName);	
-		//------------------------------------------------ update ---------------------------
+		logger.debug("insertObjSql  :{}", insertObjSql);
 		this.updateObjSql = DoSqlUtil.getUpdateSql(doClass, tableName);
-		//-------------------------------------------------------  delete------------------------
-		deleteObjSql = DoSqlUtil.getDeleteSql(doClass, tableName);	
-	}
-	@Resource(name = "dataSource")
-	public void setDataSource(DataSource ds) {
-		jdbcTemplate = new JdbcTemplate(ds);
+		logger.debug("updateObjSql  :{}", updateObjSql);
+		deleteObjSql      = DoSqlUtil.getDeleteSql(doClass, tableName);	
+		logger.debug("deleteObjSql  :{}", deleteObjSql);
 	}
 
-	public T get(String key) {
-		return this.jdbcTemplate.queryForObject(this.selectObjSql, customerRowMapper, key);
+	@SuppressWarnings("unchecked")
+	public T  get(Object key) {
+		return (T) dbUtilsTmpl.findFirst(doClass, this.selectObjSql, key);
 	}
-	public T get(int key) {
-		return this.jdbcTemplate.queryForObject(this.selectObjSql, customerRowMapper, key);
+
+	
+	@SuppressWarnings("unchecked")
+	public List<T> getList(Object key) {
+		return (List<T>) dbUtilsTmpl.find(doClass, selectObjSql, key);
 	}
 	
-	public List<T> getList(int key) {
-		return this.jdbcTemplate.query(selectObjListSql, customerRowMapper, key);
+	@SuppressWarnings("unchecked")
+	public List<T> getList(Object[] keys) {
+		return (List<T>) dbUtilsTmpl.find(doClass, selectObjSql, keys);
 	}
 
-	public List<T> getList(String key) {
-		return this.jdbcTemplate.query(selectObjListSql, customerRowMapper, key);
-	}
 	public int add(T obj){
 		setFiledValues(obj);
-		return this.jdbcTemplate.update(this.insertObjSql, fieldValues);
+		return dbUtilsTmpl.update(insertObjSql, fieldValues);
 	}
-	
-	
-	//update for sql
+		
 	public int set(T obj){
 		setFiledValues(obj);
-		return this.jdbcTemplate.update(this.updateObjSql, fieldValues);
+		return dbUtilsTmpl.update(updateObjSql, fieldValues);
 	}
 	
-	public int delete(String key){
-		return this.jdbcTemplate.update(deleteObjSql, key);
+	public int delete(Object key){
+		return dbUtilsTmpl.update(deleteObjSql, key);
 	}
-	public int delete(int key){
-		return this.jdbcTemplate.update(this.deleteObjSql, key);
+	
+	@SuppressWarnings("unchecked")
+	public T find(String sql, Class<?> entityClass){	
+		return (T) dbUtilsTmpl.findFirst(entityClass, sql);
+	}
+
+	public int update(String sql){
+		return dbUtilsTmpl.update(sql);
+	}
+	
+	public int update(String sql, Object[] params){
+		return dbUtilsTmpl.update(sql, params);
+	}
+	public int update(String sql ,Object param){
+		return dbUtilsTmpl.update(sql, param);
+	}
+	
+	public int[] batchUpdate(String sql, Object[][] params){
+		return dbUtilsTmpl.batchUpdate(sql, params);
 	}
 
 	private void setFiledValues(T obj) {
@@ -144,14 +128,11 @@ public class MySqlBaseDAO<T> {
 			Field field = fields[i];
 			String filedName = field.getName();
 			Index pkey = field.getAnnotation(Index.class);
-				
-			String fieldSetMethodName = "set" + toUpperCaseFirstOne(filedName);
-			Method fiedSetMethod = doClass.getDeclaredMethod(fieldSetMethodName,field.getType());
+	
 			String filedGetMethodName = "get" + toUpperCaseFirstOne(filedName);
-			Method fiedGetMethod = doClass.getDeclaredMethod(filedGetMethodName);
+			Method fiedGetMethod      = doClass.getDeclaredMethod(filedGetMethodName);
 			
-			Method rrsMethod = methodMap.get(field.getType());
-			DoFiledCallClass doFiledSetClass = new DoFiledCallClass(filedName,fiedSetMethod, fiedGetMethod, rrsMethod);
+			DoFiledCallClass doFiledSetClass = new DoFiledCallClass(filedName, fiedGetMethod);
 			if(pkey != null){
 				pkFiledClass = doFiledSetClass;
 				continue;
@@ -164,64 +145,11 @@ public class MySqlBaseDAO<T> {
 	private String insertObjSql;
 	private String updateObjSql;
 	private String selectObjSql;
-	private String selectObjListSql;
 	private String deleteObjSql;
 	private Object[] fieldValues;
 
 	
-	private List<DoFiledCallClass> dataObjFiledSetClassList = new ArrayList<DoFiledCallClass>();
-	private CustomRowMapper customerRowMapper = new CustomRowMapper();
-
-	private class CustomRowMapper implements RowMapper<T> {
-		@Override
-		public T mapRow(ResultSet rs, int rowNum) throws SQLException {
-
-			try {
-				@SuppressWarnings("unchecked")
-				T objInstance = (T) doClass.newInstance();
-				for (int i = 0; i < dataObjFiledSetClassList.size(); ++i) {
-					DoFiledCallClass dofiledSetClass = dataObjFiledSetClassList.get(i);
-					dofiledSetClass.setFiledValue(objInstance, rs);
-				}
-				return objInstance;
-			} catch (InstantiationException e) {
-				e.printStackTrace();
-			} catch (IllegalAccessException e) {
-				e.printStackTrace();
-			} catch (IllegalArgumentException e) {
-				e.printStackTrace();
-			} catch (InvocationTargetException e) {
-				e.printStackTrace();
-			}
-			return null;
-		}
-	}
-
-	private class DoFiledCallClass {
-		private String fieldName;
-		private Method fieldSetMethod;
-		private Method fieldGetMethod;
-		private Method rrsMethod;
-
-		public DoFiledCallClass(String filedName, Method filedSetMethod, Method filedGetMethod,
-				Method rrsMethod) {
-			this.fieldName = filedName;
-			this.fieldSetMethod = filedSetMethod;
-			this.fieldGetMethod = filedGetMethod;
-			this.rrsMethod = rrsMethod;
-		}
-
-		public void setFiledValue(T obj, ResultSet rs)
-				throws IllegalAccessException, IllegalArgumentException,
-				InvocationTargetException {
-			fieldSetMethod.invoke(obj, rrsMethod.invoke(rs, fieldName));
-		}
-		public Object getFiledValue(T obj) 
-				throws IllegalAccessException, IllegalArgumentException, InvocationTargetException{
-			return fieldGetMethod.invoke(obj);
-		}
-	}
-
+	
 	public static String toUpperCaseFirstOne(String s) {
 		if (Character.isUpperCase(s.charAt(0)))
 			return s;
@@ -229,5 +157,19 @@ public class MySqlBaseDAO<T> {
 			return (new StringBuilder())
 					.append(Character.toUpperCase(s.charAt(0)))
 					.append(s.substring(1)).toString();
+	}
+	
+	private List<DoFiledCallClass> dataObjFiledSetClassList = new ArrayList<DoFiledCallClass>();
+
+	private class DoFiledCallClass {
+		private Method fieldGetMethod;
+		public DoFiledCallClass(String filedName, Method filedGetMethod) {
+			this.fieldGetMethod = filedGetMethod;
+		}
+
+		public Object getFiledValue(T obj) 
+				throws IllegalAccessException, IllegalArgumentException, InvocationTargetException{
+			return fieldGetMethod.invoke(obj);
+		}
 	}
 }

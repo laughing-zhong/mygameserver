@@ -17,6 +17,8 @@ import java.util.Map;
 import javax.sql.DataSource; 
 
 
+
+
 import org.apache.commons.dbutils.QueryRunner; 
 import org.apache.commons.dbutils.handlers.BeanHandler; 
 import org.apache.commons.dbutils.handlers.BeanListHandler; 
@@ -37,32 +39,31 @@ public class DbUtilsTemplate {
     } 
 
     /** 
-     * 执行sql语句 
-     * @param sql sql语句 
-     * @return 受影响的行数 
+     *
+     * @param sql 
+     * @return
      */ 
     public int update(String sql) { 
         return update(sql, null); 
     } 
       
     /** 
-     * 执行sql语句 
+     *
      * <code> 
      * executeUpdate("update user set username = 'kitty' where username = ?", "hello kitty"); 
      * </code> 
-     * @param sql sql语句 
-     * @param param 参数 
-     * @return 受影响的行数 
+     * @param sql sql
+     * @param param 
+     * @return 
      */ 
     public int update(String sql, Object param) { 
         return update(sql, new Object[] { param }); 
     } 
       
     /** 
-     * 执行sql语句 
-     * @param sql sql语句 
-     * @param params 参数数组 
-     * @return 受影响的行数 
+     * 
+     * @param params 
+     * @return 
      */ 
     public int update(String sql, Object[] params) { 
         queryRunner = new QueryRunner(dataSource); 
@@ -80,10 +81,9 @@ public class DbUtilsTemplate {
     } 
       
     /** 
-     * 执行批量sql语句 
-     * @param sql sql语句 
-     * @param params 二维参数数组 
-     * @return 受影响的行数的数组 
+     * @param sql sql
+     * @param params 
+     * @return 
      */ 
     public int[] batchUpdate(String sql, Object[][] params) { 
         queryRunner = new QueryRunner(dataSource); 
@@ -97,31 +97,28 @@ public class DbUtilsTemplate {
     }     
 
     /** 
-     * 执行查询，将每行的结果保存到一个Map对象中，然后将所有Map对象保存到List中 
-     * @param sql sql语句 
-     * @return 查询结果 
+
+     * @param sql
+     * @return 
      */ 
     public List<Map<String, Object>> find(String sql) { 
         return find(sql, null); 
     } 
       
     /** 
-     * 执行查询，将每行的结果保存到一个Map对象中，然后将所有Map对象保存到List中 
-     * @param sql sql语句 
-     * @param param 参数 
-     * @return 查询结果 
+     * @param sql
+     * @param param
+     * @return
      */ 
     public List<Map<String, Object>> find(String sql, Object param) { 
         return find(sql, new Object[] {param}); 
     } 
       
     /** 
-     * 执行查询，将每行的结果保存到一个Map对象中，然后将所有Map对象保存到List中 
-     * @param sql sql语句 
-     * @param params 参数数组 
-     * @return 查询结果 
+     * @param sql sql
+     * @param params 
+     * @return  
      */ 
-    @SuppressWarnings("unchecked") 
     public List<Map<String, Object>> find(String sql, Object[] params) { 
         queryRunner = new QueryRunner(dataSource); 
         List<Map<String, Object>> list = new ArrayList<Map<String,Object>>(); 
@@ -138,34 +135,31 @@ public class DbUtilsTemplate {
     } 
       
     /** 
-     * 执行查询，将每行的结果保存到Bean中，然后将所有Bean保存到List中 
-     * @param entityClass 类名 
-     * @param sql sql语句 
-     * @return 查询结果 
+     * @param entityClass 类
+     * @param sql
+     * @return
      */ 
     public <T> List<T> find(Class<T> entityClass, String sql) { 
         return find(entityClass, sql, null); 
     } 
       
-    /** 
-     * 执行查询，将每行的结果保存到Bean中，然后将所有Bean保存到List中 
-     * @param entityClass 类名 
-     * @param sql sql语句 
-     * @param param 参数 
-     * @return 查询结果 
+    /**  
+     * @param entityClass 
+     * @param sql sq 
+     * @param param
+     * @return  
      */ 
     public <T> List<T> find(Class<T> entityClass, String sql, Object param) { 
         return find(entityClass, sql, new Object[] { param }); 
     } 
       
     /** 
-     * 执行查询，将每行的结果保存到Bean中，然后将所有Bean保存到List中 
-     * @param entityClass 类名 
-     * @param sql sql语句 
-     * @param params 参数数组 
-     * @return 查询结果 
+     * @param entityClass  
+     * @param sql  
+     * @param params
+     * @return 
      */ 
-    @SuppressWarnings("unchecked") 
+    @SuppressWarnings({ "unchecked", "rawtypes" })
     public <T> List<T> find(Class<T> entityClass, String sql, Object[] params) { 
         queryRunner = new QueryRunner(dataSource); 
         List<T> list = new ArrayList<T>(); 
@@ -182,34 +176,31 @@ public class DbUtilsTemplate {
     } 
       
     /** 
-     * 查询出结果集中的第一条记录，并封装成对象 
-     * @param entityClass 类名 
-     * @param sql sql语句 
-     * @return 对象 
+     * @param entityClass
+     * @param sql
+     * @return  
      */ 
     public <T> T findFirst(Class<T> entityClass, String sql) { 
         return findFirst(entityClass, sql, null); 
     } 
       
     /** 
-     * 查询出结果集中的第一条记录，并封装成对象 
-     * @param entityClass 类名 
-     * @param sql sql语句 
-     * @param param 参数 
-     * @return 对象 
+     * @param entityClass 
+     * @param sql 
+     * @param param
+     * @return  
      */ 
     public <T> T findFirst(Class<T> entityClass, String sql, Object param) { 
         return findFirst(entityClass, sql, new Object[] { param }); 
     } 
       
     /** 
-     * 查询出结果集中的第一条记录，并封装成对象 
-     * @param entityClass 类名 
-     * @param sql sql语句 
-     * @param params 参数数组 
-     * @return 对象 
+     * @param entityClass  
+     * @param sql sql 
+     * @param params 
+     * @return 
      */ 
-    @SuppressWarnings("unchecked") 
+    @SuppressWarnings({ "unchecked", "rawtypes" })
     public <T> T findFirst(Class<T> entityClass, String sql, Object[] params) { 
         queryRunner = new QueryRunner(dataSource); 
         Object object = null; 
@@ -226,31 +217,28 @@ public class DbUtilsTemplate {
     } 
       
     /** 
-     * 查询出结果集中的第一条记录，并封装成Map对象 
-     * @param sql sql语句 
-     * @return 封装为Map的对象 
+     * @param sql sql 
+     * @return 
      */ 
     public Map<String, Object> findFirst(String sql) { 
         return findFirst(sql, null); 
     } 
       
     /** 
-     * 查询出结果集中的第一条记录，并封装成Map对象 
-     * @param sql sql语句 
-     * @param param 参数 
-     * @return 封装为Map的对象 
+     * @param sql  
+     * @param param 
+     * @return
      */ 
     public Map<String, Object> findFirst(String sql, Object param) { 
         return findFirst(sql, new Object[] { param }); 
     } 
       
     /** 
-     * 查询出结果集中的第一条记录，并封装成Map对象 
-     * @param sql sql语句 
-     * @param params 参数数组 
-     * @return 封装为Map的对象 
+     * @param sql
+     * @param params 
+     * @return
      */ 
-    @SuppressWarnings("unchecked") 
+
     public Map<String, Object> findFirst(String sql, Object[] params) { 
         queryRunner = new QueryRunner(dataSource); 
         Map<String, Object> map = null; 
@@ -267,34 +255,32 @@ public class DbUtilsTemplate {
     } 
       
     /** 
-     * 查询某一条记录，并将指定列的数据转换为Object 
-     * @param sql sql语句 
-     * @param columnName 列名 
-     * @return 结果对象 
+     * @param sql  
+     * @param columnName 
+     * @return 
      */ 
     public Object findBy(String sql, String columnName) { 
         return findBy(sql, columnName, null); 
     } 
       
     /** 
-     * 查询某一条记录，并将指定列的数据转换为Object 
-     * @param sql sql语句 
-     * @param columnName 列名 
-     * @param param 参数 
-     * @return 结果对象 
+     * @param sql
+     * @param columnName 
+     * @param param
+     * @return  
      */ 
     public Object findBy(String sql, String columnName, Object param) { 
         return findBy(sql, columnName, new Object[] { param }); 
     } 
       
     /** 
-     * 查询某一条记录，并将指定列的数据转换为Object 
-     * @param sql sql语句 
-     * @param columnName 列名 
-     * @param params 参数数组 
-     * @return 结果对象 
+     * @param sql  
+     * @param columnName 
+     * @param params 
+     * @return 
      */ 
-    public Object findBy(String sql, String columnName, Object[] params) { 
+    @SuppressWarnings({ "unchecked", "rawtypes" })
+	public Object findBy(String sql, String columnName, Object[] params) { 
         queryRunner = new QueryRunner(dataSource); 
         Object object = null; 
         try { 
@@ -310,34 +296,32 @@ public class DbUtilsTemplate {
     } 
       
     /** 
-     * 查询某一条记录，并将指定列的数据转换为Object 
-     * @param sql sql语句 
-     * @param columnIndex 列索引 
-     * @return 结果对象 
+     * @param sql 
+     * @param columnIndex 
+     * @return
      */ 
     public Object findBy(String sql, int columnIndex) { 
         return findBy(sql, columnIndex, null); 
     } 
       
-    /** 
-     * 查询某一条记录，并将指定列的数据转换为Object 
-     * @param sql sql语句 
-     * @param columnIndex 列索引 
-     * @param param 参数 
-     * @return 结果对象 
+    /**  
+     * @param sql 
+     * @param columnIndex 
+     * @param param 
+     * @return  
      */ 
     public Object findBy(String sql, int columnIndex, Object param) { 
         return findBy(sql, columnIndex, new Object[] { param }); 
     } 
       
     /** 
-     * 查询某一条记录，并将指定列的数据转换为Object 
-     * @param sql sql语句 
-     * @param columnIndex 列索引 
-     * @param params 参数数组 
-     * @return 结果对象 
+     * @param sql 
+     * @param columnIndex
+     * @param params
+     * @return 
      */ 
-    public Object findBy(String sql, int columnIndex, Object[] params) { 
+    @SuppressWarnings({ "unchecked", "rawtypes" })
+	public Object findBy(String sql, int columnIndex, Object[] params) { 
         queryRunner = new QueryRunner(dataSource); 
         Object object = null; 
         try { 

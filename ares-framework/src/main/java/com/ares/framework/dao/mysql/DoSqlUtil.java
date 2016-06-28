@@ -107,14 +107,7 @@ public class DoSqlUtil {
 		return selectSql.toString();	
 	}
 	
-	public static String getSelectObjListSql(Class<?> doClass, String tableName){
-		StringBuilder selectSql = new StringBuilder("select * from ");
-		selectSql.append(tableName);
-		selectSql.append(" where ");
-		selectSql.append(getPk(doClass));
-		selectSql.append(" = ?");
-		return selectSql.toString();	
-	}
+
 	public static String   getDeleteSql(Class<?>doClass, String tableName)
 	{
 		StringBuilder deleteSql = new StringBuilder("delete from ");

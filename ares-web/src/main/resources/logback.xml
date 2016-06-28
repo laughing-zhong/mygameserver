@@ -23,7 +23,7 @@
         </layout>
     </appender>
     
-     <logger name="game.framework.rpc.JsonServiceRpc" additivity="false">
+     <logger name="com.ares.framework.rpc.JsonServiceRpc" additivity="false">
         <level value="DEBUG"/>
         <appender-ref ref="FILE"/>
     </logger>
@@ -62,8 +62,10 @@
         </rollingPolicy>
     </appender>
     
-    <logger name ="game.app.asyn.msg.listener" level="ERROR" additivity="false" >
+    <logger name ="com.ares.framework.dao.mysql" level="DEBUG" additivity="false" >
 	      <appender-ref ref ="daoErrorAppender"/>
+	       <appender-ref ref ="STDOUT"/>
+	      
 	</logger>
 
 </configuration>
