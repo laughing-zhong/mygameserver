@@ -57,9 +57,9 @@ public abstract class WebRequestRpc {
 			checkSession(req);
 			ViewResponse result = CallObjMethod(service, method, req.getParameterMap(), model);
 			if(result.Method != null || result.Service != null){
-				RedirectView redirecView = new RedirectView();
-				redirecView.setUrl(result.toString());
-				return new ModelAndView(redirecView,result.getParams());
+				RedirectView redirectView = new RedirectView();
+				redirectView.setUrl(result.toString());
+				return new ModelAndView(redirectView,result.getParams());
 			}		
 			return new ModelAndView(result.WebPage);
 		}catch (InvocationTargetException e ){

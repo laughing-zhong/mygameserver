@@ -1,0 +1,139 @@
+<!doctype html>
+<html>
+	<head>
+		<link rel="stylesheet" href="/resources/css/body.css" type="text/css" />
+		<meta charset="utf-8" />
+		<title>Default Examples</title>
+	    <style>
+			form {
+				margin: 0;
+			}
+			textarea {
+				display: block;
+			}
+		</style>
+		
+		    <!-- Loading Bootstrap -->
+    <link href="/resources/css/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+      <!-- Loading my define -->
+    <link href="/resources/css/wd.css" rel="stylesheet">
+  
+		  
+    <!-- Loading Flat UI -->
+    <link href="/resources/css/flat-ui.min.css" rel="stylesheet">
+    <link href="/resources/css/body.css" rel="stylesheet">
+
+    <link rel="shortcut icon" href="img/favicon.ico">
+		
+		<script src="/resources/js/vendor/jquery.min.js"></script>
+  		<script src="/resources/js/flat-ui.min.js"></script>
+  		<script src="/resources/js/assets/js/application.js"></script>
+ 		<script src="/resources/js/jquery.cookie.js"></script>
+ 		<script src="/resources/js/obj-to-url.js"></script>
+		<script charset="utf-8" src="/resources/js/kindeditor-min.js"></script>
+		<script>
+			var editor;
+			KindEditor.ready(function(K) {
+			editor = K.create('textarea[name="content"]', {
+					resizeType : 1,
+					allowPreviewEmoticons : false,
+					allowImageUpload : true,
+					allowFileManager : true,
+					allowFileUpload: true,
+					uploadJson: "${file_upload_url}",
+					items : [
+						'fontname', 'fontsize', '|', 'forecolor', 'hilitecolor', 'bold', 'italic', 'underline',
+						'removeformat', '|', 'justifyleft', 'justifycenter', 'justifyright', 'insertorderedlist',
+						'insertunorderedlist', '|', 'emoticons', 'image', 'link','insertfile']
+				});
+				K('input[name=getHtml]').click(function(e) {
+				  $.post("/rpc/NoteService/publishTopic", {title:$("#topic_title").val(),content: editor.html()},
+	  	    			function(data){
+	   						 window.location.replace(obj_to_url(data));
+        	               }      	      
+	  	   			) ;					
+				});
+				K('input[name=isEmpty]').click(function(e) {
+					alert(editor.isEmpty());
+				});
+				K('input[name=getText]').click(function(e) {
+					alert(editor.text());
+				});
+				K('input[name=selectedHtml]').click(function(e) {
+					alert(editor.selectedHtml());
+				});
+				K('input[name=setHtml]').click(function(e) {
+					editor.html('<h3>Hello KindEditor</h3>');
+				});
+				K('input[name=setText]').click(function(e) {
+					editor.text('<h3>Hello KindEditor</h3>');
+				});
+				K('input[name=insertHtml]').click(function(e) {
+					editor.insertHtml('<strong>插入HTML</strong>');
+				});
+				K('input[name=appendHtml]').click(function(e) {
+					editor.appendHtml('<strong>添加HTML</strong>');
+				});
+				K('input[name=clear]').click(function(e) {
+					editor.html('');
+				});
+			});
+		</script>
+	</head>
+	<body>
+	<hr id="line" />
+    <div class="container-fluid">
+      <div class="row">
+    	<div class="col-md-2">
+		 </div>
+        <div class="col-md-7">
+		<form>
+		<div>
+		<div class="form-group">
+          <label class="col-sm-1 control-label" for="formGroupInputDefault">标题</label>
+          <div class="col-sm-6">
+            <input class="form-control" type="text" id="topic_title" >
+          </div>
+        </div>
+		</div>
+	
+		<div id="center">
+			<textarea name="content" style="height:350px;visibility:hidden;"></textarea>
+            </div>
+		<p>
+			<input type="button" class="btn btn-primary btn-hg" name="getHtml" value="发表帖子" />
+		<!-- 	 	<input type="button" name="isEmpty" value="判断是否为空" />
+				<input type="button" name="getText" value="取得文本(包含img,embed)" />
+				<input type="button" name="selectedHtml" value="取得选中HTML" />
+				<br />
+				<br />
+				<input type="button" name="setHtml" value="设置HTML" />
+				<input type="button" name="setText" value="设置文本" />
+				<input type="button" name="insertHtml" value="插入HTML" />
+				<input type="button" name="appendHtml" value="添加HTML" />
+				<input type="button" name="clear" value="清空内容" />
+				<input type="reset"  name="reset" value="Reset" />
+				-->
+			</p>
+			
+            <div> 
+              <div class="form-group">
+              <label class="checkbox" for="checkbox1">
+                <input type="checkbox" data-toggle="checkbox" value="" id="checkbox1" required>
+                有人回复时邮件通知我
+              </label>
+              <label class="checkbox" for="checkbox2">
+                <input type="checkbox" data-toggle="checkbox" value="" id="checkbox2" required>
+               邮件通知我的联系人
+              </label>
+
+			  
+            </div>
+            </div>
+		</form>
+		</div>
+		</div>
+		</div>
+	</body>
+</html>

@@ -20,17 +20,7 @@
     <![endif]-->
   </head>
   <body>
-    <div class="container">
-        <h1>Hello, world!</h1>
-    </div>
-    <!-- /.container -->
-
-
-    <!-- jQuery (necessary for Flat UI's JavaScript plugins) -->
-    <script src="/resources/js/vendor/jquery.min.js"></script>
-    <!-- Include all compiled plugins (below), or include individual files as needed -->
-    <script src="/resources/js/vendor/video.js"></script>
-    <script src="/resources/js/flat-ui.min.js"></script>
+   <p> this is a header</p>
 
   </body>
 </html>

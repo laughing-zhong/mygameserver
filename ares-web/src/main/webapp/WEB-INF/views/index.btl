@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />  
+    <title>mongdb web</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Loading Bootstrap -->
+    <link href="/resources/css/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Loading Flat UI -->
+    <link href="/resources/css/flat-ui.css" rel="stylesheet">
+
+    <link rel="shortcut icon" href="img/favicon.ico">
+		
+		 
+ 		    <!-- jQuery (necessary for Flat UI's JavaScript plugins) -->
+    <script src="/resources/js/vendor/jquery.min.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="/resources/js/vendor/video.js"></script>
+    <script src="/resources/js/flat-ui.min.js"></script>
+	<script src="/resources/assets/js/application.js"></script>
+    <script src="/resources/js/bootstrap-treeview.js"></script>
+    <script src="/resources/js/jquerysession.js"></script>
+
+
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements. All other JS at the end of file. -->
+    <!--[if lt IE 9]>
+      <script src="js/vendor/html5shiv.js"></script>
+      <script src="js/vendor/respond.min.js"></script>
+    <![endif]-->
+	
+	
+	<script type="text/javascript">
+	
+$(function() { 
+	$("#save").click(function() {
+	  $.post("/rpc/MongdbUtilsService/wirteMgContent", {tableName: $("#tableName").val(), content: $("#content").val(),docId:$("#docId").val()},
+	   function(data){
+          $("#content").val(data.d);
+          console.log(data);  
+        }
+	  )
+	}
+  );
+  
+  $("#lookup").click(function(){
+     	  $.post("/rpc/MongdbUtilsService/lookup", {tableName: $("#tableName").val(),docId:$("#docId").val()},
+	   function(data){
+          $("#content").val(data.d);
+          console.log(data); 
+        }
+	  )
+  });  
+ } 
+ );
+ 
+ $(document).ready(function(){
+        $('select[name="inverse-dropdown"], select[name="inverse-dropdown-optgroup"], select[name="inverse-dropdown-disabled"]').select2({dropdownCssClass: 'select-inverse-dropdown'});
+
+        $('select[name="searchfield"]').select2({dropdownCssClass: 'show-select-search'});
+        $('select[name="inverse-dropdown-searchfield"]').select2({dropdownCssClass: 'select-inverse-dropdown show-select-search'});
+      });
+    </script>
+  </head>
+ <body>
+ <div class="container-fluid">
+
+ <p>	<h4>mongdb</h4> </p>
+  <div class="row">	
+  <form>
+	
+    <div class="col-xs-2">	
+         <h6>tableName</h6>
+		 <p id="treeview1" class=""/>
+     </div>
+
+	<div class="col-xs-6">
+		<p> <span class="label label-default">collectionName</span> <input type="text" name="tableName"  id="tableName" />   </p>
+        <p> <span class="label label-default">docId</span>          <input type="text" name="docId"   id="docId"/></p>        
+        <p> <span class="label label-default">docucment</span>      <textarea class="form-control" rows="6" name="content"   value="2"  id="content"></textarea></p>
+
+		<button type="button" class="btn btn-primary" id="save" >Save</button> 
+		<button type="button" class="btn btn-primary" id="lookup" >Lookup</button> 
+		<button type="button" class="btn btn-primary" id="create" >Create</button> 		
+    </div>
+	<div class="col-xs-2">
+    </div>				
+  </form>
+ </div>
+ </div>
+ <script>  	
+	$.post("/rpc/MongdbUtilsService/getMongdbInfo",
+	   function(data1){	  
+		  $('#treeview1').treeview({
+          data: data1,
+		   onNodeSelected: function(event, node) {
+              $('#tableName').val(node.text);
+            }
+        });
+          console.log(data1); //  2pm
+		  console.log($.session.get('name'));			  
+        }
+	  );
+      	
+ </script>
+  </body>
+</html>

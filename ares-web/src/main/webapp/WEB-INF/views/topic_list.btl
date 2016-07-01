@@ -1,0 +1,77 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Course List</title>
+     <meta charset="utf-8"/>
+    <title>Flat UI Free 101 Template</title>
+
+    <!-- Loading Bootstrap -->
+    <link href="/resources/css/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+      <!-- Loading my define -->
+    <link href="/resources/css/wd.css" rel="stylesheet">
+  
+		  
+    <!-- Loading Flat UI -->
+    <link href="/resources/css/flat-ui.min.css" rel="stylesheet">
+    <link href="/resources/css/body.css" rel="stylesheet">
+
+    <link rel="shortcut icon" href="img/favicon.ico">
+
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements. All other JS at the end of file. -->
+    <!--[if lt IE 9]>
+      <script src="js/vendor/html5shiv.js"></script>
+      <script src="js/vendor/respond.min.js"></script>
+    <![endif]-->
+    
+  <script src="/resources/js/vendor/jquery.min.js"></script>
+  <script src="/resources/js/flat-ui.min.js"></script>
+  <script src="/resources/js/assets/js/application.js"></script>
+  <script src="/resources/js/jquery.cookie.js"></script>
+ </head>
+ <body id="wdbody">
+    <hr id="line" />
+    <div class="container-fluid">
+      <div class="row">
+    	<div class="col-md-2">
+		 </div>
+        <div class="col-md-6">
+             <div id="day_info">
+               今日:${note_statistics.todayNoteCount}               |
+               昨日:${note_statistics.lastDayCount}  | 
+               帖子: ${note_statistics.totalCount} |
+               会员:${total_users}|
+               欢迎新会员:s505125548
+           </div>
+          
+            <hr id="line" />
+              <% for(note in topic_list) { %>
+	
+              <div  class="row">
+                <div>
+                 	<a  id= "tpc_dec" href="/view/NoteService/topicDetail?topicID=${note.id}">${note.title}</a> 
+                 </div> 
+                 <div  id="tpc_info">
+					
+					<% 	if (note.lastRplTime != null) { %>
+                    ${note.senderName} 于 ${note.senderTime}发表 |最后回复：${note.lastRplTime}
+					<% } %>
+					<% else{ %>
+				     ${note.senderName} 于 ${note.senderTime}发表|暂无回复
+					 <%}%>
+                 </div>
+                
+               </div>
+              <% }  %>   
+     </div>
+    <div class="col-md-2">
+         <div class="form-group">
+		       <div class="col-lg-2">
+		          <a  class="btn btn-primary btn-hg"  href="/view/NoteService/sendTopicView">发帖</a>  
+		       </div>
+        </div>
+	 </div>
+  </div>
+</div>
+</body> 
+</html>

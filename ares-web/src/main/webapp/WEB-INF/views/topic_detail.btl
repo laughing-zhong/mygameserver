@@ -1,0 +1,124 @@
+<html>
+    <head>
+        <title>Course List</title>
+            <meta charset="utf-8">
+    <title>Flat UI Free 101 Template</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Loading Bootstrap -->
+    <link href="/resources/css/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+      <!-- Loading Bootstrap -->
+    <link href="/resources/css/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/resources/css/body.css" rel="stylesheet">
+    
+      <!-- Loading my define -->
+    <link href="/resources/css/wd.css" rel="stylesheet">
+		  
+    <!-- Loading Flat UI -->
+    <link href="/resources/css/flat-ui.min.css" rel="stylesheet">
+
+    <link rel="shortcut icon" href="img/favicon.ico">
+
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements. All other JS at the end of file. -->
+    <!--[if lt IE 9]>
+      <script src="js/vendor/html5shiv.js"></script>
+      <script src="js/vendor/respond.min.js"></script>
+    <![endif]-->
+    
+  <script src="/resources/js/vendor/jquery.min.js"></script>
+  <script src="/resources/js/flat-ui.min.js"></script>
+  <script src="/resources/js/assets/js/application.js"></script>
+  <script src="/resources/js/jquery.cookie.js"></script>
+  <script src="/resources/js/obj-to-url.js"></script>
+  <script charset="utf-8" src="/resources/js/kindeditor-min.js"></script>
+  <script>
+	var editor;
+			KindEditor.ready(function(K) {
+			editor = K.create('textarea[name="content"]', {
+					resizeType : 1,
+				    allowPreviewEmoticons : false,
+					allowImageUpload : true,
+					allowFileManager : true,
+					allowFileUpload: true,
+					uploadJson: "${file_upload_url}",
+					items : [
+						'fontname', 'fontsize', '|', 'forecolor', 'hilitecolor', 'bold', 'italic', 'underline',
+						'removeformat', '|', 'justifyleft', 'justifycenter', 'justifyright', 'insertorderedlist',
+						'insertunorderedlist', '|', 'emoticons', 'image', 'link','insertfile']
+				});
+				K('input[name=getHtml]').click(function(e) {
+				  $.post("/rpc/NoteService/replyTopic", {id:$("#topic_id").attr("value"),content: editor.html()},
+	  	    			function(data){
+	   						 window.location.replace(obj_to_url(data));
+        	               }      	      
+	  	   			) ;					
+				});
+				K('input[name=isEmpty]').click(function(e) {
+					alert(editor.isEmpty());
+				});
+				K('input[name=getText]').click(function(e) {
+					alert(editor.text());
+				});
+				K('input[name=selectedHtml]').click(function(e) {
+					alert(editor.selectedHtml());
+				});
+				K('input[name=setHtml]').click(function(e) {
+					editor.html('<h3>Hello KindEditor</h3>');
+				});
+				K('input[name=setText]').click(function(e) {
+					editor.text('<h3>Hello KindEditor</h3>');
+				});
+				K('input[name=insertHtml]').click(function(e) {
+					editor.insertHtml('<strong>插入HTML</strong>');
+				});
+				K('input[name=appendHtml]').click(function(e) {
+					editor.appendHtml('<strong>添加HTML</strong>');
+				});
+				K('input[name=clear]').click(function(e) {
+					editor.html('');
+				});
+			});
+		</script>
+  
+  
+</head>
+
+ <body id="wdbody">
+   <hr id="line" />
+   <div class="container-fluid">
+      <div class="row">
+    	<div class="col-md-2">
+		 </div>
+        <div class="col-md-6"> 
+        <div>${topic_detail.title} </div>
+        <div id ="tpc_item">
+             ${topic_detail.content}
+             <label id="topic_id" hidden="true" value=${topic_detail.id} ></label>
+        </div>
+        <% if(topic_detail.subNoteList != null){
+        	for(subtopic in topic_detail.subNoteList) { %>
+        	<div id ="tpc_item">
+        		<div>
+        		   ${subtopic.replyName}  发表于：${subtopic.replyTime} 
+        		</div>
+        		<div>
+           		   ${subtopic.content}
+           		</div>
+        	</div>    
+            <% } 
+        }%>
+        <hr id="line" />
+        
+        <div id="center">
+			<textarea name="content" style="height:250px;visibility:hidden;"></textarea>
+			<p>
+				<input type="button" class="btn btn-primary btn-hg" name="getHtml" value="回复" />
+			</p>
+       </div>
+               
+      </div>
+	 </div>
+	 </div>
+    </body>
+</html>

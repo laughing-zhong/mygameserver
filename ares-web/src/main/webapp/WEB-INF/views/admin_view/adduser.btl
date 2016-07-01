@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Flat UI Free 101 Template</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Loading Bootstrap -->
+    <link href="/resources/css/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+		  
+    <!-- Loading Flat UI -->
+    <link href="/resources/css/flat-ui.min.css" rel="stylesheet">
+
+    <link rel="shortcut icon" href="img/favicon.ico">
+
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements. All other JS at the end of file. -->
+    <!--[if lt IE 9]>
+      <script src="js/vendor/html5shiv.js"></script>
+      <script src="js/vendor/respond.min.js"></script>
+    <![endif]-->
+  <script src="/resources/js/vendor/jquery.min.js"></script>
+  <script src="/resources/js/flat-ui.min.js"></script>
+  <script src="/resources/js/assets/js/application.js"></script>
+  <script src="/resources/js/jquery.cookie.js"></script>
+	
+<script type="text/javascript">
+var request_url="";
+$(function() { 
+	$("#createAdmin").click(function() {
+     $.post("/admin/save/admin", {name: $("#admin-name").val(), email: $("#admin-email").val(),teleno:$("#admin-teleno").val(),passwd:$("#admin-passwd").val()},
+	   function(data){
+	    console.log(data)
+	     window.location.replace("/admin");
+        }
+	  )	
+	}	
+	)
+	
+	$("#createAccount").click(function() {
+		var contactSelect = document.getElementById("contactList");
+		var val_array = [];
+	
+		for (var i=0;i<contactSelect.length;i++){
+			if (contactSelect.options[i].selected)
+				val_array.push(contactSelect.options[i].value);
+		}
+		console.log(val_array.toString());
+	     console.log(val_array.toLocaleString()); 
+     $.post("/admin/save/ee_acount", {name: $("#name").val(), email: $("#email").val(),teleno:$("#teleno").val(),passwd:$("#passwd").val(),contactList:val_array.toLocaleString()},
+	   function(data){
+	    
+                   }
+	       )	
+	    }	
+	);
+	
+	
+   $("#searchAccunt").click(function() {
+        var accountName = $("#name").val();
+		console.log(accountName);
+     $.post("/rpc/EeAcountService/searchEeAccount", {accountName},
+	   function(data){
+	   console.log(data);
+	    
+                   }
+	       )	
+	    }	
+	);
+	
+	$("[name='optionsRadios1']").on("change", 
+	function (e) { 
+		var group1 = $("[name='optionsRadios1']").filter(":checked"); 
+		var acType = group1.attr("value");
+		console.log(acType); 
+		if(acType == 1){
+			document.getElementById("contactList").style.visibility="hidden";
+			}
+		else 
+			document.getElementById("contactList").style.visibility="visible";			
+	} 
+	); 
+})
+ </script>
+  </head>
+  <body>
+     <div class="col-md-4">
+      <h4>admin account</h4>
+        <div class="form-horizontal" >
+            <div class="form-group">
+              <label for="inputEmail1" class="col-lg-2 control-label">姓名</label>
+              <div class="col-lg-6">
+                <input type="text" class="form-control" id="admin-name" >
+              </div>
+            </div>
+			
+			 <div class="form-group">
+               <label for="inputEmail1" class="col-lg-2 control-label">密码</label>
+               <div class="col-lg-6">
+                 <input type="password" class="form-control" id="admin-passwd" >
+               </div>
+            </div>	
+		   <div class="form-group">
+              <label for="inputEmail1" class="col-lg-2 control-label">Email</label>
+              <div class="col-lg-6">
+                <input type="email" class="form-control" id="admin-email" placeholder="Email">
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="inputEmail1" class="col-lg-3 control-label">联系方式</label>
+              <div class="col-lg-6">
+                <input type="text" class="form-control" id="admin-teleno" placeholder="teleno">
+              </div>
+            </div>	
+			
+			<div class="form-group">
+			  <div class="col-lg-2">
+			    <button type="submit" id="createAdmin" class="btn btn-primary" >Create</button>
+			  </div>
+            </div>
+			
+	  <ul role="navigation" class="navbar navbar-default">
+        <div class="navbar-header">
+          <button data-target="#bs-example-navbar-collapse-10" data-toggle="collapse" class="navbar-toggle" type="button">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <p class="navbar-brand">add ee user</p>
+        </div>
+      </ul>
+	  
+	      <div class="form-group">
+              <label for="inputEmail1" class="col-lg-2 control-label">姓名</label>
+              <div class="col-lg-6">
+                <input type="text" class="form-control" id="name" >
+              </div>
+            </div>		
+		    <div class="form-group">
+               <label for="inputEmail1" class="col-lg-2 control-label">密码</label>
+               <div class="col-lg-6">
+                 <input type="password" class="form-control" id="passwd" >
+               </div>
+            </div>	
+		   <div class="form-group">
+              <label for="inputEmail1" class="col-lg-2 control-label">Email</label>
+              <div class="col-lg-6">
+                <input type="email" class="form-control" id="email" placeholder="Email">
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="inputEmail1" class="col-lg-3 control-label">联系方式</label>
+              <div class="col-lg-6">
+                <input type="text" class="form-control" id="teleno" placeholder="teleno">
+              </div>
+            </div>	
+			
+		<!--   <div class="form-group">
+				<label class="radio" for="radio100">
+					<input name="optionsRadios1" type="radio" data-toggle="radio" value="1" id="radio100" required>
+						Admin
+              	</label>
+				<label class="radio" for="radio101">
+					<input name="optionsRadios1" type="radio" data-toggle="radio" value="2" id="radio101" required checked>
+						Ee
+              	</label>
+		   </div>
+		   -->
+			
+		    <div class="form-group" id ="contactList_div">
+				 <label class="col-lg-2 control-label">联系人</label>
+				 <div class="col-lg-8">				
+		         <select data-toggle="select" id ="contactList" multiple class="form-control multiselect multiselect-inverse mrs mbm">
+		          <% for( player in playerList) {
+					if( player.id == 1) {		%>		
+			            <option value = ${player.id} selected > ${player.name} </option>
+			           <% }else { %>
+					    <option value = ${player.id} > ${player.name} </option>
+					  <% }	
+					 }  %>
+                  </select>
+                </div>
+             </div>
+			
+			<div class="form-group">
+			  <div class="col-lg-2">
+			    <button type="submit" class="btn btn-primary"    id="createAccount" >Create</button>
+			  </div>
+				<div class="col-lg-2">
+				   <button type="submit" class="btn btn-primary"  id="updateAccount">update</button>
+				</div>
+				<div class="col-lg-2">
+				   <button type="submit" class="btn btn-primary"  id="searchAccunt" >search</button>
+				</div>
+		     </div>
+      </div>	  
+	 </div>
+ </div>
+  </body>
+</html>
