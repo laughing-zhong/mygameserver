@@ -28,7 +28,7 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 
 public abstract class WebRequestRpc {
 	private final static String ERROR_MSG_TAG = "error_msg";
-	private final static String  ERROR_404 = "404";
+	private final static String ERROR_404 = "404";
 	@Inject
 	private ServiceMgr  serviceMgr;
 	

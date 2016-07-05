@@ -50,10 +50,12 @@
 						</goals>
 					</execution>
 				</executions>
-
+         <!-- 
 				<configuration>
 					<protocCommand> /usr/local/bin/protoc</protocCommand>
 				</configuration>
+				
+				 -->
 			</plugin>
 		</plugins>
 	</build>
